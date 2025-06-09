@@ -25,6 +25,10 @@ Submit a pull request, and wait;
 it will be reviewed and if it is good merged.
 
 ### Coding conventions:
-Use camelCase;
-Use tabs for indentation, not spaces;
-When in doubt, match the code that's already there.
+Use camelCase, 
+use tabs for indentation, not spaces,
+when in doubt, match the code that's already there.
+
+## Planned things
+making the engine exist, there is nothing currently
+adding build support to more systems
