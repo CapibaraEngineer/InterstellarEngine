@@ -30,5 +30,6 @@ use tabs for indentation, not spaces,
 when in doubt, match the code that's already there.
 
 ## Planned things
-making the engine exist, there is nothing currently
+Making the engine exist, there is nothing currently,
+
 adding build support to more systems
