@@ -23,11 +23,15 @@ project ("InterstellarEngine-Core")
     files {
         InterstellarEngine_Core_Dir .. "**.cpp",
         InterstellarEngine_Core_Dir .. "**.hpp",
-        InterstellarEngine_Core_Dir .. "**.h"
+        InterstellarEngine_Core_Dir .. "**.h",
+        InterstellarEngine_Core_Dir .. "**.cppm",
+        InterstellarEngine_Core_Dir .. "**.ixx"
+
     }
 
     includedirs {
         InterstellarEngine_Core_Dir .. "Include",
+        InterstellarEngine_Core_Dir .. "Modules",
         InterstellarEngine_Core_Dir .. "Source",
 
         os.getenv("VULKAN_SDK") .. "/Include",
@@ -94,11 +98,14 @@ project ("InterstellarEngine-Editor")
     files {
         InterstellarEngine_Editor_Dir .. "**.cpp",
         InterstellarEngine_Editor_Dir .. "**.hpp",
-        InterstellarEngine_Editor_Dir .. "**.h"
+        InterstellarEngine_Editor_Dir .. "**.h",
+        InterstellarEngine_Core_Dir .. "**.cppm",
+        InterstellarEngine_Core_Dir .. "**.ixx"
     }
 
     includedirs {
         InterstellarEngine_Core_Dir .. "Include",
+        InterstellarEngine_Core_Dir .. "Modules",
         InterstellarEngine_Core_Dir .. "Source",
 
         os.getenv("VULKAN_SDK") .. "/Include",

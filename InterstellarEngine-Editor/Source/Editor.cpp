@@ -1,48 +1,20 @@
-#include <stdio.h>
+#include <iostream>
+#include <stdexcept>
 #include <stdlib.h>
 
-#define GLFW_INCLUDE_VULKAN
-#include <GLFW/glfw3.h>
+import InterstellarEngine_Core;
 
-constexpr int WINDOW_WIDTH = 1920;
-constexpr int WINDOW_HEIGHT = 1080;
+int main() {
+	insterstellarEngineCore::engineCore engine;
 
-GLFWwindow* window = NULL;
+	try {
+		engine.run();
 
-void GLFW_KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
-{
-	if ((key == GLFW_KEY_ESCAPE) && (action == GLFW_PRESS)) {
-		glfwSetWindowShouldClose(window, GLFW_TRUE);
 	}
-}
-
-int main(int argc, char* argv[])
-{
-	if (!glfwInit()) {
-		return 1;
+	catch (const std::exception& exception) {
+		std::cerr << exception.what() << std::endl;
+		return EXIT_FAILURE;
 	}
 
-	if (!glfwVulkanSupported()) {
-		return 1;
-	}
-
-	glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
-	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
-
-	window = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "InterstellarEngine - Editor", NULL, NULL);
-	
-	if (!window) {
-		glfwTerminate();
-		exit(EXIT_FAILURE);
-	}
-
-	glfwSetKeyCallback(window, GLFW_KeyCallback);
-
-	while (!glfwWindowShouldClose(window)) {
-		glfwPollEvents();
-	}
-
-	glfwTerminate();
-
-	return 0;
+	return EXIT_SUCCESS;
 }
