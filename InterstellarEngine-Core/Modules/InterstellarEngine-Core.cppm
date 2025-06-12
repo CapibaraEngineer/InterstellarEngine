@@ -6,6 +6,7 @@ export module InterstellarEngine_Core;
 import <vulkan/vulkan.h>;
 
 import <iostream>;
+import <vector>;
 
 export namespace insterstellarEngineCore {
 
@@ -15,7 +16,6 @@ export namespace insterstellarEngineCore {
 	class engineCore
 	{
 	public:
-		void debugInfo() {};  //shows debug info about the engineCore
 
 		void run() {
 			initWindow();
@@ -55,6 +55,7 @@ export namespace insterstellarEngineCore {
 		}
 
 		void createInstance() {
+
 			VkApplicationInfo appInfo{};
 			appInfo.sType = VK_STRUCTURE_TYPE_APPLICATION_INFO;
 			appInfo.pApplicationName = "Interstellar Engine";
@@ -78,6 +79,19 @@ export namespace insterstellarEngineCore {
 
 			if (vkCreateInstance(&createInfo, nullptr, &instance) != VK_SUCCESS) {
 				throw std::runtime_error("failed to create instance!");
+			}
+
+			// extension checking
+			uint32_t extensionCount = 0;
+			
+			vkEnumerateInstanceExtensionProperties(nullptr, &extensionCount, nullptr);
+			std::vector<VkExtensionProperties> extensions(extensionCount);
+			vkEnumerateInstanceExtensionProperties(nullptr, &extensionCount, extensions.data());
+
+			std::cout << "Extension checks:" << "\n" << "extension count : " << extensionCount << "\n" << "available extensions : \n";
+
+			for (const auto& extension : extensions) {
+				std::cout << '\t' << extension.extensionName << '\n';
 			}
 
 		}
