@@ -4,7 +4,7 @@ The engine is written in C++20, renders using the Vulkan API, and uses Premake.
 
 ## Building 
 Currently the build system only was tested on windows visual studio 2022, anything else is untested and maybe will work, or need tweaking.
-One Prerequisite is that the Vulkan SDK is installed, when the script run it will try to fine the Vulkan SDK using the enviroment variable VULKAN_SDK, that point to the Vulkan SDK path, create the variable if it doesn't exist in your system, or if its named something else just change the variable name in the system or int the `BuilPremake.lua` file, or just put vulkan SDK path instead of the variable in the script.
+One Prerequisite is that the Vulkan SDK is installed, when the script run it will try to find the Vulkan SDK using the enviroment variable VULKAN_SDK, that variable points to the Vulkan SDK path, create the variable if it doesn't exist in your system, or if its named something else just change the variable name in the system or in the `BuilPremake.lua` file, or just put vulkan SDK path instead of the variable in the script.
 In the root directory open `Premake\Scripts` run the `RunPremake.bat` tha will run premake using the `BuilPremake.lua` once again windows only for visual studio 2022, for other systems see the premake documentation.
 
 ## Contributing
