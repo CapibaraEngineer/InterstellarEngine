@@ -51,6 +51,7 @@ project ("InterstellarEngine-Core")
 
     filter "configurations:Debug"
         runtime "Debug"
+        defines {"DEBUG"}
         linktimeoptimization "off"
         optimize "off"
         symbols "full"
@@ -68,6 +69,7 @@ project ("InterstellarEngine-Core")
 
     filter "configurations:Release"
         runtime "Release"
+        defines {"NDEBUG"}
         linktimeoptimization "on"
         optimize "on"
         symbols "off"
@@ -127,12 +129,14 @@ project ("InterstellarEngine-Editor")
 
     filter "configurations:Debug"
         runtime "Debug"
+        defines {"DEBUG"}
         linktimeoptimization "off"
         optimize "off"
         symbols "full"
 
     filter "configurations:Release"
         runtime "Release"
+        defines {"NDEBUG"}
         linktimeoptimization "on"
         optimize "on"
         symbols "off"
