@@ -3,14 +3,14 @@
 #include <stdlib.h>
 
 import InterstellarEngine_Core;
+import EngineRenderer;
 
 int main() {
-	insterstellarEngineCore::engineCore engine;
+	insterstellarEngineCore::engineRenderer engine;
 
 	try {
 
 		engine.run();
-
 
 	}
 	catch (const std::exception& exception) {
