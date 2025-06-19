@@ -8,7 +8,9 @@ int main() {
 	insterstellarEngineCore::engineCore engine;
 
 	try {
+
 		engine.run();
+
 
 	}
 	catch (const std::exception& exception) {
