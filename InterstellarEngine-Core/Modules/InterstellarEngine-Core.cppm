@@ -9,6 +9,7 @@ import <iostream>;
 import <stdlib.h>;
 import <vector>;
 import <cstring>;
+import <optional>;
 
 export namespace insterstellarEngineCore {
     
@@ -17,6 +18,14 @@ export namespace insterstellarEngineCore {
 
     const std::vector<const char*> validationLayers = {
     "VK_LAYER_KHRONOS_validation"
+    };
+
+    struct QueueFamilyIndices {
+        std::optional<uint32_t> graphicsFamily;
+
+        bool isComplete() {
+            return graphicsFamily.has_value();
+        }
     };
 
 #ifdef NDEBUG

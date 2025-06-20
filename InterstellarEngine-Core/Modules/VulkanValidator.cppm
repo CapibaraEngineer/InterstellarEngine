@@ -79,9 +79,6 @@ export namespace insterstellarEngineCore{
             }
         }
 
-
-
-
         static VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback(
             VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity,
             VkDebugUtilsMessageTypeFlagsEXT messageType,
