@@ -1,10 +1,10 @@
+#define GLFW_INCLUDE_VULKAN
+#include <GLFW/glfw3.h>
+#include <vulkan/vulkan.h>
+
 export module VulkanValidator;
 
 import InterstellarEngine_Core;
-
-#define GLFW_INCLUDE_VULKAN
-import <GLFW/glfw3.h>;
-import <vulkan/vulkan.h>;
 
 import <iostream>;
 import <stdlib.h>;
@@ -44,7 +44,6 @@ export namespace insterstellarEngineCore{
 
             return true;
         }
-
 
         std::vector<const char*> getRequiredExtensions() {
             uint32_t glfwExtensionCount = 0;

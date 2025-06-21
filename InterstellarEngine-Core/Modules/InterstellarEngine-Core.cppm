@@ -1,9 +1,8 @@
-export module InterstellarEngine_Core; 
-
 #define GLFW_INCLUDE_VULKAN
-import <GLFW/glfw3.h>;
+#include <GLFW/glfw3.h>
+#include <vulkan/vulkan.h>
 
-import <vulkan/vulkan.h>;
+export module InterstellarEngine_Core; 
 
 import <iostream>;
 import <stdlib.h>;
@@ -17,15 +16,26 @@ export namespace insterstellarEngineCore {
     constexpr uint16_t windowWidth = 800;
 
     const std::vector<const char*> validationLayers = {
-    "VK_LAYER_KHRONOS_validation"
+        "VK_LAYER_KHRONOS_validation"
+    };
+
+    const std::vector<const char*> deviceExtensions = {
+        VK_KHR_SWAPCHAIN_EXTENSION_NAME
     };
 
     struct QueueFamilyIndices {
         std::optional<uint32_t> graphicsFamily;
+        std::optional<uint32_t> presentFamily;
 
         bool isComplete() const {
-            return graphicsFamily.has_value();
+            return graphicsFamily.has_value() && presentFamily.has_value();;
         }
+    };
+
+    struct SwapChainSupportDetails {
+        VkSurfaceCapabilitiesKHR capabilities;
+        std::vector<VkSurfaceFormatKHR> formats;
+        std::vector<VkPresentModeKHR> presentModes;
     };
 
 #ifdef NDEBUG
