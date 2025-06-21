@@ -89,7 +89,5 @@ export namespace insterstellarEngineCore{
 
             return VK_FALSE;
         }
-
 	};
-
 }
