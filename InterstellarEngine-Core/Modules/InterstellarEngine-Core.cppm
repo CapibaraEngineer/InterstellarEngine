@@ -23,7 +23,7 @@ export namespace insterstellarEngineCore {
     struct QueueFamilyIndices {
         std::optional<uint32_t> graphicsFamily;
 
-        bool isComplete() {
+        bool isComplete() const {
             return graphicsFamily.has_value();
         }
     };
