@@ -4,8 +4,11 @@ The engine is written in C++20, renders using the Vulkan API, and uses Premake.
 
 ## Building 
 Currently the build system only was tested on windows visual studio 2022, anything else is untested and maybe will work, or need tweaking.
-One Prerequisite is that the Vulkan SDK is installed, when the script run it will try to find the Vulkan SDK using the enviroment variable VULKAN_SDK, that variable points to the Vulkan SDK path, create the variable if it doesn't exist in your system, or if its named something else just change the variable name in the system or in the `BuilPremake.lua` file, or just put vulkan SDK path instead of the variable in the script.
-In the root directory open `Premake\Scripts` run the `RunPremake.bat` tha will run premake using the `BuilPremake.lua` once again windows only for visual studio 2022, for other systems see the premake documentation.
+One Prerequisite is that the Vulkan SDK is installed, when the script run it will try to find the Vulkan SDK using the enviroment variable `VULKAN_SDK`, that variable points to the Vulkan SDK path, if you have problems with it, you can solve in a few ways: 
+1. Create the variable if it doesn't exist in your system;
+2. If its named something else just change the variable name in the system, or the variable name in the `BuilPremake.lua` file;
+3. or just put vulkan SDK path instead of the variable in the `BuilPremake.lua` file.
+In the root directory open `Premake\Scripts` run the `RunPremake.bat` that will run premake using the `BuilPremake.lua` this batch file is only for  windows and visual studio 2022, for other systems see the premake documentation.
 
 ## Contributing
 
@@ -31,6 +34,6 @@ use tabs for indentation, not spaces,
 when in doubt, match the code that's already there.
 
 ## Planned things
-Making the engine exist, there is nothing currently,
+1.Making the engine exist, well, now there's something, some debug messages along with the blank window, but it still doens't renders anything
 
-adding build support to more systems
+2.adding build support to more systems
