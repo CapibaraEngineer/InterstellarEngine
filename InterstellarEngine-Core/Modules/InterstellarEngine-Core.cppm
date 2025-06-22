@@ -15,6 +15,8 @@ export namespace insterstellarEngineCore {
     constexpr uint16_t windowHeight = 600;
     constexpr uint16_t windowWidth = 800;
 
+    constexpr uint8_t maxFramesInFlight = 2;
+
     const std::vector<const char*> validationLayers = {
         "VK_LAYER_KHRONOS_validation"
     };
