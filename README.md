@@ -38,6 +38,6 @@ use tabs for indentation, not spaces,
 when in doubt, match the code that's already there.
 
 ## Planned things
-1.Making the engine exist, well, now there's something, some debug messages along with the blank window, but it still doens't renders anything
+1.Making the engine exist, IT RENDERS A TRIANGLE NOW!!!
 
 2.adding build support to more systems
