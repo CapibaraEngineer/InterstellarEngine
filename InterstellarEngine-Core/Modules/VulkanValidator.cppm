@@ -76,6 +76,9 @@ export namespace insterstellarEngineCore{
             if (CreateDebugUtilsMessengerEXT(instance, &createInfo, nullptr, &debugMessenger) != VK_SUCCESS) {
                 throw std::runtime_error("failed to set up debug messenger!");
             }
+            else {
+                std::cerr << "Debug Messenger has been set up successfully\n";
+            }
         }
 
         static VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback(
