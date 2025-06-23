@@ -9,9 +9,7 @@ int main() {
 	insterstellarEngineCore::engineRenderer engine;
 
 	try {
-
 		engine.run();
-
 	}
 	catch (const std::exception& exception) {
 		std::cerr << exception.what() << std::endl;

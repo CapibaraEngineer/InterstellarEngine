@@ -11,6 +11,12 @@ import <cstring>;
 import <optional>;
 
 export namespace insterstellarEngineCore {
+
+#ifdef NDEBUG
+    constexpr bool enableValidationLayers = false;
+#else
+    constexpr bool enableValidationLayers = true;
+#endif
     
     constexpr uint16_t windowHeight = 600;
     constexpr uint16_t windowWidth = 800;
@@ -40,12 +46,6 @@ export namespace insterstellarEngineCore {
         std::vector<VkPresentModeKHR> presentModes;
     };
 
-#ifdef NDEBUG
-    constexpr bool enableValidationLayers = false;
-#else
-    constexpr bool enableValidationLayers = true;
-#endif
-
     VkResult CreateDebugUtilsMessengerEXT(VkInstance instance, const VkDebugUtilsMessengerCreateInfoEXT* pCreateInfo, const VkAllocationCallbacks* pAllocator, VkDebugUtilsMessengerEXT* pDebugMessenger) {
         auto func = (PFN_vkCreateDebugUtilsMessengerEXT)vkGetInstanceProcAddr(instance, "vkCreateDebugUtilsMessengerEXT");
         if (func != nullptr) {
@@ -62,5 +62,4 @@ export namespace insterstellarEngineCore {
             func(instance, debugMessenger, pAllocator);
         }
     }
-
 }
