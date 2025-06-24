@@ -26,7 +26,6 @@ project ("InterstellarEngine-Core")
         InterstellarEngine_Core_Dir .. "**.h",
         InterstellarEngine_Core_Dir .. "**.cppm",
         InterstellarEngine_Core_Dir .. "**.ixx"
-
     }
 
     includedirs {
@@ -101,8 +100,8 @@ project ("InterstellarEngine-Editor")
         InterstellarEngine_Editor_Dir .. "**.cpp",
         InterstellarEngine_Editor_Dir .. "**.hpp",
         InterstellarEngine_Editor_Dir .. "**.h",
-        InterstellarEngine_Core_Dir .. "**.cppm",
-        InterstellarEngine_Core_Dir .. "**.ixx"
+        InterstellarEngine_Editor_Dir .. "**.cppm",
+        InterstellarEngine_Editor_Dir .. "**.ixx"
     }
 
     includedirs {
