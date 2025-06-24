@@ -31,7 +31,7 @@ export namespace insterstellarEngineCore {
 
     private:
         
-        vulkanValidator theVulkanValidator;
+        vulkanValidator engineRendererVulkanValidator;
 
         GLFWwindow* window;
 
@@ -85,7 +85,7 @@ export namespace insterstellarEngineCore {
             }
 
             createInstance();
-            theVulkanValidator.setupDebugMessenger(instance);
+            engineRendererVulkanValidator.setupDebugMessenger(instance);
             createSurface();
             pickPhysicalDevice();
             createLogicalDevice();
@@ -127,7 +127,7 @@ export namespace insterstellarEngineCore {
             vkDestroyDevice(device, nullptr);
 
             if (enableValidationLayers) {
-                DestroyDebugUtilsMessengerEXT(instance, theVulkanValidator.debugMessenger, nullptr);
+                DestroyDebugUtilsMessengerEXT(instance, engineRendererVulkanValidator.debugMessenger, nullptr);
             }
 
             vkDestroySurfaceKHR(instance, surface, nullptr);
@@ -868,7 +868,7 @@ export namespace insterstellarEngineCore {
 
         void createInstance() {
 
-            if (enableValidationLayers && !theVulkanValidator.checkValidationLayerSupport()) {
+            if (enableValidationLayers && !engineRendererVulkanValidator.checkValidationLayerSupport()) {
                 throw std::runtime_error("validation layers requested, but not available!");
             }
             else {
@@ -887,7 +887,7 @@ export namespace insterstellarEngineCore {
             createInfo.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
             createInfo.pApplicationInfo = &appInfo;
 
-            auto extensions = theVulkanValidator.getRequiredExtensions();
+            auto extensions = engineRendererVulkanValidator.getRequiredExtensions();
             createInfo.enabledExtensionCount = static_cast<uint32_t>(extensions.size());
             createInfo.ppEnabledExtensionNames = extensions.data();
 
@@ -896,7 +896,7 @@ export namespace insterstellarEngineCore {
                 createInfo.enabledLayerCount = static_cast<uint32_t>(validationLayers.size());
                 createInfo.ppEnabledLayerNames = validationLayers.data();
 
-                theVulkanValidator.populateDebugMessengerCreateInfo(debugCreateInfo);
+                engineRendererVulkanValidator.populateDebugMessengerCreateInfo(debugCreateInfo);
                 createInfo.pNext = (VkDebugUtilsMessengerCreateInfoEXT*)&debugCreateInfo;
             }
             else {
