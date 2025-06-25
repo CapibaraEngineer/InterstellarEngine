@@ -819,7 +819,7 @@ export namespace interstellarEngineCore {
             std::vector<VkPhysicalDevice> devices(deviceCount);
             vkEnumeratePhysicalDevices(instance, &deviceCount, devices.data());
 
-            std::cout << "\n physical devices:\n";
+            std::cout << "\n physical devices: \n";
             for (const auto& device : devices) {
                 VkPhysicalDeviceProperties deviceProperties;
                 vkGetPhysicalDeviceProperties(device, &deviceProperties);
