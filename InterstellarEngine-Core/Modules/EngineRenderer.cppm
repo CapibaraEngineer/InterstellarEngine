@@ -62,8 +62,6 @@ export namespace interstellarEngineCore {
         std::vector<VkFence> inFlightFences;
         uint16_t currentFrame = 0;
 
-        bool framebufferResized = false;
-
         void initVulkan() {
 
             if (!enableValidationLayers) {
@@ -235,8 +233,8 @@ export namespace interstellarEngineCore {
 
             result = vkQueuePresentKHR(presentQueue, &presentInfo);
 
-            if (result == VK_ERROR_OUT_OF_DATE_KHR || result == VK_SUBOPTIMAL_KHR || framebufferResized) {
-                framebufferResized = false;
+            if (result == VK_ERROR_OUT_OF_DATE_KHR || result == VK_SUBOPTIMAL_KHR || engineRendererWindow.framebufferResized) {
+                engineRendererWindow.framebufferResized = false;
                 recreateSwapChain();
             }
             else if (result != VK_SUCCESS) {
