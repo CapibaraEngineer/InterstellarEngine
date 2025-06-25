@@ -7,6 +7,7 @@ export module EngineRenderer;
 
 import InterstellarEngine_Core;
 import VulkanValidator;
+import EngineWindow;
 
 import <iostream>;
 import <fstream>;
@@ -23,7 +24,7 @@ export namespace interstellarEngineCore {
     public:
 
         void run() {
-            initWindow();
+            engineRendererWindow.initWindow();
             initVulkan();
             mainLoop();
             cleanup();
@@ -32,8 +33,7 @@ export namespace interstellarEngineCore {
     private:
         
         vulkanValidator engineRendererVulkanValidator;
-
-        GLFWwindow* window;
+        engineWindow engineRendererWindow;
 
         VkInstance instance;
         VkSurfaceKHR surface;
@@ -64,17 +64,6 @@ export namespace interstellarEngineCore {
 
         bool framebufferResized = false;
 
-        void initWindow() {
-            glfwInit();
-
-            glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
-            glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
-
-            window = glfwCreateWindow(windowWidth, windowHeight, "Interstellar Engine", nullptr, nullptr);
-            glfwSetWindowUserPointer(window, this);
-            glfwSetFramebufferSizeCallback(window, framebufferResizeCallback);
-        }
-
         void initVulkan() {
 
             if (!enableValidationLayers) {
@@ -100,10 +89,9 @@ export namespace interstellarEngineCore {
         }
 
         void mainLoop() {
-            while (!glfwWindowShouldClose(window)) {
+            while (!glfwWindowShouldClose(engineRendererWindow.window)) {
                 glfwPollEvents();
                 drawFrame();
-                std::cerr << currentFrame<<'\n';
             }
             vkDeviceWaitIdle(device);
         }
@@ -133,14 +121,9 @@ export namespace interstellarEngineCore {
             vkDestroySurfaceKHR(instance, surface, nullptr);
             vkDestroyInstance(instance, nullptr);
 
-            glfwDestroyWindow(window);
+            glfwDestroyWindow(engineRendererWindow.window);
 
             glfwTerminate();
-        }
-
-        static void framebufferResizeCallback(GLFWwindow* window, int width, int height) {
-            auto app = reinterpret_cast<engineRenderer*>(glfwGetWindowUserPointer(window));
-            app->framebufferResized = true;
         }
 
         void cleanupSwapChain() {
@@ -157,9 +140,9 @@ export namespace interstellarEngineCore {
 
         void recreateSwapChain() {
             int width = 0, height = 0;
-            glfwGetFramebufferSize(window, &width, &height);
+            glfwGetFramebufferSize(engineRendererWindow.window, &width, &height);
             while (width == 0 || height == 0) {
-                glfwGetFramebufferSize(window, &width, &height);
+                glfwGetFramebufferSize(engineRendererWindow.window, &width, &height);
                 glfwWaitEvents();
             }
 
@@ -270,9 +253,6 @@ export namespace interstellarEngineCore {
             if (vkBeginCommandBuffer(commandBuffer, &beginInfo) != VK_SUCCESS) {
                 throw std::runtime_error("failed to begin recording command buffer!");
             }
-            else {
-                std::cerr << "commandBuffer started being recorded sucessfully\n";
-            }
 
             VkRenderPassBeginInfo renderPassInfo{};
             renderPassInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
@@ -309,9 +289,6 @@ export namespace interstellarEngineCore {
 
             if (vkEndCommandBuffer(commandBuffer) != VK_SUCCESS) {
                 throw std::runtime_error("failed to record command buffer!");
-            }
-            else {
-                std::cerr << "command buffer recorded sucessfully\n";
             }
         }
 
@@ -677,7 +654,7 @@ export namespace interstellarEngineCore {
 
         void createSurface() {
 
-            if (glfwCreateWindowSurface(instance, window, nullptr, &surface) != VK_SUCCESS) {
+            if (glfwCreateWindowSurface(instance, engineRendererWindow.window, nullptr, &surface) != VK_SUCCESS) {
                 throw std::runtime_error("failed to create window surface!");
             }
             else {
@@ -735,7 +712,7 @@ export namespace interstellarEngineCore {
             }
             else {
                 int width, height;
-                glfwGetFramebufferSize(window, &width, &height);
+                glfwGetFramebufferSize(engineRendererWindow.window, &width, &height);
 
                 VkExtent2D actualExtent = {
                     static_cast<uint32_t>(width),

@@ -17,9 +17,6 @@ export namespace interstellarEngineCore {
 #else
     constexpr bool enableValidationLayers = true;
 #endif
-    
-    constexpr uint16_t windowHeight = 600;
-    constexpr uint16_t windowWidth = 800;
 
     constexpr uint8_t maxFramesInFlight = 2;
 
