@@ -18,7 +18,7 @@ import <cstdint>;
 import <limits>;
 import <algorithm>;
 
-export namespace insterstellarEngineCore {
+export namespace interstellarEngineCore {
     class engineRenderer {
     public:
 

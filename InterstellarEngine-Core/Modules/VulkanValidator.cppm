@@ -13,7 +13,7 @@ import <cstring>;
 
 //this thing is to put all the vulkan validation layer things in one single place so its more organized
 
-export namespace insterstellarEngineCore{
+export namespace interstellarEngineCore{
 
 	class vulkanValidator {
 	public:

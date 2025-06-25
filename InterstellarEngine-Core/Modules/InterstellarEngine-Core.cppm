@@ -10,7 +10,7 @@ import <vector>;
 import <cstring>;
 import <optional>;
 
-export namespace insterstellarEngineCore {
+export namespace interstellarEngineCore {
 
 #ifdef NDEBUG
     constexpr bool enableValidationLayers = false;
