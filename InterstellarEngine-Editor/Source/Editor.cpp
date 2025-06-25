@@ -15,6 +15,5 @@ int main() {
 		std::cerr << exception.what() << std::endl;
 		return EXIT_FAILURE;
 	}
-
 	return EXIT_SUCCESS;
 }

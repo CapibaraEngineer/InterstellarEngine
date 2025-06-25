@@ -176,7 +176,7 @@ export namespace interstellarEngineCore {
                     throw std::runtime_error("failed to create synchronization objects for a frame!");
                 }
                 else {
-                    std::cerr << "synchronization objects created sucessfully\n";
+                    std::cerr << "synchronization objects created sucessfully " << i << "\n";
                 }
             }
 
@@ -628,7 +628,7 @@ export namespace interstellarEngineCore {
             }
         }
 
-        SwapChainSupportDetails querySwapChainSupport(VkPhysicalDevice device) {
+        SwapChainSupportDetails querySwapChainSupport(VkPhysicalDevice device) const {
             SwapChainSupportDetails details;
 
             vkGetPhysicalDeviceSurfaceCapabilitiesKHR(device, surface, &details.capabilities);
@@ -706,7 +706,7 @@ export namespace interstellarEngineCore {
             vkGetDeviceQueue(device, indices.presentFamily.value(), 0, &presentQueue);
         }
 
-        VkExtent2D chooseSwapExtent(const VkSurfaceCapabilitiesKHR& capabilities) {
+        VkExtent2D chooseSwapExtent(const VkSurfaceCapabilitiesKHR& capabilities) const {
             if (capabilities.currentExtent.width != std::numeric_limits<uint32_t>::max()) {
                 return capabilities.currentExtent;
             }
