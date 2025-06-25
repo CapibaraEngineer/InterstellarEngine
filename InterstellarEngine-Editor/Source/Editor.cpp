@@ -7,7 +7,6 @@ import EngineRenderer;
 
 int main() {
 	interstellarEngineCore::engineRenderer engine;
-
 	try {
 		engine.run();
 	}
