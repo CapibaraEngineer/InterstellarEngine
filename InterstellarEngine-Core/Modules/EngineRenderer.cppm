@@ -819,11 +819,13 @@ export namespace interstellarEngineCore {
             std::vector<VkPhysicalDevice> devices(deviceCount);
             vkEnumeratePhysicalDevices(instance, &deviceCount, devices.data());
 
-            std::cout << "\n physical devices:\n";
+            VkPhysicalDeviceProperties deviceProperties;
+
+            std::cout << "\nphysical devices:\n";
             for (const auto& device : devices) {
-                VkPhysicalDeviceProperties deviceProperties;
+                
                 vkGetPhysicalDeviceProperties(device, &deviceProperties);
-                std::cout << deviceProperties.deviceName<< "\n"<<deviceProperties.deviceID << "\n" << deviceProperties.apiVersion<<"\n";
+                std::cout << "device: " << deviceProperties.deviceName << "\n device ID: " << deviceProperties.deviceID << "\n device api version: " << deviceProperties.apiVersion << "\n";
             }
 
             for (const auto& device : devices) {
@@ -837,7 +839,8 @@ export namespace interstellarEngineCore {
                 throw std::runtime_error("failed to find a suitable GPU!");
             }
             else {
-                std::cerr << "suitable GPU found\n";
+                vkGetPhysicalDeviceProperties(physicalDevice, &deviceProperties);
+                std::cerr << "suitable GPU found: " << deviceProperties.deviceName << "\n";
             }
         }
 
