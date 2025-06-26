@@ -26,7 +26,7 @@ export namespace interstellarEngineCore {
             glfwSetFramebufferSizeCallback(window, framebufferResizeCallback);
         }
 
-        void createSurface(VkInstance instance, VkSurfaceKHR &surface) {
+        void createSurface(VkInstance instance, VkSurfaceKHR &surface) const {
 
             if (glfwCreateWindowSurface(instance, window, nullptr, &surface) != VK_SUCCESS) {
                 throw std::runtime_error("failed to create window surface!");
@@ -35,6 +35,10 @@ export namespace interstellarEngineCore {
                 std::cerr << "Window surface created successfully\n";
             }
 
+        }
+
+        void terminateEngineWindow() const {
+            glfwDestroyWindow(window);
         }
 
     private:

@@ -119,9 +119,10 @@ export namespace interstellarEngineCore {
             vkDestroySurfaceKHR(instance, surface, nullptr);
             vkDestroyInstance(instance, nullptr);
 
-            glfwDestroyWindow(engineRendererWindow.window);
+            engineRendererWindow.terminateEngineWindow();
 
             glfwTerminate();
+            
         }
 
         void cleanupSwapChain() {
