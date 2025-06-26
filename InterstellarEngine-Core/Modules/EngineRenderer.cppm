@@ -73,7 +73,7 @@ export namespace interstellarEngineCore {
 
             createInstance();
             engineRendererVulkanValidator.setupDebugMessenger(instance);
-            createSurface();
+            engineRendererWindow.createSurface(instance, surface);
             pickPhysicalDevice();
             createLogicalDevice();
             createSwapChain();
@@ -648,17 +648,6 @@ export namespace interstellarEngineCore {
             }
 
             return details;
-        }
-
-        void createSurface() {
-
-            if (glfwCreateWindowSurface(instance, engineRendererWindow.window, nullptr, &surface) != VK_SUCCESS) {
-                throw std::runtime_error("failed to create window surface!");
-            }
-            else {
-                std::cerr << "Window surface created successfully\n";
-            }
-
         }
 
         void createLogicalDevice() {

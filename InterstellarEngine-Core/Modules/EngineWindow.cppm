@@ -4,6 +4,8 @@
 
 export module EngineWindow;
 
+import <iostream>;
+
 export namespace interstellarEngineCore {
 	class engineWindow {
 	public:
@@ -22,6 +24,17 @@ export namespace interstellarEngineCore {
             window = glfwCreateWindow(windowWidth, windowHeight, "Interstellar Engine", nullptr, nullptr);
             glfwSetWindowUserPointer(window, this);
             glfwSetFramebufferSizeCallback(window, framebufferResizeCallback);
+        }
+
+        void createSurface(VkInstance instance, VkSurfaceKHR &surface) {
+
+            if (glfwCreateWindowSurface(instance, window, nullptr, &surface) != VK_SUCCESS) {
+                throw std::runtime_error("failed to create window surface!");
+            }
+            else {
+                std::cerr << "Window surface created successfully\n";
+            }
+
         }
 
     private:
