@@ -35,7 +35,8 @@ project ("InterstellarEngine-Core")
 
         os.getenv("VULKAN_SDK") .. "/Include",
         ExternalDir .. "glfw-3.4.bin.WIN64/include",
-        ExternalDir .. "glm"
+        ExternalDir .. "glm",
+        ExternalDir .. "stb"
     }
 
     libdirs{
