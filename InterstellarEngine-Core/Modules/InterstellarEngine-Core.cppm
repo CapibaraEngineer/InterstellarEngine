@@ -6,6 +6,9 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
+#define GLM_ENABLE_EXPERIMENTAL
+#include <glm/gtx/hash.hpp>
+
 export module InterstellarEngine_Core; 
 
 import <iostream>;
@@ -14,6 +17,8 @@ import <stdlib.h>;
 import <vector>;
 import <cstring>;
 import <optional>;
+
+
 
 export namespace interstellarEngineCore {
 
@@ -60,6 +65,10 @@ export namespace interstellarEngineCore {
         glm::vec3 color;
         glm::vec2 texCoord;
 
+        bool operator==(const Vertex& other) const {
+            return pos == other.pos && color == other.color && texCoord == other.texCoord;
+        }
+
         static VkVertexInputBindingDescription getBindingDescription() {
             VkVertexInputBindingDescription bindingDescription{};
             bindingDescription.binding = 0;
@@ -97,24 +106,6 @@ export namespace interstellarEngineCore {
         alignas(16) glm::mat4 proj;
     };
 
-    const std::vector<Vertex> vertices = {
-        {{-0.5f, -0.5f, 0.0f}, {1.0f, 0.0f, 0.0f}, {0.0f, 0.0f}},
-        {{0.5f, -0.5f, 0.0f}, {0.0f, 1.0f, 0.0f}, {1.0f, 0.0f}},
-        {{0.5f, 0.5f, 0.0f}, {0.0f, 0.0f, 1.0f}, {1.0f, 1.0f}},
-        {{-0.5f, 0.5f, 0.0f}, {1.0f, 1.0f, 1.0f}, {0.0f, 1.0f}},
-
-        {{-0.5f, -0.5f, -0.5f}, {1.0f, 0.0f, 0.0f}, {0.0f, 0.0f}},
-        {{0.5f, -0.5f, -0.5f}, {0.0f, 1.0f, 0.0f}, {1.0f, 0.0f}},
-        {{0.5f, 0.5f, -0.5f}, {0.0f, 0.0f, 1.0f}, {1.0f, 1.0f}},
-        {{-0.5f, 0.5f, -0.5f}, {1.0f, 1.0f, 1.0f}, {0.0f, 1.0f}}
-    };
-
-
-    const std::vector<uint16_t> indices = {
-        0, 1, 2, 2, 3, 0,
-        4, 5, 6, 6, 7, 4
-    };
-
     VkResult CreateDebugUtilsMessengerEXT(VkInstance instance, const VkDebugUtilsMessengerCreateInfoEXT* pCreateInfo, const VkAllocationCallbacks* pAllocator, VkDebugUtilsMessengerEXT* pDebugMessenger) {
         auto func = (PFN_vkCreateDebugUtilsMessengerEXT)vkGetInstanceProcAddr(instance, "vkCreateDebugUtilsMessengerEXT");
         if (func != nullptr) {
@@ -131,4 +122,14 @@ export namespace interstellarEngineCore {
             func(instance, debugMessenger, pAllocator);
         }
     }
+}
+
+namespace std {
+    export template<> struct hash<interstellarEngineCore::Vertex> {
+        size_t operator()(interstellarEngineCore::Vertex const& vertex) const {
+            return ((hash<glm::vec3>()(vertex.pos) ^
+                (hash<glm::vec3>()(vertex.color) << 1)) >> 1) ^
+                (hash<glm::vec2>()(vertex.texCoord) << 1);
+        }
+    };
 }
