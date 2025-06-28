@@ -38,6 +38,6 @@ use tabs for indentation, not spaces,
 when in doubt, match the code that's already there.
 
 ## Planned things
-1.Making the engine exist, rotating suare thats everything
+1.Making the engine exist, it now renders 3d things
 
 2.adding build support to more systems
