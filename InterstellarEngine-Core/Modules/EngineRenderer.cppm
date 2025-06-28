@@ -228,7 +228,7 @@ export namespace interstellarEngineCore {
             endSingleTimeCommands(commandBuffer);
         }
 
-        VkCommandBuffer beginSingleTimeCommands() {
+        VkCommandBuffer beginSingleTimeCommands() const {
             VkCommandBufferAllocateInfo allocInfo{};
             allocInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
             allocInfo.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
@@ -247,7 +247,7 @@ export namespace interstellarEngineCore {
             return commandBuffer;
         }
 
-        void endSingleTimeCommands(VkCommandBuffer commandBuffer) {
+        void endSingleTimeCommands(VkCommandBuffer commandBuffer) const {
             vkEndCommandBuffer(commandBuffer);
 
             VkSubmitInfo submitInfo{};
