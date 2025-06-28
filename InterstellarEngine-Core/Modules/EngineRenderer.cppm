@@ -207,7 +207,7 @@ export namespace interstellarEngineCore {
             }
         }
 
-        VkImageView createImageView(VkImage image, VkFormat format) {
+        VkImageView createImageView(VkImage image, VkFormat format) const {
             VkImageViewCreateInfo viewInfo{};
             viewInfo.sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
             viewInfo.image = image;
@@ -299,7 +299,7 @@ export namespace interstellarEngineCore {
             endSingleTimeCommands(commandBuffer);
         }
 
-        VkCommandBuffer beginSingleTimeCommands() {
+        VkCommandBuffer beginSingleTimeCommands() const {
             VkCommandBufferAllocateInfo allocInfo{};
             allocInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
             allocInfo.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
@@ -318,7 +318,7 @@ export namespace interstellarEngineCore {
             return commandBuffer;
         }
 
-        void endSingleTimeCommands(VkCommandBuffer commandBuffer) {
+        void endSingleTimeCommands(VkCommandBuffer commandBuffer) const {
             vkEndCommandBuffer(commandBuffer);
 
             VkSubmitInfo submitInfo{};
