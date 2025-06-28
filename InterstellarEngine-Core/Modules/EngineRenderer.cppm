@@ -220,10 +220,10 @@ export namespace interstellarEngineCore {
             viewInfo.subresourceRange.layerCount = 1;
 
             VkImageView imageView;
-            if (vkCreateImageView(device, &viewInfo, nullptr, &imageView) != VK_SUCCESS) [[unlikely]]{
+            if (vkCreateImageView(device, &viewInfo, nullptr, &imageView) != VK_SUCCESS) [[unlikely]] {
                 throw std::runtime_error("failed to create image view!");
             }
-            else [[likely]]{
+            else [[likely]] {
                 std::cerr << "image view created sucessfully\n";
             }
 
@@ -232,12 +232,6 @@ export namespace interstellarEngineCore {
 
         void createTextureImageView() {
             textureImageView = createImageView(textureImage, VK_FORMAT_R8G8B8A8_SRGB);
-        }
-
-        void copyBufferToImage(VkBuffer buffer, VkImage image, uint32_t width, uint32_t height) {
-            VkCommandBuffer commandBuffer = beginSingleTimeCommands();
-
-            endSingleTimeCommands(commandBuffer);
         }
 
         void transitionImageLayout(VkImage image, VkFormat format, VkImageLayout oldLayout, VkImageLayout newLayout) {
@@ -277,19 +271,35 @@ export namespace interstellarEngineCore {
                 throw std::invalid_argument("unsupported layout transition!");
             }
 
-            vkCmdPipelineBarrier(
-                commandBuffer,
-                sourceStage, destinationStage,
-                0,
-                0, nullptr,
-                0, nullptr,
-                1, &barrier
-            );
+            vkCmdPipelineBarrier(commandBuffer, sourceStage, destinationStage, 0, 0, nullptr, 0, nullptr, 1, &barrier );
 
             endSingleTimeCommands(commandBuffer);
         }
 
-        VkCommandBuffer beginSingleTimeCommands() const {
+        void copyBufferToImage(VkBuffer buffer, VkImage image, uint32_t width, uint32_t height) {
+            VkCommandBuffer commandBuffer = beginSingleTimeCommands();
+
+            VkBufferImageCopy region{};
+            region.bufferOffset = 0;
+            region.bufferRowLength = 0;
+            region.bufferImageHeight = 0;
+            region.imageSubresource.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
+            region.imageSubresource.mipLevel = 0;
+            region.imageSubresource.baseArrayLayer = 0;
+            region.imageSubresource.layerCount = 1;
+            region.imageOffset = { 0, 0, 0 };
+            region.imageExtent = {
+                width,
+                height,
+                1
+            };
+
+            vkCmdCopyBufferToImage(commandBuffer, buffer, image, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, 1, &region);
+
+            endSingleTimeCommands(commandBuffer);
+        }
+
+        VkCommandBuffer beginSingleTimeCommands() {
             VkCommandBufferAllocateInfo allocInfo{};
             allocInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
             allocInfo.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
@@ -308,7 +318,7 @@ export namespace interstellarEngineCore {
             return commandBuffer;
         }
 
-        void endSingleTimeCommands(VkCommandBuffer commandBuffer) const {
+        void endSingleTimeCommands(VkCommandBuffer commandBuffer) {
             vkEndCommandBuffer(commandBuffer);
 
             VkSubmitInfo submitInfo{};
@@ -338,11 +348,8 @@ export namespace interstellarEngineCore {
             imageInfo.samples = VK_SAMPLE_COUNT_1_BIT;
             imageInfo.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
 
-            if (vkCreateImage(device, &imageInfo, nullptr, &image) != VK_SUCCESS) [[unlikely]] {
+            if (vkCreateImage(device, &imageInfo, nullptr, &image) != VK_SUCCESS) {
                 throw std::runtime_error("failed to create image!");
-            }
-            else [[likely]] {
-                std::cerr << "image created sucessfully\n";
             }
 
             VkMemoryRequirements memRequirements;
@@ -353,11 +360,8 @@ export namespace interstellarEngineCore {
             allocInfo.allocationSize = memRequirements.size;
             allocInfo.memoryTypeIndex = findMemoryType(memRequirements.memoryTypeBits, properties);
 
-            if (vkAllocateMemory(device, &allocInfo, nullptr, &imageMemory) != VK_SUCCESS) [[unlikely]] {
+            if (vkAllocateMemory(device, &allocInfo, nullptr, &imageMemory) != VK_SUCCESS) {
                 throw std::runtime_error("failed to allocate image memory!");
-            }
-            else [[likely]] {
-                std::cerr << "image memory allocated sucessfully\n";
             }
 
             vkBindImageMemory(device, image, imageMemory, 0);
@@ -365,8 +369,7 @@ export namespace interstellarEngineCore {
 
         void createTextureImage() {
             int texWidth, texHeight, texChannels;
-            stbi_uc* pixels = stbi_load("C:/Desenvolvimento/C++/InterstellarEngine/InterstellarEngine-Core/Textures/capibara_engineer_512x512.png", 
-                &texWidth, &texHeight, &texChannels, STBI_rgb_alpha);
+            stbi_uc* pixels = stbi_load("C:/Desenvolvimento/C++/InterstellarEngine/InterstellarEngine-Core/Textures/capibara_engineer_512x512.png", &texWidth, &texHeight, &texChannels, STBI_rgb_alpha);
             VkDeviceSize imageSize = texWidth * texHeight * 4;
 
             if (!pixels) [[unlikely]] {
