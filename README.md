@@ -38,6 +38,6 @@ use tabs for indentation, not spaces,
 when in doubt, match the code that's already there.
 
 ## Planned things
-1.Making the engine exist, IT RENDERS A TRIANGLE NOW!!! Yeah i know the shader are hard coded and that this is bad
+1.Making the engine exist, rotating suare thats everything
 
 2.adding build support to more systems
