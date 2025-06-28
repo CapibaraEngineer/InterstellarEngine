@@ -201,7 +201,7 @@ export namespace interstellarEngineCore {
             );
         }
 
-        VkFormat findSupportedFormat(const std::vector<VkFormat>& candidates, VkImageTiling tiling, VkFormatFeatureFlags features) {
+        VkFormat findSupportedFormat(const std::vector<VkFormat>& candidates, VkImageTiling tiling, VkFormatFeatureFlags features) const {
             for (VkFormat format : candidates) {
                 VkFormatProperties props;
                 vkGetPhysicalDeviceFormatProperties(physicalDevice, format, &props);
