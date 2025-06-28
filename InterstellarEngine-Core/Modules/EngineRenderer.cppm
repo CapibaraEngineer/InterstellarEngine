@@ -415,7 +415,7 @@ export namespace interstellarEngineCore {
 
         void createTextureImage() {
             int texWidth, texHeight, texChannels;
-            stbi_uc* pixels = stbi_load("C:/Desenvolvimento/C++/InterstellarEngine/InterstellarEngine-Core/Textures/capibara_engineer_512x512.png", &texWidth, &texHeight, &texChannels, STBI_rgb_alpha);
+            stbi_uc* pixels = stbi_load(capibaraEngineerPath, &texWidth, &texHeight, &texChannels, STBI_rgb_alpha);
             VkDeviceSize imageSize = texWidth * texHeight * 4;
 
             if (!pixels) [[unlikely]] {
@@ -913,8 +913,8 @@ export namespace interstellarEngineCore {
         }
 
         void createGraphicsPipeline() {
-            auto vertShaderCode = readFile("C:/Desenvolvimento/C++/InterstellarEngine/InterstellarEngine-Core/Source/Shaders/vert.spv");
-            auto fragShaderCode = readFile("C:/Desenvolvimento/C++/InterstellarEngine/InterstellarEngine-Core/Source/Shaders/frag.spv");
+            auto vertShaderCode = readFile(vertexShaderPath);
+            auto fragShaderCode = readFile(fragamentShaderPath);
 
             VkShaderModule vertShaderModule = createShaderModule(vertShaderCode);
             VkShaderModule fragShaderModule = createShaderModule(fragShaderCode);

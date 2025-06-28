@@ -25,6 +25,13 @@ export namespace interstellarEngineCore {
 
     constexpr uint8_t maxFramesInFlight = 2;
 
+    //yes i know that i shouldn't use absoulute paths, but relative path refuse to work, i fix that later, and is not like there is someone using this thing
+    const std::string modelPath = "C:/Desenvolvimento/C++/InterstellarEngine/InterstellarEngine-Core/Assets/Models/viking_room.obj";
+    const std::string modelTexturePath = "C:/Desenvolvimento/C++/InterstellarEngine/InterstellarEngine-Core/Assets/Textures/viking_room.png";
+    const std::string capibaraEngineerPath = "C:/Desenvolvimento/C++/InterstellarEngine/InterstellarEngine-Core/Assets/Textures/capibara_engineer_512x512.png";
+    const std::string vertexShaderPath = "C:/Desenvolvimento/C++/InterstellarEngine/InterstellarEngine-Core/Shaders/vert.spv";
+    const std::string fragamentShaderPath = "C:/Desenvolvimento/C++/InterstellarEngine/InterstellarEngine-Core/Shaders/frag.spv";
+
     const std::vector<const char*> validationLayers = {
         "VK_LAYER_KHRONOS_validation"
     };
