@@ -111,10 +111,10 @@ export namespace interstellarEngineCore {
         void initVulkan() {
 
             if (!enableValidationLayers) {
-                std::clog << "[\033[94mLOG\033[0m] Release Build - validation layers disabled\n";
+                std::clog << "[\033[94mLOG\033[0m] Release Build - validation layers [\033[31mDISABLED\033[0m]\n";
             }
             else {
-                std::clog << "[\033[94mLOG\033[0m] Debug Build - validation layers enabled\n";
+                std::clog << "[\033[94mLOG\033[0m] Debug Build - validation layers [\033[32mENABLED\033[0m]\n";
             }
 
             createInstance();
