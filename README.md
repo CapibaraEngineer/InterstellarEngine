@@ -27,7 +27,7 @@ If possible, provide an example, like a code snippet, showing what your new feat
 ### Pull Requests
 if you fixed a bug or added a feature create a pull request
 
-If you haven't already, create a fork of the Premake repository;
+If you haven't already, create a fork of the repository;
 Create a topic branch, and make all of your changes on that branch;
 Submit a pull request, and wait;
 it will be reviewed and if it is good merged.
