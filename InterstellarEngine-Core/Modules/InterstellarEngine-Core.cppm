@@ -18,8 +18,6 @@ import <vector>;
 import <cstring>;
 import <optional>;
 
-
-
 export namespace interstellarEngineCore {
 
 #ifdef NDEBUG
