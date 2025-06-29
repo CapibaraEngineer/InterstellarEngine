@@ -13,8 +13,8 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <vulkan/vulkan.h>
 
-#include <chrono>//include instead of imported because intellisense is dumb
-#include <fstream>//include instead of imported because intellisense is dumb, if i include chrono the fstream breaks when imported, just for intelisense, this thing still compiles
+#include <chrono>//included instead of imported because intellisense is dumb
+#include <fstream>//included instead of imported because intellisense is dumb, if i include chrono the fstream breaks when imported, just for intelisense, this thing still compiles
 
 export module EngineRenderer;
 
