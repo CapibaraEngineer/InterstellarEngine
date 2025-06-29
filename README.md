@@ -12,30 +12,8 @@ One Prerequisite is that the Vulkan SDK is installed, when the script run it wil
 2. If its named something else just change the variable name in the system, or the variable name in the `BuilPremake.lua` file;
 3. or just put vulkan SDK path instead of the variable in the `BuilPremake.lua` file.
    
-
-
 ## Contributing
-
-### Bug reports e feature suggestion
-If you found a bug report it a the github issue tracker, but before check if anyone already reported it, please give the most information you can on the bug.
-
-Before opening a new  feature request, use the search feature at the top of that page to see if it has already been requested;
-Explain the problem that you're having, and anything you've tried to solve it using the currently available features;
-Explain how this new feature will help;
-If possible, provide an example, like a code snippet, showing what your new feature might look like in use.
-
-### Pull Requests
-if you fixed a bug or added a feature create a pull request
-
-If you haven't already, create a fork of the repository;
-Create a topic branch, and make all of your changes on that branch;
-Submit a pull request, and wait;
-it will be reviewed and if it is good merged.
-
-### Coding conventions:
-Use camelCase, 
-use tabs for indentation, not spaces,
-when in doubt, match the code that's already there.
+You are free to contribute to the project, see the [contributing guideline here](https://github.com/CapibaraEngineer/InterstellarEngine/blob/master/CONTRIBUTING.md).
 
 ## Planned things
 1.Making the engine exist, it now renders 3d things
