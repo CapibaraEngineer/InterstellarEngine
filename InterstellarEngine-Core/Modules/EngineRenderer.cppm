@@ -236,7 +236,7 @@ export namespace interstellarEngineCore {
                 throw std::runtime_error("texture image format does not support linear blitting!");
             }
             else [[likely]] {
-                std::clog << "[\033[32mOK\033[0m] texture image format support linear blitting\n";
+                std::clog << "[\033[32mOK\033[0m] texture image format supports linear blitting\n";
             }
 
             VkCommandBuffer commandBuffer = beginSingleTimeCommands();
