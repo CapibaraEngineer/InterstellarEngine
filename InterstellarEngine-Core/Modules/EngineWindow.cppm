@@ -28,11 +28,11 @@ export namespace interstellarEngineCore {
 
         void createSurface(VkInstance instance, VkSurfaceKHR &surface) const {
 
-            if (glfwCreateWindowSurface(instance, window, nullptr, &surface) != VK_SUCCESS) {
+            if (glfwCreateWindowSurface(instance, window, nullptr, &surface) != VK_SUCCESS) [[unlikely]] {
                 throw std::runtime_error("failed to create window surface!");
             }
-            else {
-                std::cerr << "Window surface created successfully\n";
+            else [[likely]] {
+                std::clog << "[\033[32mOK\033[0m] Window surface created successfully\n";
             }
 
         }

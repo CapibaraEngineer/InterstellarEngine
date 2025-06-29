@@ -73,11 +73,11 @@ export namespace interstellarEngineCore{
             VkDebugUtilsMessengerCreateInfoEXT createInfo;
             populateDebugMessengerCreateInfo(createInfo);
 
-            if (CreateDebugUtilsMessengerEXT(instance, &createInfo, nullptr, &debugMessenger) != VK_SUCCESS) {
+            if (CreateDebugUtilsMessengerEXT(instance, &createInfo, nullptr, &debugMessenger) != VK_SUCCESS) [[unlikely]] {
                 throw std::runtime_error("failed to set up debug messenger!");
             }
-            else {
-                std::cerr << "Debug Messenger has been set up successfully\n";
+            else [[likely]] {
+                std::clog << "[\033[32mOK\033[0m] Debug Messenger has been set up successfully\n";
             }
         }
 

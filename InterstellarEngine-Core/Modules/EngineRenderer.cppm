@@ -111,10 +111,10 @@ export namespace interstellarEngineCore {
         void initVulkan() {
 
             if (!enableValidationLayers) {
-                std::cerr << "Release Build - validation layers disabled\n";
+                std::clog << "[\033[94mLOG\033[0m] Release Build - validation layers disabled\n";
             }
             else {
-                std::cerr << "Debug Build - validation layers enabled\n";
+                std::clog << "[\033[94mLOG\033[0m] Debug Build - validation layers enabled\n";
             }
 
             createInstance();
@@ -212,7 +212,7 @@ export namespace interstellarEngineCore {
             colorImageView = createImageView(colorImage, colorFormat, VK_IMAGE_ASPECT_COLOR_BIT, 1);
         }
 
-        VkSampleCountFlagBits getMaxUsableSampleCount() {
+        VkSampleCountFlagBits getMaxUsableSampleCount() const {
             VkPhysicalDeviceProperties physicalDeviceProperties;
             vkGetPhysicalDeviceProperties(physicalDevice, &physicalDeviceProperties);
 
@@ -232,8 +232,11 @@ export namespace interstellarEngineCore {
             VkFormatProperties formatProperties;
             vkGetPhysicalDeviceFormatProperties(physicalDevice, imageFormat, &formatProperties);
 
-            if (!(formatProperties.optimalTilingFeatures & VK_FORMAT_FEATURE_SAMPLED_IMAGE_FILTER_LINEAR_BIT)) {
+            if (!(formatProperties.optimalTilingFeatures & VK_FORMAT_FEATURE_SAMPLED_IMAGE_FILTER_LINEAR_BIT)) [[unlikely]] {
                 throw std::runtime_error("texture image format does not support linear blitting!");
+            }
+            else [[likely]] {
+                std::clog << "[\033[32mOK\033[0m] texture image format support linear blitting\n";
             }
 
             VkCommandBuffer commandBuffer = beginSingleTimeCommands();
@@ -423,11 +426,11 @@ export namespace interstellarEngineCore {
                 throw std::runtime_error("failed to create texture sampler!");
             }
             else [[likely]] {
-                std::cerr << "texture sampler created sucessfully\n";
+                std::clog << "[\033[32mOK\033[0m] texture sampler created sucessfully\n";
             }
         }
 
-        VkImageView createImageView(VkImage image, VkFormat format, VkImageAspectFlags aspectFlags, uint32_t mipLevels) {
+        VkImageView createImageView(VkImage image, VkFormat format, VkImageAspectFlags aspectFlags, uint32_t mipLevels) const {
             VkImageViewCreateInfo viewInfo{};
             viewInfo.sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
             viewInfo.image = image;
@@ -440,8 +443,11 @@ export namespace interstellarEngineCore {
             viewInfo.subresourceRange.layerCount = 1;
 
             VkImageView imageView;
-            if (vkCreateImageView(device, &viewInfo, nullptr, &imageView) != VK_SUCCESS) {
+            if (vkCreateImageView(device, &viewInfo, nullptr, &imageView) != VK_SUCCESS) [[unlikely]] {
                 throw std::runtime_error("failed to create image view!");
+            }
+            else [[likely]] {
+                std::clog << "[\033[32mOK\033[0m] image view created sucessfully\n";
             }
 
             return imageView;
@@ -568,8 +574,11 @@ export namespace interstellarEngineCore {
             imageInfo.samples = numSamples;
             imageInfo.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
 
-            if (vkCreateImage(device, &imageInfo, nullptr, &image) != VK_SUCCESS) {
+            if (vkCreateImage(device, &imageInfo, nullptr, &image) != VK_SUCCESS) [[unlikely]] {
                 throw std::runtime_error("failed to create image!");
+            }
+            else [[likely]] {
+                std::clog << "[\033[32mOK\033[0m] image created sucessfully\n";
             }
 
             VkMemoryRequirements memRequirements;
@@ -580,8 +589,11 @@ export namespace interstellarEngineCore {
             allocInfo.allocationSize = memRequirements.size;
             allocInfo.memoryTypeIndex = findMemoryType(memRequirements.memoryTypeBits, properties);
 
-            if (vkAllocateMemory(device, &allocInfo, nullptr, &imageMemory) != VK_SUCCESS) {
+            if (vkAllocateMemory(device, &allocInfo, nullptr, &imageMemory) != VK_SUCCESS) [[unlikely]] {
                 throw std::runtime_error("failed to allocate image memory!");
+            }
+            else [[likely]] {
+                std::clog << "[\033[32mOK\033[0m] image memory allocated sucessfully\n";
             }
 
             vkBindImageMemory(device, image, imageMemory, 0);
@@ -597,7 +609,7 @@ export namespace interstellarEngineCore {
                 throw std::runtime_error("failed to load texture image!");
             }
             else [[likely]] {
-                std::cerr << "\033[31m image texture loaded sucessfully \033[0m \n";
+                std::clog << "[\033[32mOK\033[0m] image texture loaded sucessfully\n";
             }
 
             VkBuffer stagingBuffer;
@@ -634,8 +646,11 @@ export namespace interstellarEngineCore {
             allocInfo.pSetLayouts = layouts.data();
 
             descriptorSets.resize(maxFramesInFlight);
-            if (vkAllocateDescriptorSets(device, &allocInfo, descriptorSets.data()) != VK_SUCCESS) {
+            if (vkAllocateDescriptorSets(device, &allocInfo, descriptorSets.data()) != VK_SUCCESS) [[unlikely]] {
                 throw std::runtime_error("failed to allocate descriptor sets!");
+            }
+            else [[likely]] {
+                std::clog << "[\033[32mOK\033[0m] descriptor sets allocated sucessfully\n";
             }
 
             for (size_t i = 0; i < maxFramesInFlight; i++) {
@@ -684,11 +699,11 @@ export namespace interstellarEngineCore {
             poolInfo.pPoolSizes = poolSizes.data();
             poolInfo.maxSets = static_cast<uint32_t>(maxFramesInFlight);
 
-            if (vkCreateDescriptorPool(device, &poolInfo, nullptr, &descriptorPool) != VK_SUCCESS) {
+            if (vkCreateDescriptorPool(device, &poolInfo, nullptr, &descriptorPool) != VK_SUCCESS) [[unlikely]] {
                 throw std::runtime_error("failed to create descriptor pool!");
             }
-            else {
-                std::cerr << "descriptor pool created sucessfully\n";
+            else [[likely]] {
+                std::clog << "[\033[32mOK\033[0m] descriptor pool created sucessfully\n";
             }
         }
 
@@ -746,7 +761,7 @@ export namespace interstellarEngineCore {
                 throw std::runtime_error("failed to create descriptor set layout!");
             }
             else [[likely]] {
-                std::cerr << "descriptor Set Layout created sucessfully\n";
+                std::clog << "[\033[32mOK\033[0m] descriptor Set Layout created sucessfully\n";
             }
         }
 
@@ -767,11 +782,11 @@ export namespace interstellarEngineCore {
             bufferInfo.usage = usage;
             bufferInfo.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
 
-            if (vkCreateBuffer(device, &bufferInfo, nullptr, &buffer) != VK_SUCCESS) {
+            if (vkCreateBuffer(device, &bufferInfo, nullptr, &buffer) != VK_SUCCESS) [[unlikely]] {
                 throw std::runtime_error("failed to create buffer!");
             }
-            else {
-                std::cerr << "buffer created sucessfully\n";
+            else [[likely]] {
+                std::clog << "[\033[32mOK\033[0m] buffer created sucessfully\n";
             }
 
             VkMemoryRequirements memRequirements;
@@ -782,11 +797,11 @@ export namespace interstellarEngineCore {
             allocInfo.allocationSize = memRequirements.size;
             allocInfo.memoryTypeIndex = findMemoryType(memRequirements.memoryTypeBits, properties);
 
-            if (vkAllocateMemory(device, &allocInfo, nullptr, &bufferMemory) != VK_SUCCESS) {
+            if (vkAllocateMemory(device, &allocInfo, nullptr, &bufferMemory) != VK_SUCCESS) [[unlikely]] {
                 throw std::runtime_error("failed to allocate buffer memory!");
             }
-            else {
-                std::cerr << "buffer memory allocated sucessfully\n";
+            else [[likely]] {
+                std::clog << "[\033[32mOK\033[0m] buffer memory allocated sucessfully\n";
             }
 
             vkBindBufferMemory(device, buffer, bufferMemory, 0);
@@ -901,12 +916,12 @@ export namespace interstellarEngineCore {
             for (size_t i = 0; i < maxFramesInFlight; i++) {
                 if (vkCreateSemaphore(device, &semaphoreInfo, nullptr, &imageAvailableSemaphores[i]) != VK_SUCCESS ||
                     vkCreateSemaphore(device, &semaphoreInfo, nullptr, &renderFinishedSemaphores[i]) != VK_SUCCESS ||
-                    vkCreateFence(device, &fenceInfo, nullptr, &inFlightFences[i]) != VK_SUCCESS) {
+                    vkCreateFence(device, &fenceInfo, nullptr, &inFlightFences[i]) != VK_SUCCESS) [[unlikely]] {
 
                     throw std::runtime_error("failed to create synchronization objects for a frame!");
                 }
-                else {
-                    std::cerr << "synchronization objects created sucessfully " << i << "\n";
+                else [[likely]] {
+                    std::clog << "[\033[32mOK\033[0m] synchronization object" << i << "created sucessfully\n";
                 }
             }
 
@@ -1045,11 +1060,11 @@ export namespace interstellarEngineCore {
             allocInfo.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
             allocInfo.commandBufferCount = (uint32_t)commandBuffers.size();
 
-            if (vkAllocateCommandBuffers(device, &allocInfo, commandBuffers.data()) != VK_SUCCESS) {
+            if (vkAllocateCommandBuffers(device, &allocInfo, commandBuffers.data()) != VK_SUCCESS) [[unlikely]] {
                 throw std::runtime_error("failed to allocate command buffers!");
             }
-            else {
-                std::cerr << "command buffers created sucessfully\n";
+            else [[likely]] {
+                std::clog << "[\033[32mOK\033[0m] command buffers created sucessfully\n";
             }
         }
 
@@ -1061,11 +1076,11 @@ export namespace interstellarEngineCore {
             poolInfo.flags = VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT;
             poolInfo.queueFamilyIndex = queueFamilyIndices.graphicsFamily.value();
 
-            if (vkCreateCommandPool(device, &poolInfo, nullptr, &commandPool) != VK_SUCCESS) {
+            if (vkCreateCommandPool(device, &poolInfo, nullptr, &commandPool) != VK_SUCCESS) [[unlikely]] {
                 throw std::runtime_error("failed to create command pool!");
             }
-            else {
-                std::cerr << "command pool created sucessfully\n";
+            else [[likely]] {
+                std::clog << "[\033[32mOK\033[0m] command pool created sucessfully\n";
             }
         }
 
@@ -1092,7 +1107,7 @@ export namespace interstellarEngineCore {
                     throw std::runtime_error("failed to create framebuffer!");
                 }
                 else [[likely]] {
-                    std::cerr << "framebuffer " << i << " created sucessffully\n";
+                    std::clog << "[\033[32mOK\033[0m] framebuffer " << i << " created sucessffully\n";
                 }
             }
         }
@@ -1197,11 +1212,11 @@ export namespace interstellarEngineCore {
             pipelineLayoutInfo.setLayoutCount = 1;
             pipelineLayoutInfo.pSetLayouts = &descriptorSetLayout;
 
-            if (vkCreatePipelineLayout(device, &pipelineLayoutInfo, nullptr, &pipelineLayout) != VK_SUCCESS) {
+            if (vkCreatePipelineLayout(device, &pipelineLayoutInfo, nullptr, &pipelineLayout) != VK_SUCCESS) [[unlikely]] {
                 throw std::runtime_error("failed to create pipeline layout!");
             }
-            else {
-                std::cerr << "graphics pipeline layout created successfully\n";
+            else [[likely]] {
+                std::clog << "[\033[32mOK\033[0m] graphics pipeline layout created successfully\n";
             }
 
             VkGraphicsPipelineCreateInfo pipelineInfo{};
@@ -1225,7 +1240,7 @@ export namespace interstellarEngineCore {
                 throw std::runtime_error("failed to create graphics pipeline!");
             }
             else [[likely]] {
-                std::cerr << "graphics pipeline created successfully\n";
+                std::clog << "[\033[32mOK\033[0m] graphics pipeline created successfully\n";
             }
 
             vkDestroyShaderModule(device, fragShaderModule, nullptr);
@@ -1304,7 +1319,7 @@ export namespace interstellarEngineCore {
                 throw std::runtime_error("failed to create render pass!");
             }
             else [[likely]] {
-                std::cerr << "Render Pass created successfully\n";
+                std::clog << "[\033[32mOK\033[0m] Render Pass created successfully\n";
             }
         }
 
@@ -1315,8 +1330,11 @@ export namespace interstellarEngineCore {
             createInfo.pCode = reinterpret_cast<const uint32_t*>(code.data());
 
             VkShaderModule shaderModule;
-            if (vkCreateShaderModule(device, &createInfo, nullptr, &shaderModule) != VK_SUCCESS) {
+            if (vkCreateShaderModule(device, &createInfo, nullptr, &shaderModule) != VK_SUCCESS) [[unlikely]] {
                 throw std::runtime_error("failed to create shader module!");
+            }
+            else [[likely]] {
+                std::clog << "[\033[32mOK\033[0m] shader module created sucessfully\n";
             }
 
             return shaderModule;
@@ -1382,11 +1400,11 @@ export namespace interstellarEngineCore {
 
             createInfo.oldSwapchain = VK_NULL_HANDLE;
 
-            if (vkCreateSwapchainKHR(device, &createInfo, nullptr, &swapChain) != VK_SUCCESS) {
+            if (vkCreateSwapchainKHR(device, &createInfo, nullptr, &swapChain) != VK_SUCCESS) [[unlikely]] {
                 throw std::runtime_error("failed to create swap chain!");
             }
-            else {
-                std::cerr << "SwapChain created successfully\n";
+            else [[likely]] {
+                std::clog << "[\033[32mOK\033[0m] SwapChain created successfully\n";
             }
 
             vkGetSwapchainImagesKHR(device, swapChain, &imageCount, nullptr);
@@ -1460,11 +1478,11 @@ export namespace interstellarEngineCore {
             createInfo.enabledExtensionCount = static_cast<uint32_t>(deviceExtensions.size());
             createInfo.ppEnabledExtensionNames = deviceExtensions.data();
 
-            if (vkCreateDevice(physicalDevice, &createInfo, nullptr, &device) != VK_SUCCESS) {
+            if (vkCreateDevice(physicalDevice, &createInfo, nullptr, &device) != VK_SUCCESS) [[unlikely]] {
                 throw std::runtime_error("failed to create logical device!");
             }
-            else {
-                std::cerr << "logical device created successfully\n";
+            else [[likely]] {
+                std::clog << "[\033[32mOK\033[0m] logical device created successfully\n";
             }
 
             vkGetDeviceQueue(device, indices.graphicsFamily.value(), 0, &graphicsQueue);
@@ -1579,11 +1597,11 @@ export namespace interstellarEngineCore {
         void pickPhysicalDevice() {
             uint32_t deviceCount = 0;
             vkEnumeratePhysicalDevices(instance, &deviceCount, nullptr);
-            if (deviceCount == 0) {
+            if (deviceCount == 0) [[unlikely]] {
                 throw std::runtime_error("failed to find GPUs with Vulkan support!");
             }
-            else {
-                std::cerr << "GPUs with Vulkan support found\n";
+            else [[likely]] {
+                std::clog << "[\033[32mOK\033[0m] GPUs with Vulkan support found\n";
             }
 
             std::vector<VkPhysicalDevice> devices(deviceCount);
@@ -1591,11 +1609,13 @@ export namespace interstellarEngineCore {
 
             VkPhysicalDeviceProperties deviceProperties;
 
-            std::cout << "\nphysical devices:\n";
+            std::clog << "[\033[94mLOG\033[0m]physical devices:\n";
+            int i = 1;
             for (const auto& device : devices) {
                 
                 vkGetPhysicalDeviceProperties(device, &deviceProperties);
-                std::cout << "device: " << deviceProperties.deviceName << "\n device ID: " << deviceProperties.deviceID << "\n device api version: " << deviceProperties.apiVersion << "\n";
+                std::clog << "  " << i << ".device: " << deviceProperties.deviceName << "\n     device ID: " << deviceProperties.deviceID << "\n     device api version: " << deviceProperties.apiVersion << "\n";
+                i++;
             }
 
             for (const auto& device : devices) {
@@ -1606,22 +1626,22 @@ export namespace interstellarEngineCore {
                 }
             }
 
-            if (physicalDevice == VK_NULL_HANDLE) {
+            if (physicalDevice == VK_NULL_HANDLE) [[unlikely]] {
                 throw std::runtime_error("failed to find a suitable GPU!");
             }
-            else {
+            else [[likely]] {
                 vkGetPhysicalDeviceProperties(physicalDevice, &deviceProperties);
-                std::cerr << "suitable GPU found: " << deviceProperties.deviceName << "\n";
+                std::clog << "[\033[32mOK\033[0m] suitable GPU found: " << deviceProperties.deviceName << "\n";
             }
         }
 
         void createInstance() {
 
-            if (enableValidationLayers && !engineRendererVulkanValidator.checkValidationLayerSupport()) {
+            if (enableValidationLayers && !engineRendererVulkanValidator.checkValidationLayerSupport()) [[unlikely]] {
                 throw std::runtime_error("validation layers requested, but not available!");
             }
-            else {
-                std::cerr << "validations layers availabe\n";
+            else [[likely]] {
+                std::clog << "[\033[32mOK\033[0m] validations layers availabe\n";
             }
 
             VkApplicationInfo appInfo{};
@@ -1653,11 +1673,11 @@ export namespace interstellarEngineCore {
                 createInfo.pNext = nullptr;
             }
 
-            if (vkCreateInstance(&createInfo, nullptr, &instance) != VK_SUCCESS) {
+            if (vkCreateInstance(&createInfo, nullptr, &instance) != VK_SUCCESS) [[unlikely]] {
                 throw std::runtime_error("failed to create instance!");
             }
-            else {
-                std::cerr << "Instance created successfully\n";
+            else [[likely]] {
+                std::clog << "[\033[32mOK\033[0m] Instance created successfully\n";
             }
         }
     };
