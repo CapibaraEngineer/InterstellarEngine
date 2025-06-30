@@ -5,6 +5,7 @@
 export module VulkanValidator;
 
 import InterstellarEngine_Core;
+import EngineLogger;
 
 import <iostream>;
 import <stdlib.h>;
@@ -77,7 +78,7 @@ export namespace interstellarEngineCore{
                 throw std::runtime_error("failed to set up debug messenger!");
             }
             else [[likely]] {
-                std::clog << "[\033[32mOK\033[0m] Debug Messenger has been set up successfully\n";
+                logOK("Debug Messenger has been set up successfully", "vulkanValidator.setupDebugMessenger()");
             }
         }
 

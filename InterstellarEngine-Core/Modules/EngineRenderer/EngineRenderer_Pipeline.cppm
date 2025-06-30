@@ -4,6 +4,7 @@
 export module EngineRenderer_Pipeline;
 
 import InterstellarEngine_Core;
+import EngineLogger;
 
 import <iostream>;
 import <vector>;
@@ -14,7 +15,7 @@ export namespace interstellarEngineCore {
 	public:
 		VkPipelineLayout pipelineLayout;
 		VkPipeline graphicsPipeline;
-		VkRenderPass renderPass;
+		VkRenderPass renderPass; 
 		VkDescriptorSetLayout descriptorSetLayout;
 
         void createPipeline(VkDevice device, VkSampleCountFlagBits msaaSamples, VkPhysicalDevice physicalDevice, VkFormat swapChainImageFormat) {
@@ -127,7 +128,7 @@ export namespace interstellarEngineCore {
                 throw std::runtime_error("failed to create pipeline layout!");
             }
             else [[likely]] {
-                std::clog << "[\033[32mOK\033[0m] graphics pipeline layout created successfully\n";
+                logOK("graphics pipeline layout created successfully","engineRendererPipeline.createGraphicsPipeline()");
             }
 
             VkGraphicsPipelineCreateInfo pipelineInfo{};
@@ -151,7 +152,7 @@ export namespace interstellarEngineCore {
                 throw std::runtime_error("failed to create graphics pipeline!");
             }
             else [[likely]] {
-                std::clog << "[\033[32mOK\033[0m] graphics pipeline created successfully\n";
+                logOK("graphics pipeline created successfully", "engineRendererPipeline.createGraphicsPipeline()");
             }
 
             vkDestroyShaderModule(device, fragShaderModule, nullptr);
@@ -183,7 +184,7 @@ export namespace interstellarEngineCore {
                 throw std::runtime_error("failed to create descriptor set layout!");
             }
             else [[likely]] {
-                std::clog << "[\033[32mOK\033[0m] descriptor Set Layout created sucessfully\n";
+                logOK("descriptor Set Layout created sucessfully", "engineRendererPipeline.createDescriptorSetLayout()");
             }
         }
 
@@ -259,7 +260,7 @@ export namespace interstellarEngineCore {
                 throw std::runtime_error("failed to create render pass!");
             }
             else [[likely]] {
-                std::clog << "[\033[32mOK\033[0m] Render Pass created successfully\n";
+                logOK("Render Pass created successfully", "engineRendererPipeline.createRenderPass()");
             }
         }
 
@@ -307,7 +308,7 @@ export namespace interstellarEngineCore {
                 throw std::runtime_error("failed to create shader module!");
             }
             else [[likely]] {
-                std::clog << "[\033[32mOK\033[0m] shader module created sucessfully\n";
+                logOK("shader module created sucessfully", "engineRendererPipeline.createShaderModule()");
             }
 
             return shaderModule;
