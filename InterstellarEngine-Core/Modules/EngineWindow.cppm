@@ -4,6 +4,8 @@
 
 export module EngineWindow;
 
+import EngineLogger;
+
 import <iostream>;
 
 export namespace interstellarEngineCore {
@@ -32,7 +34,7 @@ export namespace interstellarEngineCore {
                 throw std::runtime_error("failed to create window surface!");
             }
             else [[likely]] {
-                std::clog << "[\033[32mOK\033[0m] Window surface created successfully\n";
+                logOK("window surface created sucessfully", "engineWindow.createSurface()");
             }
 
         }
