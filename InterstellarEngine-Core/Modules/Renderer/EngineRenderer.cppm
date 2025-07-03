@@ -133,7 +133,7 @@ export namespace interstellarEngineCore {
             createTextureImageView();
             createTextureSampler();
             loadModel();
-            generateSquare();
+            //generateSquare();
             createVertexBuffer();
             createIndexBuffer();
             createUniformBuffers();
@@ -617,7 +617,7 @@ export namespace interstellarEngineCore {
 
         void createTextureImage() {
             int texWidth, texHeight, texChannels;
-            stbi_uc* pixels = stbi_load(grassTexturePath.c_str(), &texWidth, &texHeight, &texChannels, STBI_rgb_alpha);
+            stbi_uc* pixels = stbi_load(modelTexturePath.c_str(), &texWidth, &texHeight, &texChannels, STBI_rgb_alpha);
             VkDeviceSize imageSize = texWidth * texHeight * 4;
             mipLevels = static_cast<uint32_t>(std::floor(std::log2(std::max(texWidth, texHeight)))) + 1;
 

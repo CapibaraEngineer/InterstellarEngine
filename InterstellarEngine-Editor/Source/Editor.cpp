@@ -3,7 +3,7 @@
 #include <stdlib.h>
 
 import InterstellarEngine_Core;
-import EngineRenderer;
+import Engine.Renderer;
 
 int main() {
 	interstellarEngineCore::engineRenderer engine;
