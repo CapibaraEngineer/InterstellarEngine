@@ -16,13 +16,13 @@
 #include <chrono>//included instead of imported because intellisense is dumb
 #include <fstream>//included instead of imported because intellisense is dumb, if i include chrono the fstream breaks when imported, just for intelisense, this thing still compiles
 
-export module EngineRenderer;
+export module Engine.Renderer;
 
 import InterstellarEngine_Core;
-import EngineLogger;
-import EngineRenderer_Pipeline;
-import VulkanValidator;
-import EngineWindow;
+import Engine.Utils.Logger;
+import Engine.Renderer.Pipeline;
+import Engine.Renderer.VulkanValidator;
+import Engine.Renderer.Window;
 
 import <iostream>;
 import <format>;
@@ -133,6 +133,7 @@ export namespace interstellarEngineCore {
             createTextureImageView();
             createTextureSampler();
             loadModel();
+            generateSquare();
             createVertexBuffer();
             createIndexBuffer();
             createUniformBuffers();
@@ -195,6 +196,27 @@ export namespace interstellarEngineCore {
 
             glfwTerminate();
             
+        }
+
+        void generateSquare() {
+            const std::vector<Vertex> _vertices = {
+                {{-0.5f, -0.5f, 0.0f}, {1.0f, 0.0f, 0.0f}, {0.0f, 0.0f}},
+                {{0.5f, -0.5f, 0.0f}, {0.0f, 1.0f, 0.0f}, {1.0f, 0.0f}},
+                {{0.5f, 0.5f, 0.0f}, {0.0f, 0.0f, 1.0f}, {1.0f, 1.0f}},
+                {{-0.5f, 0.5f, 0.0f}, {1.0f, 1.0f, 1.0f}, {0.0f, 1.0f}},
+
+                {{-0.5f, -0.5f, -0.5f}, {1.0f, 0.0f, 0.0f}, {0.0f, 0.0f}},
+                {{0.5f, -0.5f, -0.5f}, {0.0f, 1.0f, 0.0f}, {1.0f, 0.0f}},
+                {{0.5f, 0.5f, -0.5f}, {0.0f, 0.0f, 1.0f}, {1.0f, 1.0f}},
+                {{-0.5f, 0.5f, -0.5f}, {1.0f, 1.0f, 1.0f}, {0.0f, 1.0f}}
+            };
+            const std::vector<uint32_t> _indices = {
+                0, 1, 2, 2, 3, 0,
+                4, 5, 6, 6, 7, 4
+            };
+            vertices = _vertices;
+            indices = _indices;
+
         }
 
         void createColorResources() {
@@ -595,7 +617,7 @@ export namespace interstellarEngineCore {
 
         void createTextureImage() {
             int texWidth, texHeight, texChannels;
-            stbi_uc* pixels = stbi_load(modelTexturePath.c_str(), &texWidth, &texHeight, &texChannels, STBI_rgb_alpha);
+            stbi_uc* pixels = stbi_load(grassTexturePath.c_str(), &texWidth, &texHeight, &texChannels, STBI_rgb_alpha);
             VkDeviceSize imageSize = texWidth * texHeight * 4;
             mipLevels = static_cast<uint32_t>(std::floor(std::log2(std::max(texWidth, texHeight)))) + 1;
 

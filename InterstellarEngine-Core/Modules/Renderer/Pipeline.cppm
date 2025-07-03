@@ -1,10 +1,10 @@
 
 #include <vulkan/vulkan.h>
 
-export module EngineRenderer_Pipeline;
+export module Engine.Renderer.Pipeline;
 
 import InterstellarEngine_Core;
-import EngineLogger;
+import Engine.Utils.Logger;
 
 import <iostream>;
 import <vector>;

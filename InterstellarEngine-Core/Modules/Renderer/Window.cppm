@@ -2,9 +2,9 @@
 #include <GLFW/glfw3.h>
 #include <vulkan/vulkan.h>
 
-export module EngineWindow;
+export module Engine.Renderer.Window;
 
-import EngineLogger;
+import Engine.Utils.Logger;
 
 import <iostream>;
 
@@ -38,7 +38,7 @@ export namespace interstellarEngineCore {
             }
 
         }
-
+ 
         void terminateEngineWindow() const {
             glfwDestroyWindow(window);
         }

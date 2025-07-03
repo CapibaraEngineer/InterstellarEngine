@@ -31,6 +31,7 @@ export namespace interstellarEngineCore {
     //yes i know that i shouldn't use absoulute paths, but relative path refuse to work, i fix that later, and is not like there is someone using this thing
     const std::string modelPath = "C:/Desenvolvimento/C++/InterstellarEngine/InterstellarEngine-Core/Assets/Models/viking_room.obj";
     const std::string modelTexturePath = "C:/Desenvolvimento/C++/InterstellarEngine/InterstellarEngine-Core/Assets/Textures/viking_room.png";
+    const std::string grassTexturePath = "C:/Desenvolvimento/C++/InterstellarEngine/InterstellarEngine-Core/Assets/Textures/grass_block_side.png";
     const std::string capibaraEngineerPath = "C:/Desenvolvimento/C++/InterstellarEngine/InterstellarEngine-Core/Assets/Textures/capibara_engineer_512x512.png";
     const std::string vertexShaderPath = "C:/Desenvolvimento/C++/InterstellarEngine/InterstellarEngine-Core/Shaders/vert.spv";
     const std::string fragamentShaderPath = "C:/Desenvolvimento/C++/InterstellarEngine/InterstellarEngine-Core/Shaders/frag.spv";

@@ -1,4 +1,4 @@
-export module EngineLogger;
+export module Engine.Utils.Logger;
 
 import <iostream>;
 

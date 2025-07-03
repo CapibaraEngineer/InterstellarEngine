@@ -2,10 +2,10 @@
 #include <GLFW/glfw3.h>
 #include <vulkan/vulkan.h>
 
-export module VulkanValidator;
+export module Engine.Renderer.VulkanValidator;
 
 import InterstellarEngine_Core;
-import EngineLogger;
+import Engine.Utils.Logger;
 
 import <iostream>;
 import <stdlib.h>;
