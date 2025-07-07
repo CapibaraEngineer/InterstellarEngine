@@ -36,7 +36,7 @@ import <limits>;
 import <algorithm>;
 import <unordered_map>;
 
-export namespace interstellarEngineCore {
+export namespace interstellarEngineCore::Renderer {
     class engineRenderer {
     public:
 

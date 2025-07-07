@@ -10,7 +10,7 @@ import <iostream>;
 import <vector>;
 import <fstream>;
 
-export namespace interstellarEngineCore {
+export namespace interstellarEngineCore::Renderer {
 	class engineRendererPipeline {
 	public:
 		VkPipelineLayout pipelineLayout;

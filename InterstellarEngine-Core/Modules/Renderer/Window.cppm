@@ -8,7 +8,7 @@ import Engine.Utils.Logger;
 
 import <iostream>;
 
-export namespace interstellarEngineCore {
+export namespace interstellarEngineCore::Renderer {
 	class engineWindow {
 	public:
 		static constexpr uint16_t windowHeight = 600;
