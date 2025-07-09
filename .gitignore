@@ -76,6 +76,7 @@ StyleCopReport.xml
 *.ilk
 *.meta
 *.obj
+!InterstellarEngine-Core/Assets/Models/*.obj
 *.iobj
 *.pch
 *.pdb
