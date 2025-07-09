@@ -36,7 +36,7 @@ export namespace interstellarEngineCore {
 		std::clog << "[\033[94mLOG\033[0m] " << message << "\n";
 	}
 	void logFAIL(std::string message) {
-		/*  this function Logs: [FAIL] messager
+		/*  this function Logs: [FAIL] message
 		 *	Exemple: [FAIL] image falied to load
 		*/
 		std::cerr << "[\033[31mFAIL\033[0m] " << message << "\n";;
