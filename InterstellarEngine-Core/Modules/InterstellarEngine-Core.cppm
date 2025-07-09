@@ -33,8 +33,8 @@ export namespace interstellarEngineCore {
     const std::string modelTexturePath = "C:/Desenvolvimento/C++/InterstellarEngine/InterstellarEngine-Core/Assets/Textures/viking_room.png";
     const std::string grassTexturePath = "C:/Desenvolvimento/C++/InterstellarEngine/InterstellarEngine-Core/Assets/Textures/grass_block_side.png";
     const std::string capibaraEngineerPath = "C:/Desenvolvimento/C++/InterstellarEngine/InterstellarEngine-Core/Assets/Textures/capibara_engineer_512x512.png";
-    const std::string vertexShaderPath = "C:/Desenvolvimento/C++/InterstellarEngine/InterstellarEngine-Core/Shaders/vert.spv";
-    const std::string fragamentShaderPath = "C:/Desenvolvimento/C++/InterstellarEngine/InterstellarEngine-Core/Shaders/frag.spv";
+    const std::string vertexShaderPath = "C:/Desenvolvimento/C++/InterstellarEngine/InterstellarEngine-Core/Assets/Shaders/vert.spv";
+    const std::string fragamentShaderPath = "C:/Desenvolvimento/C++/InterstellarEngine/InterstellarEngine-Core/Assets/Shaders/frag.spv";
 
     const std::vector<const char*> validationLayers = {
         "VK_LAYER_KHRONOS_validation"
