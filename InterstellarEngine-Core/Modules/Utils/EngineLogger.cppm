@@ -2,7 +2,7 @@ export module Engine.Utils.Logger;
 
 import <iostream>;
 
-export namespace interstellarEngineCore {
+export namespace interstellarEngineCore::utils {
 	void logOK(std::string message, std::string caller) {
 		/*   this function Logs: [OK] message, logged by caller
 		 *	Exemple: [OK] image loaded sucessfuly, logged by imageLoader

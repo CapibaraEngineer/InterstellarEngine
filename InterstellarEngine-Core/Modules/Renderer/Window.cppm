@@ -36,7 +36,7 @@ export namespace interstellarEngineCore::Renderer {
                 throw std::runtime_error("failed to create window surface!");
             }
             else [[likely]] {
-                logOK("window surface created sucessfully", "engineWindow.createSurface()");
+                utils::logOK("window surface created sucessfully", "engineWindow.createSurface()");
             }
 
         }

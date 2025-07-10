@@ -129,7 +129,7 @@ export namespace interstellarEngineCore::Renderer {
                 throw std::runtime_error("failed to create pipeline layout!");
             }
             else [[likely]] {
-                logOK("graphics pipeline layout created successfully","engineRendererPipeline.createGraphicsPipeline()");
+                utils::logOK("graphics pipeline layout created successfully","engineRendererPipeline.createGraphicsPipeline()");
             }
 
             VkGraphicsPipelineCreateInfo pipelineInfo{};
@@ -153,7 +153,7 @@ export namespace interstellarEngineCore::Renderer {
                 throw std::runtime_error("failed to create graphics pipeline!");
             }
             else [[likely]] {
-                logOK("graphics pipeline created successfully", "engineRendererPipeline.createGraphicsPipeline()");
+                utils::logOK("graphics pipeline created successfully", "engineRendererPipeline.createGraphicsPipeline()");
             }
 
             vkDestroyShaderModule(device, fragShaderModule, nullptr);
@@ -185,7 +185,7 @@ export namespace interstellarEngineCore::Renderer {
                 throw std::runtime_error("failed to create descriptor set layout!");
             }
             else [[likely]] {
-                logOK("descriptor Set Layout created sucessfully", "engineRendererPipeline.createDescriptorSetLayout()");
+                utils::logOK("descriptor Set Layout created sucessfully", "engineRendererPipeline.createDescriptorSetLayout()");
             }
         }
 
@@ -261,7 +261,7 @@ export namespace interstellarEngineCore::Renderer {
                 throw std::runtime_error("failed to create render pass!");
             }
             else [[likely]] {
-                logOK("Render Pass created successfully", "engineRendererPipeline.createRenderPass()");
+                utils::logOK("Render Pass created successfully", "engineRendererPipeline.createRenderPass()");
             }
         }
 
@@ -309,7 +309,7 @@ export namespace interstellarEngineCore::Renderer {
                 throw std::runtime_error("failed to create shader module!");
             }
             else [[likely]] {
-                logOK("shader module created sucessfully", "engineRendererPipeline.createShaderModule()");
+                utils::logOK("shader module created sucessfully", "engineRendererPipeline.createShaderModule()");
             }
 
             return shaderModule;

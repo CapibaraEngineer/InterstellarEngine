@@ -112,10 +112,10 @@ export namespace interstellarEngineCore::Renderer {
         void initVulkan() {
 
             if (!enableValidationLayers) {
-                logLOG("Release Build - validation layers [\033[31mDISABLED\033[0m]");
+                utils::logLOG("Release Build - validation layers [\033[31mDISABLED\033[0m]");
             }
             else {
-                logLOG("Debug Build - validation layers [\033[32mENABLED\033[0m]");
+                utils::logLOG("Debug Build - validation layers [\033[32mENABLED\033[0m]");
             }
 
             createInstance();
@@ -253,7 +253,7 @@ export namespace interstellarEngineCore::Renderer {
                 throw std::runtime_error("texture image format does not support linear blitting!");
             }
             else [[likely]] {
-                logOK("texture image format supports linear blitting", "engineRenderer.generateMipmaps()");
+                utils::logOK("texture image format supports linear blitting", "engineRenderer.generateMipmaps()");
             }
 
             VkCommandBuffer commandBuffer = beginSingleTimeCommands();
@@ -443,7 +443,7 @@ export namespace interstellarEngineCore::Renderer {
                 throw std::runtime_error("failed to create texture sampler!");
             }
             else [[likely]] {
-                logOK("texture sampler created sucessfully", "engineRenderer.createTextureSampler()");
+                utils::logOK("texture sampler created sucessfully", "engineRenderer.createTextureSampler()");
             }
         }
 
@@ -464,7 +464,7 @@ export namespace interstellarEngineCore::Renderer {
                 throw std::runtime_error("failed to create image view!");
             }
             else [[likely]] {
-                logOK("image view created sucessfully", "engineRenderer.createImageView()");
+                utils::logOK("image view created sucessfully", "engineRenderer.createImageView()");
             }
 
             return imageView;
@@ -595,7 +595,7 @@ export namespace interstellarEngineCore::Renderer {
                 throw std::runtime_error("failed to create image!");
             }
             else [[likely]] {
-                logOK("image created sucessfully", "engineRenderer.createImage()");
+                utils::logOK("image created sucessfully", "engineRenderer.createImage()");
             }
 
             VkMemoryRequirements memRequirements;
@@ -610,7 +610,7 @@ export namespace interstellarEngineCore::Renderer {
                 throw std::runtime_error("failed to allocate image memory!");
             }
             else [[likely]] {
-                logOK("image memory allocated sucessfully", "engineRenderer.createImage()");
+                utils::logOK("image memory allocated sucessfully", "engineRenderer.createImage()");
             }
 
             vkBindImageMemory(device, image, imageMemory, 0);
@@ -626,7 +626,7 @@ export namespace interstellarEngineCore::Renderer {
                 throw std::runtime_error("failed to load texture image!");
             }
             else [[likely]] {
-                logOK("image texture loaded sucessfully", "engineRenderer.createTextureImage()");
+                utils::logOK("image texture loaded sucessfully", "engineRenderer.createTextureImage()");
             }
 
             VkBuffer stagingBuffer;
@@ -667,7 +667,7 @@ export namespace interstellarEngineCore::Renderer {
                 throw std::runtime_error("failed to allocate descriptor sets!");
             }
             else [[likely]] {
-                logOK("descriptor sets allocated sucessfully", "engineRenderer.createDescriptorSets()");
+                utils::logOK("descriptor sets allocated sucessfully", "engineRenderer.createDescriptorSets()");
             }
 
             for (size_t i = 0; i < maxFramesInFlight; i++) {
@@ -720,7 +720,7 @@ export namespace interstellarEngineCore::Renderer {
                 throw std::runtime_error("failed to create descriptor pool!");
             }
             else [[likely]] {
-                logOK("descriptor pool created sucessfully", "engineRenderer.createDescriptorPool()");
+                utils::logOK("descriptor pool created sucessfully", "engineRenderer.createDescriptorPool()");
             }
         }
 
@@ -774,7 +774,7 @@ export namespace interstellarEngineCore::Renderer {
                 throw std::runtime_error("failed to create buffer!");
             }
             else [[likely]] {
-                logOK("buffer created sucessfully","engineRenderer.createBuffer()");
+                utils::logOK("buffer created sucessfully","engineRenderer.createBuffer()");
             }
 
             VkMemoryRequirements memRequirements;
@@ -789,7 +789,7 @@ export namespace interstellarEngineCore::Renderer {
                 throw std::runtime_error("failed to allocate buffer memory!");
             }
             else [[likely]] {
-                logOK("buffer memory allocate sucessfully", "engineRenderer.createBuffer()");
+                utils::logOK("buffer memory allocate sucessfully", "engineRenderer.createBuffer()");
             }
 
             vkBindBufferMemory(device, buffer, bufferMemory, 0);
@@ -909,7 +909,7 @@ export namespace interstellarEngineCore::Renderer {
                     throw std::runtime_error("failed to create synchronization objects for a frame!");
                 }
                 else [[likely]] {
-                    logOK(std::format("synchronization object {} created sucessfully", i), "engineRenderer.createSyncObjects()");
+                    utils::logOK(std::format("synchronization object {} created sucessfully", i), "engineRenderer.createSyncObjects()");
                 }
             }
 
@@ -1052,7 +1052,7 @@ export namespace interstellarEngineCore::Renderer {
                 throw std::runtime_error("failed to allocate command buffers!");
             }
             else [[likely]] {
-                logOK("command buffers created sucessfully", "engineRenderer.createCommandBuffers()");
+                utils::logOK("command buffers created sucessfully", "engineRenderer.createCommandBuffers()");
             }
         }
 
@@ -1068,7 +1068,7 @@ export namespace interstellarEngineCore::Renderer {
                 throw std::runtime_error("failed to create command pool!");
             }
             else [[likely]] {
-                logOK("command pool created sucessfully", "engineRenderer.createCommandPool()");
+                utils::logOK("command pool created sucessfully", "engineRenderer.createCommandPool()");
             }
         }
 
@@ -1095,7 +1095,7 @@ export namespace interstellarEngineCore::Renderer {
                     throw std::runtime_error("failed to create framebuffer!");
                 }
                 else [[likely]] {
-                    logOK(std::format("framebuffer {} created sucessffully", i), "engineRenderer.createFramebuffers()");
+                    utils::logOK(std::format("framebuffer {} created sucessffully", i), "engineRenderer.createFramebuffers()");
                 }
             }
         }
@@ -1146,7 +1146,7 @@ export namespace interstellarEngineCore::Renderer {
                 throw std::runtime_error("failed to create swap chain!");
             }
             else [[likely]] {
-                logOK("SwapChain created successfully","engineRenderer.createSwapChain()");
+                utils::logOK("SwapChain created successfully","engineRenderer.createSwapChain()");
             }
 
             vkGetSwapchainImagesKHR(device, swapChain, &imageCount, nullptr);
@@ -1224,7 +1224,7 @@ export namespace interstellarEngineCore::Renderer {
                 throw std::runtime_error("failed to create logical device!");
             }
             else [[likely]] {
-                logOK("logical device created successfully","engineRenderer.createLogicalDevice()");
+                utils::logOK("logical device created successfully","engineRenderer.createLogicalDevice()");
             }
 
             vkGetDeviceQueue(device, indices.graphicsFamily.value(), 0, &graphicsQueue);
@@ -1343,7 +1343,7 @@ export namespace interstellarEngineCore::Renderer {
                 throw std::runtime_error("failed to find GPUs with Vulkan support!");
             }
             else [[likely]] {
-                logOK("GPUs with Vulkan support found","engineRenderer.pickPhysicalDevice()");
+                utils::logOK("GPUs with Vulkan support found","engineRenderer.pickPhysicalDevice()");
             }
 
             std::vector<VkPhysicalDevice> devices(deviceCount);
@@ -1351,7 +1351,7 @@ export namespace interstellarEngineCore::Renderer {
 
             VkPhysicalDeviceProperties deviceProperties;
 
-            logLOG("physical devices:");
+            utils::logLOG("physical devices:");
             int i = 1;
             for (const auto& device : devices) {
                 
@@ -1373,7 +1373,7 @@ export namespace interstellarEngineCore::Renderer {
             }
             else [[likely]] {
                 vkGetPhysicalDeviceProperties(physicalDevice, &deviceProperties);
-                logOK(std::format("suitable GPU found: {}", deviceProperties.deviceName), "engineRenderer.pickPhysicalDevice()");
+                utils::logOK(std::format("suitable GPU found: {}", deviceProperties.deviceName), "engineRenderer.pickPhysicalDevice()");
             }
         }
 
@@ -1383,7 +1383,7 @@ export namespace interstellarEngineCore::Renderer {
                 throw std::runtime_error("validation layers requested, but not available!");
             }
             else [[likely]] {
-                logOK("validations layers availabe", "engineRenderer.createInstance()");
+                utils::logOK("validations layers availabe", "engineRenderer.createInstance()");
             }
 
             VkApplicationInfo appInfo{};
@@ -1419,7 +1419,7 @@ export namespace interstellarEngineCore::Renderer {
                 throw std::runtime_error("failed to create instance!");
             }
             else [[likely]] {
-                logOK("Instance created successfully", "engineRenderer.createInstance()");
+                utils::logOK("Instance created successfully", "engineRenderer.createInstance()");
             }
         }
     };

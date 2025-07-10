@@ -80,7 +80,7 @@ export namespace interstellarEngineCore::Renderer {
                 throw std::runtime_error("failed to set up debug messenger!");
             }
             else [[likely]] {
-                logOK("Debug Messenger has been set up successfully", "vulkanValidator.setupDebugMessenger()");
+                utils::logOK("Debug Messenger has been set up successfully", "vulkanValidator.setupDebugMessenger()");
             }
         }
 
