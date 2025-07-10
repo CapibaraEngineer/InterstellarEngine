@@ -14,8 +14,8 @@ module;
 export module InterstellarEngine_Core; 
 
 import <iostream>;
-import <string>
 import <array>;
+import <string>;
 import <stdlib.h>;
 import <vector>;
 import <cstring>;
