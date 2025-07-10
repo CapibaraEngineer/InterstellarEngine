@@ -5,6 +5,7 @@ module;
 export module Engine.Renderer.Pipeline;
 
 import InterstellarEngine_Core;
+import Engine.RendererCore;
 import Engine.Utils.Logger;
 
 import <iostream>;
