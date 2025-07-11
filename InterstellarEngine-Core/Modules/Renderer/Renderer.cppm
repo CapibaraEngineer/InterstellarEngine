@@ -20,7 +20,7 @@ module;
 export module Engine.Renderer;
 
 import InterstellarEngine_Core;
-import Engine.RedererCore;
+import Engine.RendererCore;
 import Engine.Utils.Logger;
 import Engine.Renderer.Pipeline;
 import Engine.Renderer.VulkanValidator;
