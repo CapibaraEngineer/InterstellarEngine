@@ -1,6 +1,6 @@
 # Interstellar Engine
 Insterstellar Engine is a game engine with the objective of providing accurate gravitational simulations.
-The engine is written in C++20, renders using the Vulkan API, and uses Premake. 
+The engine is written in C++23, renders using the Vulkan API, and uses Premake. 
 
 ## Building 
 
