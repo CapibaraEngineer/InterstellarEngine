@@ -2,7 +2,7 @@ module;
 
 export module InterstellarEngine_Core; 
 
-import <string>;
+import std;
 
 export namespace interstellarEngineCore {
     //The working directory is the InterstellarEngine-Editor directory

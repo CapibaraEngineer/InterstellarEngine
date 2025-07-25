@@ -9,13 +9,12 @@ module;
 #include <stb_image.h>
 
 #define TINYOBJLOADER_IMPLEMENTATION
+#define TINYOBJLOADER_USE_DOUBLE
 #include <tiny_obj_loader.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <vulkan/vulkan.h>
 
-#include <chrono>//included instead of imported because intellisense is dumb
-#include <fstream>//included instead of imported because intellisense is dumb, if i include chrono the fstream breaks when imported, just for intelisense, this thing still compiles
 
 export module Engine.Renderer;
 
@@ -26,17 +25,7 @@ import Engine.Renderer.Pipeline;
 import Engine.Renderer.VulkanValidator;
 import Engine.Renderer.Window;
 
-import <iostream>;
-import <format>;
-import <stdlib.h>;
-import <vector>;
-import <array>;
-import <cstring>;
-import <set>;
-import <cstdint>;
-import <limits>;
-import <algorithm>;
-import <unordered_map>;
+import std;
 
 export namespace interstellarEngineCore::Renderer {
     class engineRenderer {
@@ -729,7 +718,7 @@ export namespace interstellarEngineCore::Renderer {
             static auto startTime = std::chrono::high_resolution_clock::now();
 
             auto currentTime = std::chrono::high_resolution_clock::now();
-            float time = std::chrono::duration<float, std::chrono::seconds::period>(currentTime - startTime).count();
+            float time = std::chrono::duration<float, std::chrono::seconds::period>(currentTime - startTime).count(); //stop being stupid visual studio intellisense, there is no error
 
             UniformBufferObject ubo{};
             ubo.model = glm::rotate(glm::mat4(1.0f), time * glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));

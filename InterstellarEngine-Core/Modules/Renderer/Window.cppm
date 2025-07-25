@@ -8,7 +8,7 @@ export module Engine.Renderer.Window;
 
 import Engine.Utils.Logger;
 
-import <iostream>;
+import std;
 
 export namespace interstellarEngineCore::Renderer {
 	class engineWindow {

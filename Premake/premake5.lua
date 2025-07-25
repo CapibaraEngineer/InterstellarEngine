@@ -14,7 +14,7 @@ project ("InterstellarEngine-Core")
     location (InterstellarEngine_Core_Dir)
     kind ("StaticLib")
     language ("C++")
-    cppdialect "C++20"
+    cppdialect "C++23"
     staticruntime "off"
 
     targetdir (Root_Dir .. "Binaries/IE_Core/%{cfg.system}_%{cfg.architecture}/%{cfg.buildcfg}") --example: Binaries/IE_Core/Windows_x86_64/Debug
@@ -92,7 +92,7 @@ project ("InterstellarEngine-Editor")
     location (InterstellarEngine_Editor_Dir)
     kind ("ConsoleApp")
     language ("C++")
-    cppdialect "C++20"
+    cppdialect "C++23"
     staticruntime "off"
 
     targetdir (Root_Dir .. "Binaries/IE_Editor/%{cfg.system}_%{cfg.architecture}/%{cfg.buildcfg}") --example: Binaries/IE_Editor/Windows_x86_64/Debug
@@ -141,3 +141,5 @@ project ("InterstellarEngine-Editor")
         linktimeoptimization "on"
         optimize "on"
         symbols "off"
+
+    filter {}

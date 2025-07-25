@@ -9,10 +9,8 @@ export module Engine.Renderer.VulkanValidator;
 import Engine.RendererCore;
 import Engine.Utils.Logger;
 
-import <iostream>;
-import <stdlib.h>;
-import <vector>;
-import <cstring>;
+import std;
+import std.compat;
 
 //this thing is to put all the vulkan validation layer things in one single place so its more organized
 

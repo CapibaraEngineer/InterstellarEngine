@@ -1,6 +1,6 @@
 export module Engine.Utils.Logger;
 
-import <iostream>;
+import std;
 
 export namespace interstellarEngineCore::utils {
 	void logOK(std::string message, std::string caller) {

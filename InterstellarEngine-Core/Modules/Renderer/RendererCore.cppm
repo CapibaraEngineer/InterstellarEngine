@@ -10,8 +10,7 @@ module;
 
 export module Engine.RendererCore;
 
-import <array>;
-import <optional>;
+import std;
 
 export namespace interstellarEngineCore::Renderer {
 

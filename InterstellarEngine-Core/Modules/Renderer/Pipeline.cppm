@@ -8,9 +8,7 @@ import InterstellarEngine_Core;
 import Engine.RendererCore;
 import Engine.Utils.Logger;
 
-import <iostream>;
-import <vector>;
-import <fstream>;
+import std;
 
 export namespace interstellarEngineCore::Renderer {
 	class engineRendererPipeline {
