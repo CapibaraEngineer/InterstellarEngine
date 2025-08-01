@@ -123,9 +123,9 @@ export namespace interstellarEngineCore::Renderer {
             pipelineLayoutInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
             pipelineLayoutInfo.setLayoutCount = 1;
             pipelineLayoutInfo.pSetLayouts = &descriptorSetLayout;
-
+            
             if (vkCreatePipelineLayout(device, &pipelineLayoutInfo, nullptr, &pipelineLayout) != VK_SUCCESS) [[unlikely]] {
-                throw std::runtime_error("failed to create pipeline layout!");
+                throw std::runtime_error(utils::writeLogFAIL("failed to create pipeline layout!","engineRendererPipeline.createGraphicsPipeline()"));
             }
             else [[likely]] {
                 utils::logOK("graphics pipeline layout created successfully","engineRendererPipeline.createGraphicsPipeline()");
@@ -149,7 +149,7 @@ export namespace interstellarEngineCore::Renderer {
             pipelineInfo.basePipelineHandle = VK_NULL_HANDLE;
 
             if (vkCreateGraphicsPipelines(device, VK_NULL_HANDLE, 1, &pipelineInfo, nullptr, &graphicsPipeline) != VK_SUCCESS) [[unlikely]] {
-                throw std::runtime_error("failed to create graphics pipeline!");
+                throw std::runtime_error(utils::writeLogFAIL("failed to create graphics pipeline!","engineRendererPipeline.createGraphicsPipeline()"));
             }
             else [[likely]] {
                 utils::logOK("graphics pipeline created successfully", "engineRendererPipeline.createGraphicsPipeline()");
@@ -314,11 +314,11 @@ export namespace interstellarEngineCore::Renderer {
             return shaderModule;
         }
 
-        static std::vector<char> readFile(const std::string& filename) {
-            std::ifstream file(filename, std::ios::ate | std::ios::binary);
+        static std::vector<char> readFile(const std::string_view filename) {
+            std::ifstream file(filename.data(), std::ios::ate | std::ios::binary);
 
-            if (!file.is_open()) {
-                throw std::runtime_error("[\033[31mFAIL\033[0m] failed to open file" + filename);
+            if (!file.is_open()) [[unlikely]] {
+                throw std::runtime_error("[\033[31mFAIL\033[0m] failed to open file" + std::string(filename));
             }
 
             size_t fileSize = (size_t)file.tellg();

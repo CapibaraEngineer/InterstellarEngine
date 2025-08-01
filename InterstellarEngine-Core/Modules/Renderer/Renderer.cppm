@@ -15,7 +15,6 @@ module;
 #include <glm/gtc/matrix_transform.hpp>
 #include <vulkan/vulkan.h>
 
-
 export module Engine.Renderer;
 
 import InterstellarEngine_Core;
@@ -334,7 +333,7 @@ export namespace interstellarEngineCore::Renderer {
             std::vector<tinyobj::material_t> materials;
             std::string warn, err;
 
-            if (!tinyobj::LoadObj(&attrib, &shapes, &materials, &warn, &err, modelPath.c_str())) {
+            if (!tinyobj::LoadObj(&attrib, &shapes, &materials, &warn, &err, modelPath.data())) {
                 throw std::runtime_error(warn + err);
             }
 
@@ -608,7 +607,7 @@ export namespace interstellarEngineCore::Renderer {
 
         void createTextureImage() {
             int texWidth, texHeight, texChannels;
-            stbi_uc* pixels = stbi_load(modelTexturePath.c_str(), &texWidth, &texHeight, &texChannels, STBI_rgb_alpha);
+            stbi_uc* pixels = stbi_load(modelTexturePath.data(), &texWidth, &texHeight, &texChannels, STBI_rgb_alpha);
             VkDeviceSize imageSize = texWidth * texHeight * 4;
             mipLevels = static_cast<uint32_t>(std::floor(std::log2(std::max(texWidth, texHeight)))) + 1;
 
