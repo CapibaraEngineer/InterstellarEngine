@@ -32,7 +32,7 @@ export namespace interstellarEngineCore::Renderer {
     public:
 
         void run() {
-            engineRendererWindow.initWindow();
+            engineRendererWindow.initWindow(&rendererCamera);
             initVulkan();
             mainLoop();
             cleanup();
@@ -99,7 +99,7 @@ export namespace interstellarEngineCore::Renderer {
         std::vector<VkFence> inFlightFences;
         uint16_t currentFrame = 0;
 
-        camera camera;
+        camera rendererCamera;
         
         void initVulkan() {
 
@@ -146,16 +146,16 @@ export namespace interstellarEngineCore::Renderer {
                 glfwPollEvents();
 
                 if (glfwGetKey(engineRendererWindow.window, GLFW_KEY_W)) {
-                    camera.processKeyboard(GLFW_KEY_W, timeDifference(lastFrameEndTime, lastFrameStartTime));
+                    rendererCamera.processKeyboard(GLFW_KEY_W, timeDifference(lastFrameEndTime, lastFrameStartTime));
                 }
                 if (glfwGetKey(engineRendererWindow.window, GLFW_KEY_A)) {
-                    camera.processKeyboard(GLFW_KEY_A, timeDifference(lastFrameEndTime, lastFrameStartTime));
+                    rendererCamera.processKeyboard(GLFW_KEY_A, timeDifference(lastFrameEndTime, lastFrameStartTime));
                 }
                 if (glfwGetKey(engineRendererWindow.window, GLFW_KEY_S)) {
-                    camera.processKeyboard(GLFW_KEY_S, timeDifference(lastFrameEndTime, lastFrameStartTime));
+                    rendererCamera.processKeyboard(GLFW_KEY_S, timeDifference(lastFrameEndTime, lastFrameStartTime));
                 }
                 if (glfwGetKey(engineRendererWindow.window, GLFW_KEY_D)) {
-                    camera.processKeyboard(GLFW_KEY_D, timeDifference(lastFrameEndTime, lastFrameStartTime));
+                    rendererCamera.processKeyboard(GLFW_KEY_D, timeDifference(lastFrameEndTime, lastFrameStartTime));
                 }
                 
                 drawFrame();
@@ -745,8 +745,8 @@ export namespace interstellarEngineCore::Renderer {
 
             UniformBufferObject ubo{};
             ubo.model = glm::rotate(glm::mat4(1.0f), glm::radians(0.0f), glm::vec3(0.0f, 0.0f, 1.0f));
-            ubo.view = camera.getViewMatrix();
-            ubo.proj = glm::perspective(glm::radians(45.0f), swapChainExtent.width / (float)swapChainExtent.height, 0.1f, 10.0f);
+            ubo.view = rendererCamera.getViewMatrix();
+            ubo.proj = glm::perspective(glm::radians(45.0f), swapChainExtent.width / (float)swapChainExtent.height, 0.1f, 200.0f);
             ubo.proj[1][1] *= -1;
 
             memcpy(uniformBuffersMapped[currentImage], &ubo, sizeof(ubo));
