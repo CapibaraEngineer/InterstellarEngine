@@ -1,5 +1,4 @@
 module;
-
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -51,11 +50,11 @@ export namespace interstellarEngineCore::Renderer {
 
     private:
         void updateVectors() {
-            glm::vec3 f;
-            f.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
-            f.y = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
-            f.z = sin(glm::radians(pitch));
-            front = glm::normalize(f);
+            glm::vec3 vector;
+            vector.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
+            vector.y = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
+            vector.z = sin(glm::radians(pitch));
+            front = glm::normalize(vector);
         }
     };
 }

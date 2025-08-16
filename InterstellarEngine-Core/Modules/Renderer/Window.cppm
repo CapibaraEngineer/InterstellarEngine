@@ -13,8 +13,8 @@ import std;
 export namespace interstellarEngineCore::Renderer {
 	class engineWindow {
 	public:
-		static constexpr uint16_t windowHeight = 600;
-		static constexpr uint16_t windowWidth = 800;
+		static constexpr uint16_t defaultWindowHeight = 600;
+		static constexpr uint16_t defaultWindowWidth = 800;
 
         bool framebufferResized = false;
         GLFWwindow* window;
@@ -25,7 +25,7 @@ export namespace interstellarEngineCore::Renderer {
             glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
             glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
 
-            window = glfwCreateWindow(windowWidth, windowHeight, "Interstellar Engine", nullptr, nullptr);
+            window = glfwCreateWindow(defaultWindowWidth, defaultWindowHeight, "Interstellar Engine", nullptr, nullptr);
             glfwSetWindowUserPointer(window, this);
             glfwSetFramebufferSizeCallback(window, framebufferResizeCallback);
         }
