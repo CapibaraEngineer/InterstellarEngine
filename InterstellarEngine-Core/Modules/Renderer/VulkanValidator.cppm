@@ -105,7 +105,26 @@ export namespace interstellarEngineCore::Renderer {
             const VkDebugUtilsMessengerCallbackDataEXT* pCallbackData,
             void* pUserData
         ) {
-            std::cerr << "validation layer: " << pCallbackData->pMessage << std::endl;
+            switch (messageSeverity) {
+            case VK_DEBUG_UTILS_MESSAGE_SEVERITY_VERBOSE_BIT_EXT:
+                std::cerr << "[\033[3;91mVK Validation layer\033[0m] [\033[36mVERBOSE\033[0m] message: " << pCallbackData->pMessage << std::endl;
+                break;
+            case VK_DEBUG_UTILS_MESSAGE_SEVERITY_INFO_BIT_EXT:
+                std::cerr << "[\033[3;91mVK Validation layer\033[0m] [\033[94mINFO\033[0m] message: " << pCallbackData->pMessage << std::endl;
+                break;
+            case VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT:
+                std::cerr << "[\033[3;91mVK Validation layer\033[0m] [\033[93mWARNING\033[0m] message: " << pCallbackData->pMessage << std::endl;
+                break;
+            case VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT:
+                std::cerr << "[\033[3;91mVK Validation layer\033[0m] [\033[31mERROR\033[0m] message: " << pCallbackData->pMessage << std::endl;
+                break;
+            case VK_DEBUG_UTILS_MESSAGE_SEVERITY_FLAG_BITS_MAX_ENUM_EXT:
+                std::cerr << "[\033[3;91mVK Validation layer\033[0m] [\033[35mI DONT KNOW WHAT THIS CASE MEANS BUT IT IS IN THE ENUM\033[0m] message: " << pCallbackData->pMessage << std::endl;
+                break;
+            default:
+                std::cerr << "[\033[3;91mVK Validation layer\033[0m] [\033[95mFor some reason the messageSeveretiy of the vulkan validation is not right\033[0m] message: " << pCallbackData->pMessage << std::endl;
+                break;
+            }
 
             return VK_FALSE;
         }
