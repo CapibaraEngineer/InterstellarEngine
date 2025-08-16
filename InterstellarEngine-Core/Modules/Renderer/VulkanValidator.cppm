@@ -112,7 +112,7 @@ export namespace interstellarEngineCore::Renderer {
             case VK_DEBUG_UTILS_MESSAGE_SEVERITY_INFO_BIT_EXT:
                 std::cerr << "[\033[3;91mVK Validation layer\033[0m] [\033[94mINFO\033[0m] message: " << pCallbackData->pMessage << std::endl;
                 break;
-            case VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT:
+            case VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT: 
                 std::cerr << "[\033[3;91mVK Validation layer\033[0m] [\033[93mWARNING\033[0m] message: " << pCallbackData->pMessage << std::endl;
                 break;
             case VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT:

@@ -21,6 +21,7 @@ import InterstellarEngine_Core;
 import Engine.RendererCore;
 import Engine.Utils.Logger;
 import Engine.Renderer.Pipeline;
+import Engine.Renderer.Camera;
 import Engine.Renderer.VulkanValidator;
 import Engine.Renderer.Window;
 
@@ -98,6 +99,8 @@ export namespace interstellarEngineCore::Renderer {
         std::vector<VkFence> inFlightFences;
         uint16_t currentFrame = 0;
 
+        camera camera;
+        
         void initVulkan() {
 
             if (!enableValidationLayers) {
@@ -134,9 +137,30 @@ export namespace interstellarEngineCore::Renderer {
         }
 
         void mainLoop() {
+            auto lastFrameStartTime = std::chrono::high_resolution_clock::now();
+            auto thisFrameStartTime = std::chrono::high_resolution_clock::now();
+            auto lastFrameEndTime = std::chrono::high_resolution_clock::now();
+
             while (!glfwWindowShouldClose(engineRendererWindow.window)) {
+                auto thisFrameStartTime = std::chrono::high_resolution_clock::now();
                 glfwPollEvents();
+
+                if (glfwGetKey(engineRendererWindow.window, GLFW_KEY_W)) {
+                    camera.processKeyboard(GLFW_KEY_W, timeDifference(lastFrameEndTime, lastFrameStartTime));
+                }
+                if (glfwGetKey(engineRendererWindow.window, GLFW_KEY_A)) {
+                    camera.processKeyboard(GLFW_KEY_A, timeDifference(lastFrameEndTime, lastFrameStartTime));
+                }
+                if (glfwGetKey(engineRendererWindow.window, GLFW_KEY_S)) {
+                    camera.processKeyboard(GLFW_KEY_S, timeDifference(lastFrameEndTime, lastFrameStartTime));
+                }
+                if (glfwGetKey(engineRendererWindow.window, GLFW_KEY_D)) {
+                    camera.processKeyboard(GLFW_KEY_D, timeDifference(lastFrameEndTime, lastFrameStartTime));
+                }
+                
                 drawFrame();
+                lastFrameStartTime = thisFrameStartTime;
+                lastFrameEndTime = std::chrono::high_resolution_clock::now();
             }
             vkDeviceWaitIdle(device);
         }
@@ -186,6 +210,10 @@ export namespace interstellarEngineCore::Renderer {
 
             glfwTerminate();
             
+        }
+
+        [[nodiscard]] float timeDifference(std::chrono::time_point<std::chrono::steady_clock> a, std::chrono::time_point<std::chrono::steady_clock> b) const {
+            return std::chrono::duration<float, std::chrono::seconds::period>(a - b).count();
         }
 
         void generateSquare() {
@@ -714,14 +742,10 @@ export namespace interstellarEngineCore::Renderer {
         }
 
         void updateUniformBuffer(uint32_t currentImage) {
-            static auto startTime = std::chrono::high_resolution_clock::now();
-
-            auto currentTime = std::chrono::high_resolution_clock::now();
-            float time = std::chrono::duration<float, std::chrono::seconds::period>(currentTime - startTime).count(); //stop being stupid visual studio intellisense, there is no error
 
             UniformBufferObject ubo{};
-            ubo.model = glm::rotate(glm::mat4(1.0f), time * glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
-            ubo.view = glm::lookAt(glm::vec3(2.0f, 2.0f, 2.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+            ubo.model = glm::rotate(glm::mat4(1.0f), glm::radians(0.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+            ubo.view = camera.getViewMatrix();
             ubo.proj = glm::perspective(glm::radians(45.0f), swapChainExtent.width / (float)swapChainExtent.height, 0.1f, 10.0f);
             ubo.proj[1][1] *= -1;
 
