@@ -44,6 +44,7 @@ export namespace interstellarEngineCore::Renderer {
 		static constexpr uint16_t defaultWindowWidth = 800;
 
         bool framebufferResized = false;
+        bool mouseEnabled = false;
         GLFWwindow* window;
 
         void initWindow(camera* camera) {

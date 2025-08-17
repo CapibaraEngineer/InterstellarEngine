@@ -157,7 +157,23 @@ export namespace interstellarEngineCore::Renderer {
                 if (glfwGetKey(engineRendererWindow.window, GLFW_KEY_D)) {
                     rendererCamera.processKeyboard(GLFW_KEY_D, timeDifference(lastFrameEndTime, lastFrameStartTime));
                 }
-                
+                if (glfwGetKey(engineRendererWindow.window, GLFW_KEY_SPACE)) {
+                    rendererCamera.processKeyboard(GLFW_KEY_SPACE, timeDifference(lastFrameEndTime, lastFrameStartTime));
+                }
+                if (glfwGetKey(engineRendererWindow.window, GLFW_KEY_LEFT_CONTROL)) {
+                    rendererCamera.processKeyboard(GLFW_KEY_LEFT_CONTROL, timeDifference(lastFrameEndTime, lastFrameStartTime));
+                }
+                if (glfwGetKey(engineRendererWindow.window, GLFW_KEY_ESCAPE)) {
+                    if (engineRendererWindow.mouseEnabled == false) {
+                        glfwSetInputMode(engineRendererWindow.window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+                        engineRendererWindow.mouseEnabled = true;
+                    }
+                    else {
+                        glfwSetInputMode(engineRendererWindow.window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+                        engineRendererWindow.mouseEnabled = false;
+                    }
+                    
+                }
                 drawFrame();
                 lastFrameStartTime = thisFrameStartTime;
                 lastFrameEndTime = std::chrono::high_resolution_clock::now();
@@ -746,7 +762,7 @@ export namespace interstellarEngineCore::Renderer {
             UniformBufferObject ubo{};
             ubo.model = glm::rotate(glm::mat4(1.0f), glm::radians(0.0f), glm::vec3(0.0f, 0.0f, 1.0f));
             ubo.view = rendererCamera.getViewMatrix();
-            ubo.proj = glm::perspective(glm::radians(45.0f), swapChainExtent.width / (float)swapChainExtent.height, 0.1f, 200.0f);
+            ubo.proj = glm::perspective(glm::radians(45.0f), swapChainExtent.width / (float)swapChainExtent.height, 0.1f, std::numeric_limits<float>::max());
             ubo.proj[1][1] *= -1;
 
             memcpy(uniformBuffersMapped[currentImage], &ubo, sizeof(ubo));

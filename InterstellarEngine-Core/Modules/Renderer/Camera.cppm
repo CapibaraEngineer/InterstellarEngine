@@ -16,8 +16,8 @@ export namespace interstellarEngineCore::Renderer {
 
         float yaw = 0.0f;
         float pitch = 0.0f;
-        float speed = 2.5f;
-        float sensitivity = 0.1f;
+        constexpr static float speed = 2.5f;
+        constexpr static float sensitivity = 0.1f;
 
         camera(glm::vec3 startPos = { 2.0f, 2.0f, 2.0f }, glm::vec3 upVec = { 0.0f, 0.0f, 1.0f }) {
             position = startPos; 
@@ -33,6 +33,8 @@ export namespace interstellarEngineCore::Renderer {
             if (key == GLFW_KEY_S) position -= front * velocity;
             if (key == GLFW_KEY_A) position -= glm::normalize(glm::cross(front, up)) * velocity;
             if (key == GLFW_KEY_D) position += glm::normalize(glm::cross(front, up)) * velocity;
+            if (key == GLFW_KEY_SPACE) position += up * velocity;
+            if (key == GLFW_KEY_LEFT_CONTROL) position -= up * velocity;
         }
 
         void processMouse(float xoffset, float yoffset) {
