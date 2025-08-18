@@ -262,7 +262,7 @@ export namespace interstellarEngineCore::Renderer {
             colorImageView = createImageView(colorImage, colorFormat, VK_IMAGE_ASPECT_COLOR_BIT, 1);
         }
 
-        VkSampleCountFlagBits getMaxUsableSampleCount() const {
+        [[nodiscard]] VkSampleCountFlagBits getMaxUsableSampleCount() const {
             VkPhysicalDeviceProperties physicalDeviceProperties;
             vkGetPhysicalDeviceProperties(physicalDevice, &physicalDeviceProperties);
 
@@ -410,11 +410,11 @@ export namespace interstellarEngineCore::Renderer {
             }
         }
 
-        bool hasStencilComponent(VkFormat format) {
+        [[nodiscard]] bool hasStencilComponent(VkFormat format) {
             return format == VK_FORMAT_D32_SFLOAT_S8_UINT || format == VK_FORMAT_D24_UNORM_S8_UINT;
         }
 
-        VkFormat findDepthFormat() {
+        [[nodiscard]] VkFormat findDepthFormat() {
             return findSupportedFormat(
                 { VK_FORMAT_D32_SFLOAT, VK_FORMAT_D32_SFLOAT_S8_UINT, VK_FORMAT_D24_UNORM_S8_UINT },
                 VK_IMAGE_TILING_OPTIMAL,
@@ -422,7 +422,7 @@ export namespace interstellarEngineCore::Renderer {
             );
         }
 
-        VkFormat findSupportedFormat(const std::vector<VkFormat>& candidates, VkImageTiling tiling, VkFormatFeatureFlags features) const {
+        [[nodiscard]] VkFormat findSupportedFormat(const std::vector<VkFormat>& candidates, VkImageTiling tiling, VkFormatFeatureFlags features) const {
             for (VkFormat format : candidates) {
                 VkFormatProperties props;
                 vkGetPhysicalDeviceFormatProperties(physicalDevice, format, &props);
@@ -480,7 +480,7 @@ export namespace interstellarEngineCore::Renderer {
             }
         }
 
-        VkImageView createImageView(VkImage image, VkFormat format, VkImageAspectFlags aspectFlags, uint32_t mipLevels) const {
+        [[nodiscard]] VkImageView createImageView(VkImage image, VkFormat format, VkImageAspectFlags aspectFlags, uint32_t mipLevels) const {
             VkImageViewCreateInfo viewInfo{};
             viewInfo.sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
             viewInfo.image = image;
@@ -573,7 +573,7 @@ export namespace interstellarEngineCore::Renderer {
             endSingleTimeCommands(commandBuffer);
         }
 
-        VkCommandBuffer beginSingleTimeCommands() const {
+        [[nodiscard]] VkCommandBuffer beginSingleTimeCommands() const {
             VkCommandBufferAllocateInfo allocInfo{};
             allocInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
             allocInfo.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
@@ -864,7 +864,7 @@ export namespace interstellarEngineCore::Renderer {
             vkFreeMemory(device, stagingBufferMemory, nullptr);
         }
 
-        uint32_t findMemoryType(uint32_t typeFilter, VkMemoryPropertyFlags properties) const {
+        [[nodiscard]] uint32_t findMemoryType(uint32_t typeFilter, VkMemoryPropertyFlags properties) const {
             VkPhysicalDeviceMemoryProperties memProperties;
             vkGetPhysicalDeviceMemoryProperties(physicalDevice, &memProperties);
 
@@ -1194,7 +1194,7 @@ export namespace interstellarEngineCore::Renderer {
             }
         }
 
-        SwapChainSupportDetails querySwapChainSupport(VkPhysicalDevice device) const {
+        [[nodiscard]] SwapChainSupportDetails querySwapChainSupport(VkPhysicalDevice device) const {
             SwapChainSupportDetails details;
 
             vkGetPhysicalDeviceSurfaceCapabilitiesKHR(device, surface, &details.capabilities);
@@ -1260,7 +1260,7 @@ export namespace interstellarEngineCore::Renderer {
             vkGetDeviceQueue(device, indices.presentFamily.value(), 0, &presentQueue);
         }
 
-        VkExtent2D chooseSwapExtent(const VkSurfaceCapabilitiesKHR& capabilities) const {
+        [[nodiscard]] VkExtent2D chooseSwapExtent(const VkSurfaceCapabilitiesKHR& capabilities) const {
             if (capabilities.currentExtent.width != std::numeric_limits<uint32_t>::max()) {
                 return capabilities.currentExtent;
             }
@@ -1280,7 +1280,7 @@ export namespace interstellarEngineCore::Renderer {
             }
         }
 
-        VkPresentModeKHR chooseSwapPresentMode(const std::vector<VkPresentModeKHR>& availablePresentModes) {
+        [[nodiscard]] VkPresentModeKHR chooseSwapPresentMode(const std::vector<VkPresentModeKHR>& availablePresentModes) {
             for (const auto& availablePresentMode : availablePresentModes) {
                 if (availablePresentMode == VK_PRESENT_MODE_MAILBOX_KHR) {
                     return availablePresentMode;
@@ -1290,7 +1290,7 @@ export namespace interstellarEngineCore::Renderer {
             return VK_PRESENT_MODE_FIFO_KHR;
         }
 
-        VkSurfaceFormatKHR chooseSwapSurfaceFormat(const std::vector<VkSurfaceFormatKHR>& availableFormats) {
+        [[nodiscard]] VkSurfaceFormatKHR chooseSwapSurfaceFormat(const std::vector<VkSurfaceFormatKHR>& availableFormats) {
             for (const auto& availableFormat : availableFormats) {
                 if (availableFormat.format == VK_FORMAT_B8G8R8A8_SRGB && availableFormat.colorSpace == VK_COLOR_SPACE_SRGB_NONLINEAR_KHR) {
                     return availableFormat;
@@ -1300,7 +1300,7 @@ export namespace interstellarEngineCore::Renderer {
             return availableFormats[0];
         }
 
-        QueueFamilyIndices findQueueFamilies(VkPhysicalDevice device) const {
+        [[nodiscard]] QueueFamilyIndices findQueueFamilies(VkPhysicalDevice device) const {
             QueueFamilyIndices indices;
 
             uint32_t queueFamilyCount = 0;
@@ -1332,7 +1332,7 @@ export namespace interstellarEngineCore::Renderer {
             return indices;
         }
 
-        bool isDeviceSuitable(VkPhysicalDevice device){
+        [[nodiscard]] bool isDeviceSuitable(VkPhysicalDevice device) {
             QueueFamilyIndices indices = findQueueFamilies(device);
 
             bool extensionsSupported = checkDeviceExtensionSupport(device);
@@ -1349,7 +1349,7 @@ export namespace interstellarEngineCore::Renderer {
             return indices.isComplete() && extensionsSupported && swapChainAdequate && supportedFeatures.samplerAnisotropy;
         }
 
-        bool checkDeviceExtensionSupport(VkPhysicalDevice device) {
+        [[nodiscard]] bool checkDeviceExtensionSupport(VkPhysicalDevice device) {
             uint32_t extensionCount;
             vkEnumerateDeviceExtensionProperties(device, nullptr, &extensionCount, nullptr);
 

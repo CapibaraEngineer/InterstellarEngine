@@ -273,7 +273,7 @@ export namespace interstellarEngineCore::Renderer {
         private:
         //Helper functions
 
-        VkFormat findDepthFormat(VkPhysicalDevice physicalDevice) {
+        [[nodiscard]] VkFormat findDepthFormat(VkPhysicalDevice physicalDevice) {
             return findSupportedFormat(
                 { VK_FORMAT_D32_SFLOAT, VK_FORMAT_D32_SFLOAT_S8_UINT, VK_FORMAT_D24_UNORM_S8_UINT },
                 VK_IMAGE_TILING_OPTIMAL,
@@ -281,7 +281,7 @@ export namespace interstellarEngineCore::Renderer {
                 );
         }
 
-        VkFormat findSupportedFormat(const std::vector<VkFormat>& candidates, VkImageTiling tiling, VkFormatFeatureFlags features, VkPhysicalDevice physicalDevice) const {
+        [[nodiscard]] VkFormat findSupportedFormat(const std::vector<VkFormat>& candidates, VkImageTiling tiling, VkFormatFeatureFlags features, VkPhysicalDevice physicalDevice) const {
             for (VkFormat format : candidates) {
                 VkFormatProperties props;
                 vkGetPhysicalDeviceFormatProperties(physicalDevice, format, &props);
@@ -297,7 +297,7 @@ export namespace interstellarEngineCore::Renderer {
             throw std::runtime_error("failed to find supported format!");
         }
 
-        VkShaderModule createShaderModule(const std::vector<char>& code, VkDevice device) const {
+        [[nodiscard]] VkShaderModule createShaderModule(const std::vector<char>& code, VkDevice device) const {
             VkShaderModuleCreateInfo createInfo{};
             createInfo.sType = VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO;
             createInfo.codeSize = code.size();
@@ -314,7 +314,7 @@ export namespace interstellarEngineCore::Renderer {
             return shaderModule;
         }
 
-        static std::vector<char> readFile(const std::string_view filename) {
+        [[nodiscard]] static std::vector<char> readFile(const std::string_view filename) {
             std::ifstream file(filename.data(), std::ios::ate | std::ios::binary);
 
             if (!file.is_open()) [[unlikely]] {

@@ -46,7 +46,7 @@ export namespace interstellarEngineCore::Renderer {
             updateVectors();
         }
 
-        glm::mat4 getViewMatrix() const {
+        [[nodiscard]] glm::mat4 getViewMatrix() const {
             return glm::lookAt(position, position + front, up);
         }
 

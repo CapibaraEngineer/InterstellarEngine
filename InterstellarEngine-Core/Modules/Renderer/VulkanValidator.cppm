@@ -16,7 +16,7 @@ import std.compat;
 
 export namespace interstellarEngineCore::Renderer {
 
-    VkResult CreateDebugUtilsMessengerEXT(VkInstance instance, const VkDebugUtilsMessengerCreateInfoEXT* pCreateInfo, const VkAllocationCallbacks* pAllocator, VkDebugUtilsMessengerEXT* pDebugMessenger) {
+    [[nodiscard]] VkResult CreateDebugUtilsMessengerEXT(VkInstance instance, const VkDebugUtilsMessengerCreateInfoEXT* pCreateInfo, const VkAllocationCallbacks* pAllocator, VkDebugUtilsMessengerEXT* pDebugMessenger) {
         auto func = (PFN_vkCreateDebugUtilsMessengerEXT)vkGetInstanceProcAddr(instance, "vkCreateDebugUtilsMessengerEXT");
         if (func != nullptr) {
             return func(instance, pCreateInfo, pAllocator, pDebugMessenger);
@@ -38,7 +38,7 @@ export namespace interstellarEngineCore::Renderer {
 
         VkDebugUtilsMessengerEXT debugMessenger;
 
-        bool checkValidationLayerSupport() {
+        [[nodiscard]] bool checkValidationLayerSupport() {
             uint32_t layerCount;
             vkEnumerateInstanceLayerProperties(&layerCount, nullptr);
 
@@ -63,7 +63,7 @@ export namespace interstellarEngineCore::Renderer {
             return true;
         }
 
-        std::vector<const char*> getRequiredExtensions() {
+        [[nodiscard]] std::vector<const char*> getRequiredExtensions() {
             uint32_t glfwExtensionCount = 0;
             const char** glfwExtensions;
             glfwExtensions = glfwGetRequiredInstanceExtensions(&glfwExtensionCount);
