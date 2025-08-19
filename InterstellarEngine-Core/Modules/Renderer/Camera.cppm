@@ -27,8 +27,8 @@ export namespace interstellarEngineCore::Renderer {
             updateVectors();
         }
 
-        void processKeyboard(int key, float deltaTime) {
-            float velocity = speed * deltaTime;
+        void processKeyboard(const int key, const float deltaTime) {
+            const float velocity = speed * deltaTime;
             if (key == GLFW_KEY_W) position += front * velocity;
             if (key == GLFW_KEY_S) position -= front * velocity;
             if (key == GLFW_KEY_A) position -= glm::normalize(glm::cross(front, up)) * velocity;
@@ -46,7 +46,7 @@ export namespace interstellarEngineCore::Renderer {
             updateVectors();
         }
 
-        [[nodiscard]] glm::mat4 getViewMatrix() const {
+        [[nodiscard]] glm::mat4 getViewMatrix() const noexcept {
             return glm::lookAt(position, position + front, up);
         }
 

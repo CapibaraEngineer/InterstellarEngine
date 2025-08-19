@@ -97,7 +97,7 @@ export namespace interstellarEngineCore::Renderer {
         std::vector<VkSemaphore> imageAvailableSemaphores;
         std::vector<VkSemaphore> renderFinishedSemaphores;
         std::vector<VkFence> inFlightFences;
-        uint16_t currentFrame = 0;
+        uint8_t currentFrame = 0;
 
         camera rendererCamera;
         
@@ -437,7 +437,6 @@ export namespace interstellarEngineCore::Renderer {
 
             throw std::runtime_error("failed to find supported format!");
         }
-
         void createDepthResources() {
             VkFormat depthFormat = findDepthFormat();
 
