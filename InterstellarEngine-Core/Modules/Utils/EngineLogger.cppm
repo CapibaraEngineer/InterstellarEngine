@@ -6,6 +6,15 @@ import std;
 
 export namespace interstellarEngineCore::utils {
 
+	class logger {
+	public:
+		std::thread writerThread;
+		std::thread listenerThread;
+		
+		std::queue<std::string_view> listOfThing;
+
+	};
+
 	void logOK(const std::string_view message, const std::string_view caller) {
 		/*   this function Logs: [OK] message, logged by caller
 		 *	Exemple: [OK] image loaded sucessfuly, logged by imageLoader
@@ -26,6 +35,7 @@ export namespace interstellarEngineCore::utils {
 	}
 
 	//log without the caller
+
 	void logOK(const std::string_view message) {
 		/*  this function Logs: [OK] message
 		 *	Exemple: [OK] image loaded sucessfuly
@@ -46,6 +56,7 @@ export namespace interstellarEngineCore::utils {
 	}
 
 	//the sames functions but instead of writing to the standard output these will return the string to be written somewhere else
+
 	LOGFunc_Nodiscard constexpr std::string writeLogOK(const std::string_view message, const std::string_view caller) {
 		/*   this function Logs: [OK] message, logged by caller
 		 *	Exemple: [OK] image loaded sucessfuly, logged by imageLoader
@@ -66,6 +77,7 @@ export namespace interstellarEngineCore::utils {
 	}
 
 	//log without the caller
+
 	LOGFunc_Nodiscard constexpr std::string writeLogOK(const std::string_view message) {
 		/*  this function Logs: [OK] message
 		 *	Exemple: [OK] image loaded sucessfuly
