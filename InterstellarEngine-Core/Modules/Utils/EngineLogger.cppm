@@ -6,15 +6,6 @@ import std;
 
 export namespace interstellarEngineCore::utils {
 
-	class logger {
-	public:
-		std::thread writerThread;
-		std::thread listenerThread;
-		
-		std::queue<std::string_view> listOfThing;
-
-	};
-
 	void logOK(const std::string_view message, const std::string_view caller) {
 		/*   this function Logs: [OK] message, logged by caller
 		 *	Exemple: [OK] image loaded sucessfuly, logged by imageLoader
