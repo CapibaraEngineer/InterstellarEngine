@@ -228,7 +228,7 @@ export namespace interstellarEngineCore::Renderer {
             
         }
 
-        [[nodiscard]] float timeDifference(std::chrono::time_point<std::chrono::steady_clock> a, std::chrono::time_point<std::chrono::steady_clock> b) const {
+        [[nodiscard]] float timeDifference(const std::chrono::time_point<std::chrono::steady_clock> a, const std::chrono::time_point<std::chrono::steady_clock> b) const {
             return std::chrono::duration<float, std::chrono::seconds::period>(a - b).count();
         }
 
