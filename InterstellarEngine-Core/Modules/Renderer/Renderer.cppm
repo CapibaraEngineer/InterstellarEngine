@@ -103,7 +103,7 @@ export namespace interstellarEngineCore::Renderer {
         
         void initVulkan() {
 
-            if (!enableValidationLayers) {
+            if constexpr (!enableValidationLayers)  {
                 utils::logLOG("Release Build - validation layers [\033[31mDISABLED\033[0m]");
             }
             else {
