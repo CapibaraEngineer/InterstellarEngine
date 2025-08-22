@@ -34,7 +34,7 @@ export namespace interstellarEngineCore::Renderer {
         std::optional<uint32_t> graphicsFamily;
         std::optional<uint32_t> presentFamily;
 
-        [[nodiscard]] bool isComplete() const {
+        [[nodiscard]] constexpr bool isComplete() const {
             return graphicsFamily.has_value() && presentFamily.has_value();;
         }
     };
@@ -45,18 +45,16 @@ export namespace interstellarEngineCore::Renderer {
         std::vector<VkPresentModeKHR> presentModes;
     };
 
-
-
     struct Vertex {
         glm::vec3 pos;
         glm::vec3 color;
         glm::vec2 texCoord;
 
-        bool operator==(const Vertex& other) const {
-            return pos == other.pos && color == other.color && texCoord == other.texCoord;
+        [[nodiscard]] constexpr bool operator==(const Vertex& other) const {
+            return pos == other.pos and color == other.color and texCoord == other.texCoord;
         }
 
-        static VkVertexInputBindingDescription getBindingDescription() {
+        constexpr static VkVertexInputBindingDescription getBindingDescription() {
             VkVertexInputBindingDescription bindingDescription{};
             bindingDescription.binding = 0;
             bindingDescription.stride = sizeof(Vertex);
@@ -65,7 +63,7 @@ export namespace interstellarEngineCore::Renderer {
             return bindingDescription;
         }
 
-        static std::array<VkVertexInputAttributeDescription, 3> getAttributeDescriptions() {
+        constexpr static std::array<VkVertexInputAttributeDescription, 3> getAttributeDescriptions() {
             std::array<VkVertexInputAttributeDescription, 3> attributeDescriptions{};
 
             attributeDescriptions[0].binding = 0;
