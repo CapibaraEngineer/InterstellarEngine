@@ -35,7 +35,7 @@ export namespace interstellarEngineCore::Renderer {
         std::optional<uint32_t> presentFamily;
 
         [[nodiscard]] constexpr bool isComplete() const {
-            return graphicsFamily.has_value() && presentFamily.has_value();;
+            return graphicsFamily.has_value() and presentFamily.has_value();;
         }
     };
 

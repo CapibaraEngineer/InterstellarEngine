@@ -277,7 +277,7 @@ export namespace interstellarEngineCore::Renderer {
             return VK_SAMPLE_COUNT_1_BIT;
         }
 
-        void generateMipmaps(VkImage image, VkFormat imageFormat, int32_t texWidth, int32_t texHeight, uint32_t mipLevels) {
+        void generateMipmaps(VkImage image, VkFormat imageFormat, int32_t textureWidth, int32_t textureHeight, uint32_t mipLevels) {
             // Check if image format supports linear blitting
             VkFormatProperties formatProperties;
             vkGetPhysicalDeviceFormatProperties(physicalDevice, imageFormat, &formatProperties);
@@ -301,10 +301,8 @@ export namespace interstellarEngineCore::Renderer {
             barrier.subresourceRange.layerCount = 1;
             barrier.subresourceRange.levelCount = 1;
 
-            int32_t mipWidth = texWidth;
-            int32_t mipHeight = texHeight;
-
-
+            int32_t mipWidth = textureWidth;
+            int32_t mipHeight = textureHeight;
 
             for (uint32_t i = 1; i < mipLevels; i++) {
                 barrier.subresourceRange.baseMipLevel = i - 1;
@@ -408,6 +406,7 @@ export namespace interstellarEngineCore::Renderer {
                     indices.push_back(uniqueVertices[vertex]);
                 }
             }
+            utils::logLOG(std::format("model shapes size: {}, model materials size: {}, model indices size: {}", shapes.size(), materials.size(), indices.size()));
         }
 
         [[nodiscard]] bool hasStencilComponent(VkFormat format) {
@@ -781,12 +780,12 @@ export namespace interstellarEngineCore::Renderer {
             }
         }
 
-        void copyBuffer(VkBuffer srcBuffer, VkBuffer dstBuffer, VkDeviceSize size) {
+        void copyBuffer(VkBuffer sourceBuffer, VkBuffer destinationBuffer, VkDeviceSize size) {
             VkCommandBuffer commandBuffer = beginSingleTimeCommands();
 
             VkBufferCopy copyRegion{};
             copyRegion.size = size;
-            vkCmdCopyBuffer(commandBuffer, srcBuffer, dstBuffer, 1, &copyRegion);
+            vkCmdCopyBuffer(commandBuffer, sourceBuffer, destinationBuffer, 1, &copyRegion);
 
             endSingleTimeCommands(commandBuffer);
         }
@@ -953,7 +952,7 @@ export namespace interstellarEngineCore::Renderer {
                 recreateSwapChain();
                 return;
             }
-            else if (result != VK_SUCCESS && result != VK_SUBOPTIMAL_KHR) {
+            else if (result != VK_SUCCESS and result != VK_SUBOPTIMAL_KHR) {
                 throw std::runtime_error("failed to acquire swap chain image!");
             }
 
@@ -998,7 +997,7 @@ export namespace interstellarEngineCore::Renderer {
 
             result = vkQueuePresentKHR(presentQueue, &presentInfo);
 
-            if (result == VK_ERROR_OUT_OF_DATE_KHR || result == VK_SUBOPTIMAL_KHR || engineRendererWindow.framebufferResized) {
+            if (result == VK_ERROR_OUT_OF_DATE_KHR or result == VK_SUBOPTIMAL_KHR or engineRendererWindow.framebufferResized) {
                 engineRendererWindow.framebufferResized = false;
                 recreateSwapChain();
             }
