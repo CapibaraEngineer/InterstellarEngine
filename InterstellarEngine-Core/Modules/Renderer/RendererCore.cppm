@@ -23,7 +23,7 @@ export namespace interstellarEngineCore::Renderer {
     constexpr uint8_t maxFramesInFlight = 2;
 
     const std::vector<const char*> validationLayers = {
-    "VK_LAYER_KHRONOS_validation"
+        "VK_LAYER_KHRONOS_validation"
     };
 
     const std::vector<const char*> deviceExtensions = {
@@ -46,9 +46,9 @@ export namespace interstellarEngineCore::Renderer {
     };
 
     struct Vertex {
-        glm::vec3 pos;
-        glm::vec3 color;
-        glm::vec2 texCoord;
+        glm::vec3 pos = {0,0,0};
+        glm::vec3 color = { 0,0,0 };
+        glm::vec2 texCoord = { 0,0 };
 
         [[nodiscard]] constexpr bool operator==(const Vertex& other) const {
             return pos == other.pos and color == other.color and texCoord == other.texCoord;
