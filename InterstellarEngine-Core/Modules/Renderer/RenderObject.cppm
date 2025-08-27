@@ -29,7 +29,7 @@ export namespace interstellarEngineCore::Renderer {
             visible = otherRenderObject.visible;
         }
 
-        //load a model from a OBJ file, being the only parameter the path to the OBJ file, it will overwrite the vertices and indices of the model
+        //load a model from a OBJ file, the only parameter is the path to the OBJ file, it will overwrite the vertices and indices of the model
         void loadModel(const std::string_view& modelToBeLoadedPath) {
             vertices.clear();
             indices.clear();

@@ -9,7 +9,6 @@ module;
 #include <stb_image.h>
 
 #define TINYOBJLOADER_IMPLEMENTATION
-#define TINYOBJLOADER_USE_DOUBLE
 #include <tiny_obj_loader.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -24,6 +23,7 @@ import Engine.Renderer.Pipeline;
 import Engine.Renderer.Camera;
 import Engine.Renderer.VulkanValidator;
 import Engine.Renderer.Window;
+import Engine.Renderer.RenderObject;
 
 import std;
 
@@ -31,7 +31,7 @@ export namespace interstellarEngineCore::Renderer {
     class engineRenderer {
     public:
 
-        void run() {
+        void run() { 
             engineRendererWindow.initWindow(&rendererCamera);
             initVulkan();
             mainLoop();
@@ -39,7 +39,7 @@ export namespace interstellarEngineCore::Renderer {
         }
 
     private:
-        
+
         vulkanValidator engineRendererVulkanValidator;
         engineWindow engineRendererWindow;
 
@@ -74,10 +74,10 @@ export namespace interstellarEngineCore::Renderer {
         std::vector<Vertex> vertices;
         std::vector<uint32_t> indices;
 
-        VkBuffer vertexBuffer;
-        VkDeviceMemory vertexBufferMemory;
-        VkBuffer indexBuffer;
-        VkDeviceMemory indexBufferMemory;
+        VkBuffer vertexBuffer = nullptr;
+        VkDeviceMemory vertexBufferMemory = nullptr;
+        VkBuffer indexBuffer = nullptr;
+        VkDeviceMemory indexBufferMemory = nullptr;
 
         std::vector<VkBuffer> uniformBuffers;
         std::vector<VkDeviceMemory> uniformBuffersMemory;
@@ -125,7 +125,7 @@ export namespace interstellarEngineCore::Renderer {
             createTextureImage();
             createTextureImageView();
             createTextureSampler();
-            loadModel();
+            loadModels();
             //generateSquare();
             createVertexBuffer();
             createIndexBuffer();
@@ -369,19 +369,30 @@ export namespace interstellarEngineCore::Renderer {
 
         }
 
-        void loadModel() {
+        void loadModels() {
+            renderObject theThing;
+            theThing.loadModel(modelPath);
+            indices = theThing.indices;
+            vertices = theThing.vertices;
+            //loadModel(modelPath);
+        }
+        
+        void loadModel(const std::string_view& modelToBeLoadedPath) {
+            vertices.clear();
+            indices.clear();
             tinyobj::attrib_t attrib;
             std::vector<tinyobj::shape_t> shapes;
             std::vector<tinyobj::material_t> materials;
             std::string warn, err;
 
-            if (!tinyobj::LoadObj(&attrib, &shapes, &materials, &warn, &err, modelPath.data())) {
+            if (!tinyobj::LoadObj(&attrib, &shapes, &materials, &warn, &err, modelToBeLoadedPath.data())) {
                 throw std::runtime_error(warn + err);
             }
-
+            utils::logLOG(std::format("model shapes size {}", shapes.size()));
             std::unordered_map<Vertex, uint32_t> uniqueVertices{};
 
             for (const auto& shape : shapes) {
+                utils::logLOG(std::format("shape indice {}", shape.mesh.indices.size()));
                 for (const auto& index : shape.mesh.indices) {
                     Vertex vertex{};
 
@@ -406,7 +417,9 @@ export namespace interstellarEngineCore::Renderer {
                     indices.push_back(uniqueVertices[vertex]);
                 }
             }
-            utils::logLOG(std::format("model shapes size: {}, model materials size: {}, model indices size: {}", shapes.size(), materials.size(), indices.size()));
+            utils::logLOG(std::format("model {} ; model shapes size: {}, model materials size: {}, model vertices size: {}, model indices size: {}, model unique vertices size: {}",
+                modelToBeLoadedPath.data(), shapes.size(), materials.size(), vertices.size(), indices.size(), uniqueVertices.size()));
+
         }
 
         [[nodiscard]] bool hasStencilComponent(VkFormat format) {
