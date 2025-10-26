@@ -370,11 +370,11 @@ export namespace interstellarEngineCore::Renderer {
         }
 
         void loadModels() {
-            renderObject theThing;
-            theThing.loadModel(modelPath);
-            indices = theThing.indices;
-            vertices = theThing.vertices;
-            //loadModel(modelPath);
+            //renderObject theThing;
+            //theThing.loadModel(modelPath);
+            //indices = theThing.indices;
+            //vertices = theThing.vertices;
+            loadModel(modelPath);
         }
         
         void loadModel(const std::string_view& modelToBeLoadedPath) {
