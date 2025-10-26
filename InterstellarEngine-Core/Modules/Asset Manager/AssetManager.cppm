@@ -1,5 +1,7 @@
 module;
 
+#include <stdint.h>
+
 export module Engine.AssetManager;
 
 import std;
