@@ -6,6 +6,7 @@ The PRE-ALPHAS starts on the 90th because that the commit that added it, then it
 
 #### PRE-ALPHA 95
 A lot of constants, a lot of constant expressions and nodiscards
+vey bad asset manager
 
 #### PRE-ALPHA 94
 Better naming
