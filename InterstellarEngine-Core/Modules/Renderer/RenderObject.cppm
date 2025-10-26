@@ -16,7 +16,7 @@ export namespace interstellarEngineCore::Renderer {
 		std::vector<Vertex> vertices;
 		std::vector<uint32_t> indices;
 		bool visible = true;
-		uint64_t uid = 0; //unique iddentifier, never copied
+		uint64_t uid = 0; //unique identifier, never copied
 
         
         renderObject(const std::string_view& OBJToConstructTheModel) {
