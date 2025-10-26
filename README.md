@@ -1,7 +1,7 @@
 # Interstellar Engine
 ![Static Badge](https://img.shields.io/badge/Version-PRE--ALPHA%2094-blue)
 
-Insterstellar Engine is a game engine with the objective of providing accurate gravitational simulations.
+Insterstellar Engine is a game engine with the objective of doing something and looking cool.
 The engine is written in C++23, renders using the Vulkan API, and uses Premake. 
 
 ## Building 
