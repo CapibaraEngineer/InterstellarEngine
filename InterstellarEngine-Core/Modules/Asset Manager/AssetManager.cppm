@@ -30,7 +30,7 @@ export namespace interstellarEngineCore::AssetManager {
 	}
 
 	// removes an asset by its unique identifier, does not free memory, just marks it as removed, 
-	// because if it did remove it I would need to actually make proper UID logic
+	// because if it did remove it I would need to actually make proper UID logic and i am lazy
 	void removeAssetByUID(uint64_t assetUID) {
 		assetsList.at(assetUID).assetName = "removed";
 		assetsList.at(assetUID).assetPath = "removed";
