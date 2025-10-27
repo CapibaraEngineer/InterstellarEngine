@@ -5,6 +5,9 @@ export module InterstellarEngine_Core;
 import std;
 
 export namespace interstellarEngineCore {
+
+	bool shouldClose = false;
+
     //The working directory is the InterstellarEngine-Editor directory
     constexpr std::string_view modelPath = "../InterstellarEngine-Core/Assets/Models/viking_room.obj";
     constexpr std::string_view modelTexturePath = "../InterstellarEngine-Core/Assets/Textures/viking_room.png";

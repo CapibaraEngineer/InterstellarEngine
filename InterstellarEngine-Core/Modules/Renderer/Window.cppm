@@ -36,7 +36,6 @@ void mouseCallback(GLFWwindow* window, double xpos, double ypos) {
     cameraReference->processMouse(xoffset, yoffset);
 }
 
-
 export namespace interstellarEngineCore::Renderer {
 	class engineWindow {
 	public:
