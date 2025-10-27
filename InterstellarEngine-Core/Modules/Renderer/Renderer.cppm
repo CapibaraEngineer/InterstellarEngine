@@ -241,7 +241,7 @@ export namespace interstellarEngineCore::Renderer {
 			return std::chrono::duration<float, std::chrono::seconds::period>(a - b).count();
 		}
 
-		void generateSquare() {
+		void generateSquare() { 
 			const std::vector<Vertex> _vertices = {
 				{{-0.5f, -0.5f, 0.0f}, {1.0f, 0.0f, 0.0f}, {0.0f, 0.0f}},
 				{{0.5f, -0.5f, 0.0f}, {0.0f, 1.0f, 0.0f}, {1.0f, 0.0f}},
