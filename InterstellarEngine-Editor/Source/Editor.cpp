@@ -13,7 +13,7 @@ int main() {
 		engine.run();
 	}
 	catch (const std::exception& exception) {
-		std::cerr << exception.what() << std::endl;
+		//std::cerr << exception.what() << "\n"; //MSVC is breaking (internal error) because of the std::cout/clog/cerr specifically here, so no log for you
 		return EXIT_FAILURE;
 	}
 	return EXIT_SUCCESS;

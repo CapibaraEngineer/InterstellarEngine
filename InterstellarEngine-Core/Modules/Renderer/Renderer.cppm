@@ -25,6 +25,7 @@ import Engine.Renderer.Camera;
 import Engine.Renderer.VulkanValidator;
 import Engine.Renderer.Window;
 import Engine.Renderer.RenderObject;
+import Engine.Renderer.World;
 
 import std;
 
@@ -73,9 +74,6 @@ export namespace interstellarEngineCore::Renderer {
 
 		std::vector<VkCommandBuffer> commandBuffers;
 
-		std::vector<Vertex> vertices;
-		std::vector<uint32_t> indices;
-
 		VkBuffer vertexBuffer = nullptr;
 		VkDeviceMemory vertexBufferMemory = nullptr;
 		VkBuffer indexBuffer = nullptr;
@@ -102,6 +100,10 @@ export namespace interstellarEngineCore::Renderer {
 		uint8_t currentFrame = 0;
 
 		camera rendererCamera;
+
+		renderObject simpleScene;
+
+		world simpleWorld;
 		
 		void initVulkan() {
 
@@ -257,8 +259,8 @@ export namespace interstellarEngineCore::Renderer {
 				0, 1, 2, 2, 3, 0,
 				4, 5, 6, 6, 7, 4
 			};
-			vertices = _vertices;
-			indices = _indices;
+			simpleScene.vertices = _vertices;
+			simpleScene.indices = _indices;
 
 		}
 
@@ -387,8 +389,8 @@ export namespace interstellarEngineCore::Renderer {
 		}
 		
 		void loadModel(const std::string_view& modelToBeLoadedPath) {
-			vertices.clear();
-			indices.clear();
+			simpleScene.vertices.clear();
+			simpleScene.indices.clear();
 			tinyobj::attrib_t attrib;
 			std::vector<tinyobj::shape_t> shapes;
 			std::vector<tinyobj::material_t> materials;
@@ -419,15 +421,15 @@ export namespace interstellarEngineCore::Renderer {
 					vertex.color = { 1.0f, 1.0f, 1.0f };
 
 					if (uniqueVertices.count(vertex) == 0) {
-						uniqueVertices[vertex] = static_cast<uint32_t>(vertices.size());
-						vertices.push_back(vertex);
+						uniqueVertices[vertex] = static_cast<uint32_t>(simpleScene.vertices.size());
+						simpleScene.vertices.push_back(vertex);
 					}
 
-					indices.push_back(uniqueVertices[vertex]);
+					simpleScene.indices.push_back(uniqueVertices[vertex]);
 				}
 			}
 			utils::logLOG(std::format("model {} ; model shapes size: {}, model materials size: {}, model vertices size: {}, model indices size: {}, model unique vertices size: {}",
-				modelToBeLoadedPath.data(), shapes.size(), materials.size(), vertices.size(), indices.size(), uniqueVertices.size()));
+				modelToBeLoadedPath.data(), shapes.size(), materials.size(), simpleScene.vertices.size(), simpleScene.indices.size(), uniqueVertices.size()));
 
 		}
 
@@ -845,7 +847,7 @@ export namespace interstellarEngineCore::Renderer {
 		}
 
 		void createVertexBuffer() {
-			VkDeviceSize bufferSize = sizeof(vertices[0]) * vertices.size();
+			VkDeviceSize bufferSize = sizeof(simpleScene.vertices[0]) * simpleScene.vertices.size();
 
 			VkBuffer stagingBuffer;
 			VkDeviceMemory stagingBufferMemory;
@@ -853,7 +855,7 @@ export namespace interstellarEngineCore::Renderer {
 
 			void* data;
 			vkMapMemory(device, stagingBufferMemory, 0, bufferSize, 0, &data);
-			memcpy(data, vertices.data(), (size_t)bufferSize);
+			memcpy(data, simpleScene.vertices.data(), (size_t)bufferSize);
 			vkUnmapMemory(device, stagingBufferMemory);
 
 			createBuffer(bufferSize, VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_VERTEX_BUFFER_BIT, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT, vertexBuffer, vertexBufferMemory);
@@ -865,7 +867,7 @@ export namespace interstellarEngineCore::Renderer {
 		}
 
 		void createIndexBuffer() {
-			VkDeviceSize bufferSize = sizeof(indices[0]) * indices.size();
+			VkDeviceSize bufferSize = sizeof(simpleScene.indices[0]) * simpleScene.indices.size();
 
 			VkBuffer stagingBuffer;
 			VkDeviceMemory stagingBufferMemory;
@@ -873,7 +875,7 @@ export namespace interstellarEngineCore::Renderer {
 
 			void* data;
 			vkMapMemory(device, stagingBufferMemory, 0, bufferSize, 0, &data);
-			memcpy(data, indices.data(), (size_t)bufferSize);
+			memcpy(data, simpleScene.indices.data(), (size_t)bufferSize);
 			vkUnmapMemory(device, stagingBufferMemory);
 
 			createBuffer(bufferSize, VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_INDEX_BUFFER_BIT, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT, indexBuffer, indexBufferMemory);
@@ -1078,7 +1080,7 @@ export namespace interstellarEngineCore::Renderer {
 
 			vkCmdBindDescriptorSets(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, pipeline.pipelineLayout, 0, 1, &descriptorSets[currentFrame], 0, nullptr);
 
-			vkCmdDrawIndexed(commandBuffer, static_cast<uint32_t>(indices.size()), 1, 0, 0, 0);
+			vkCmdDrawIndexed(commandBuffer, static_cast<uint32_t>(simpleScene.indices.size()), 1, 0, 0, 0);
 
 			vkCmdEndRenderPass(commandBuffer);
 

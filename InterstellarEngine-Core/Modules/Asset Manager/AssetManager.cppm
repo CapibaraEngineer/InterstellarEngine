@@ -14,6 +14,11 @@ export namespace interstellarEngineCore::AssetManager {
 		const uint64_t assetUID = 0; //unique identifier, never copied
 	};
 
+	struct model
+	{
+		
+	};
+
 
 	std::vector<asset> assetsList = {
 		asset{ "../InterstellarEngine-Core/Assets/Models/viking_room.obj", "viking_room_model", 0},

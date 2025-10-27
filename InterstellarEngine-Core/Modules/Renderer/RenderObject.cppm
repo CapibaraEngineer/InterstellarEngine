@@ -18,6 +18,8 @@ export namespace interstellarEngineCore::Renderer {
 		bool visible = true;
 		uint64_t uid = 0; //unique identifier, never copied
 
+		renderObject() = default;
+
 		renderObject(const std::string_view& OBJToConstructTheModel) {
 			loadModel(OBJToConstructTheModel);
 		}
