@@ -16,6 +16,8 @@ module;
 
 export module Engine.Renderer;
 
+import std;
+
 import InterstellarEngine_Core;
 import Engine.RendererCore;
 import Engine.Utils.Logger;
@@ -26,8 +28,6 @@ import Engine.Renderer.VulkanValidator;
 import Engine.Renderer.Window;
 import Engine.Renderer.RenderObject;
 import Engine.Renderer.World;
-
-import std;
 
 export namespace interstellarEngineCore::Renderer {
 	class engineRenderer {
@@ -102,6 +102,7 @@ export namespace interstellarEngineCore::Renderer {
 		camera rendererCamera;
 
 		renderObject simpleScene;
+		renderObject worldThing;
 
 		world simpleWorld;
 		
@@ -129,7 +130,9 @@ export namespace interstellarEngineCore::Renderer {
 			createTextureImage();
 			createTextureImageView();
 			createTextureSampler();
-			loadModels();
+			loadModel(modelPath);
+			loadScene();
+			//loadModels();
 			//generateSquare();
 			createVertexBuffer();
 			createIndexBuffer();
@@ -239,6 +242,14 @@ export namespace interstellarEngineCore::Renderer {
 			
 		}
 
+		void loadScene() {
+			simpleWorld.renderObjects.push_back(simpleScene); // quick test, load the simpleScene into the simpleWorld
+			for (const auto& renderObjectInWorld : simpleWorld.renderObjects) {
+				worldThing.indices.insert_range(renderObjectInWorld.indices.end(), renderObjectInWorld.indices);
+				worldThing.vertices.insert_range(renderObjectInWorld.vertices.end(), renderObjectInWorld.vertices);
+			}
+		}
+
 		[[nodiscard]] float timeDifference(const std::chrono::time_point<std::chrono::steady_clock> a, const std::chrono::time_point<std::chrono::steady_clock> b) const {
 			return std::chrono::duration<float, std::chrono::seconds::period>(a - b).count();
 		}
@@ -259,8 +270,8 @@ export namespace interstellarEngineCore::Renderer {
 				0, 1, 2, 2, 3, 0,
 				4, 5, 6, 6, 7, 4
 			};
-			simpleScene.vertices = _vertices;
-			simpleScene.indices = _indices;
+			worldThing.vertices = _vertices;
+			worldThing.indices = _indices;
 
 		}
 
@@ -460,6 +471,7 @@ export namespace interstellarEngineCore::Renderer {
 
 			throw std::runtime_error("failed to find supported format!");
 		}
+
 		void createDepthResources() {
 			VkFormat depthFormat = findDepthFormat();
 
@@ -847,7 +859,7 @@ export namespace interstellarEngineCore::Renderer {
 		}
 
 		void createVertexBuffer() {
-			VkDeviceSize bufferSize = sizeof(simpleScene.vertices[0]) * simpleScene.vertices.size();
+			VkDeviceSize bufferSize = sizeof(worldThing.vertices[0]) * worldThing.vertices.size();
 
 			VkBuffer stagingBuffer;
 			VkDeviceMemory stagingBufferMemory;
@@ -855,7 +867,7 @@ export namespace interstellarEngineCore::Renderer {
 
 			void* data;
 			vkMapMemory(device, stagingBufferMemory, 0, bufferSize, 0, &data);
-			memcpy(data, simpleScene.vertices.data(), (size_t)bufferSize);
+			memcpy(data, worldThing.vertices.data(), (size_t)bufferSize);
 			vkUnmapMemory(device, stagingBufferMemory);
 
 			createBuffer(bufferSize, VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_VERTEX_BUFFER_BIT, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT, vertexBuffer, vertexBufferMemory);
@@ -867,7 +879,7 @@ export namespace interstellarEngineCore::Renderer {
 		}
 
 		void createIndexBuffer() {
-			VkDeviceSize bufferSize = sizeof(simpleScene.indices[0]) * simpleScene.indices.size();
+			VkDeviceSize bufferSize = sizeof(worldThing.indices[0]) * worldThing.indices.size();
 
 			VkBuffer stagingBuffer;
 			VkDeviceMemory stagingBufferMemory;
@@ -875,7 +887,7 @@ export namespace interstellarEngineCore::Renderer {
 
 			void* data;
 			vkMapMemory(device, stagingBufferMemory, 0, bufferSize, 0, &data);
-			memcpy(data, simpleScene.indices.data(), (size_t)bufferSize);
+			memcpy(data, worldThing.indices.data(), (size_t)bufferSize);
 			vkUnmapMemory(device, stagingBufferMemory);
 
 			createBuffer(bufferSize, VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_INDEX_BUFFER_BIT, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT, indexBuffer, indexBufferMemory);
@@ -1080,7 +1092,7 @@ export namespace interstellarEngineCore::Renderer {
 
 			vkCmdBindDescriptorSets(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, pipeline.pipelineLayout, 0, 1, &descriptorSets[currentFrame], 0, nullptr);
 
-			vkCmdDrawIndexed(commandBuffer, static_cast<uint32_t>(simpleScene.indices.size()), 1, 0, 0, 0);
+			vkCmdDrawIndexed(commandBuffer, static_cast<uint32_t>(worldThing.indices.size()), 1, 0, 0, 0);
 
 			vkCmdEndRenderPass(commandBuffer);
 
