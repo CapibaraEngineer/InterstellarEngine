@@ -13,7 +13,7 @@ import Engine.Utils.Logger;
 export namespace interstellarEngineCore::Renderer {
 	class renderObject {
 	public:
-		std::vector<Vertex> vertices;
+		std::vector<vertex> vertices;
 		std::vector<uint32_t> indices;
 		bool visible = true;
 		uint64_t uid = 0; //unique identifier, never copied
@@ -43,12 +43,12 @@ export namespace interstellarEngineCore::Renderer {
 				throw std::runtime_error(warn + err);
 			}
 			utils::logLOG(std::format("model shapes size {}", shapes.size()));
-			std::unordered_map<Vertex, uint32_t> uniqueVertices{};
+			std::unordered_map<vertex, uint32_t> uniqueVertices{};
 
 			for (const auto& shape : shapes) {
 				utils::logLOG(std::format("shape indice {}", shape.mesh.indices.size()));
 				for (const auto& index : shape.mesh.indices) {
-					Vertex vertex{};
+					vertex vertex{};
 
 					vertex.pos = {
 						attrib.vertices[3 * index.vertex_index + 0],

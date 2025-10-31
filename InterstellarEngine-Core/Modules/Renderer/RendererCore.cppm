@@ -45,19 +45,19 @@ export namespace interstellarEngineCore::Renderer {
 		std::vector<VkPresentModeKHR> presentModes;
 	};
 
-	struct Vertex {
+	struct vertex {
 		glm::vec3 pos = {0,0,0};
 		glm::vec3 color = { 0,0,0 };
 		glm::vec2 texCoord = { 0,0 };
 
-		[[nodiscard]] constexpr bool operator==(const Vertex& other) const {
+		[[nodiscard]] constexpr bool operator==(const vertex& other) const {
 			return pos == other.pos and color == other.color and texCoord == other.texCoord;
 		}
 
 		constexpr static VkVertexInputBindingDescription getBindingDescription() {
 			VkVertexInputBindingDescription bindingDescription{};
 			bindingDescription.binding = 0;
-			bindingDescription.stride = sizeof(Vertex);
+			bindingDescription.stride = sizeof(vertex);
 			bindingDescription.inputRate = VK_VERTEX_INPUT_RATE_VERTEX;
 
 			return bindingDescription;
@@ -69,17 +69,17 @@ export namespace interstellarEngineCore::Renderer {
 			attributeDescriptions[0].binding = 0;
 			attributeDescriptions[0].location = 0;
 			attributeDescriptions[0].format = VK_FORMAT_R32G32B32_SFLOAT;
-			attributeDescriptions[0].offset = offsetof(Vertex, pos);
+			attributeDescriptions[0].offset = offsetof(vertex, pos);
 
 			attributeDescriptions[1].binding = 0;
 			attributeDescriptions[1].location = 1;
 			attributeDescriptions[1].format = VK_FORMAT_R32G32B32_SFLOAT;
-			attributeDescriptions[1].offset = offsetof(Vertex, color);
+			attributeDescriptions[1].offset = offsetof(vertex, color);
 
 			attributeDescriptions[2].binding = 0;
 			attributeDescriptions[2].location = 2;
 			attributeDescriptions[2].format = VK_FORMAT_R32G32_SFLOAT;
-			attributeDescriptions[2].offset = offsetof(Vertex, texCoord);
+			attributeDescriptions[2].offset = offsetof(vertex, texCoord);
 
 			return attributeDescriptions;
 		}
@@ -94,8 +94,8 @@ export namespace interstellarEngineCore::Renderer {
 }
 
 namespace std {
-	export template<> struct hash<interstellarEngineCore::Renderer::Vertex> {
-		size_t operator()(interstellarEngineCore::Renderer::Vertex const& vertex) const {
+	export template<> struct hash<interstellarEngineCore::Renderer::vertex> {
+		size_t operator()(interstellarEngineCore::Renderer::vertex const& vertex) const {
 			return ((hash<glm::vec3>()(vertex.pos) ^
 				(hash<glm::vec3>()(vertex.color) << 1)) >> 1) ^
 				(hash<glm::vec2>()(vertex.texCoord) << 1);

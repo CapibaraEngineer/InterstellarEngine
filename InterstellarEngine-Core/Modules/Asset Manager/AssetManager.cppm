@@ -26,7 +26,8 @@ export namespace interstellarEngineCore::AssetManager {
 		asset{ "../InterstellarEngine-Core/Assets/Textures/grass_block_side.png", "grass_block_texture", 2},
 		asset{ "../InterstellarEngine-Core/Assets/Textures/capibara_engineer_512x512.png", "capibara_engineer_texture", 3},
 		asset{ "../InterstellarEngine-Core/Assets/Shaders/vert.spv", "vertex_shader", 4},
-		asset{ "../InterstellarEngine-Core/Assets/Shaders/frag.spv", "fragment_shader", 5}
+		asset{ "../InterstellarEngine-Core/Assets/Shaders/frag.spv", "fragment_shader", 5},
+		asset{ "../InterstellarEngine-Core/Assets/Models/modelTest.obj", "model_test", 6}
 		
 	};
 

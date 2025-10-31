@@ -30,6 +30,7 @@ import Engine.Renderer.RenderObject;
 import Engine.Renderer.World;
 
 export namespace interstellarEngineCore::Renderer {
+	//The engineRender is class that run the rendering process
 	class engineRenderer {
 	public:
 
@@ -102,7 +103,7 @@ export namespace interstellarEngineCore::Renderer {
 		camera rendererCamera;
 
 		renderObject simpleScene;
-		renderObject worldThing;
+		renderObject testModel; //for loading more than onde object in a world
 
 		world simpleWorld;
 		
@@ -130,10 +131,10 @@ export namespace interstellarEngineCore::Renderer {
 			createTextureImage();
 			createTextureImageView();
 			createTextureSampler();
-			loadModel(modelPath);
+			loadModel(modelPath, simpleScene);
+			//loadModel(testModelPath, testModel);
 			loadScene();
 			//loadModels();
-			//generateSquare();
 			createVertexBuffer();
 			createIndexBuffer();
 			createUniformBuffers();
@@ -243,19 +244,16 @@ export namespace interstellarEngineCore::Renderer {
 		}
 
 		void loadScene() {
-			simpleWorld.renderObjects.push_back(simpleScene); // quick test, load the simpleScene into the simpleWorld
-			for (const auto& renderObjectInWorld : simpleWorld.renderObjects) {
-				worldThing.indices.insert_range(renderObjectInWorld.indices.end(), renderObjectInWorld.indices);
-				worldThing.vertices.insert_range(renderObjectInWorld.vertices.end(), renderObjectInWorld.vertices);
-			}
+			simpleWorld.renderObjects.push_back(simpleScene);
+			//simpleWorld.renderObjects.push_back(testModel);
 		}
 
 		[[nodiscard]] float timeDifference(const std::chrono::time_point<std::chrono::steady_clock> a, const std::chrono::time_point<std::chrono::steady_clock> b) const {
 			return std::chrono::duration<float, std::chrono::seconds::period>(a - b).count();
 		}
 
-		void generateSquare() { 
-			const std::vector<Vertex> _vertices = {
+		void generateSquare(renderObject square) { 
+			static const std::vector<vertex> _vertices = {
 				{{-0.5f, -0.5f, 0.0f}, {1.0f, 0.0f, 0.0f}, {0.0f, 0.0f}},
 				{{0.5f, -0.5f, 0.0f}, {0.0f, 1.0f, 0.0f}, {1.0f, 0.0f}},
 				{{0.5f, 0.5f, 0.0f}, {0.0f, 0.0f, 1.0f}, {1.0f, 1.0f}},
@@ -266,13 +264,12 @@ export namespace interstellarEngineCore::Renderer {
 				{{0.5f, 0.5f, -0.5f}, {0.0f, 0.0f, 1.0f}, {1.0f, 1.0f}},
 				{{-0.5f, 0.5f, -0.5f}, {1.0f, 1.0f, 1.0f}, {0.0f, 1.0f}}
 			};
-			const std::vector<uint32_t> _indices = {
+			static const std::vector<uint32_t> _indices = {
 				0, 1, 2, 2, 3, 0,
 				4, 5, 6, 6, 7, 4
 			};
-			worldThing.vertices = _vertices;
-			worldThing.indices = _indices;
-
+			square.vertices = _vertices;
+			square.indices = _indices;
 		}
 
 		void createColorResources() {
@@ -396,12 +393,12 @@ export namespace interstellarEngineCore::Renderer {
 			//theThing.loadModel(modelPath);
 			//indices = theThing.indices;
 			//vertices = theThing.vertices;
-			loadModel(modelPath);
+			//loadModel(modelPath);
 		}
 		
-		void loadModel(const std::string_view& modelToBeLoadedPath) {
-			simpleScene.vertices.clear();
-			simpleScene.indices.clear();
+		void loadModel(const std::string_view& modelToBeLoadedPath, renderObject& objectToBeSavedTo) {
+			objectToBeSavedTo.vertices.clear();
+			objectToBeSavedTo.indices.clear();
 			tinyobj::attrib_t attrib;
 			std::vector<tinyobj::shape_t> shapes;
 			std::vector<tinyobj::material_t> materials;
@@ -411,12 +408,12 @@ export namespace interstellarEngineCore::Renderer {
 				throw std::runtime_error(warn + err);
 			}
 			utils::logLOG(std::format("model shapes size {}", shapes.size()));
-			std::unordered_map<Vertex, uint32_t> uniqueVertices{};
+			std::unordered_map<vertex, uint32_t> uniqueVertices{};
 
 			for (const auto& shape : shapes) {
 				utils::logLOG(std::format("shape indice {}", shape.mesh.indices.size()));
 				for (const auto& index : shape.mesh.indices) {
-					Vertex vertex{};
+					vertex vertex{};
 
 					vertex.pos = {
 						attrib.vertices[3 * index.vertex_index + 0],
@@ -432,15 +429,15 @@ export namespace interstellarEngineCore::Renderer {
 					vertex.color = { 1.0f, 1.0f, 1.0f };
 
 					if (uniqueVertices.count(vertex) == 0) {
-						uniqueVertices[vertex] = static_cast<uint32_t>(simpleScene.vertices.size());
-						simpleScene.vertices.push_back(vertex);
+						uniqueVertices[vertex] = static_cast<uint32_t>(objectToBeSavedTo.vertices.size());
+						objectToBeSavedTo.vertices.push_back(vertex);
 					}
 
-					simpleScene.indices.push_back(uniqueVertices[vertex]);
+					objectToBeSavedTo.indices.push_back(uniqueVertices[vertex]);
 				}
 			}
 			utils::logLOG(std::format("model {} ; model shapes size: {}, model materials size: {}, model vertices size: {}, model indices size: {}, model unique vertices size: {}",
-				modelToBeLoadedPath.data(), shapes.size(), materials.size(), simpleScene.vertices.size(), simpleScene.indices.size(), uniqueVertices.size()));
+				modelToBeLoadedPath.data(), shapes.size(), materials.size(), objectToBeSavedTo.vertices.size(), objectToBeSavedTo.indices.size(), uniqueVertices.size()));
 
 		}
 
@@ -859,7 +856,8 @@ export namespace interstellarEngineCore::Renderer {
 		}
 
 		void createVertexBuffer() {
-			VkDeviceSize bufferSize = sizeof(worldThing.vertices[0]) * worldThing.vertices.size();
+			std::vector<vertex> vertices = simpleWorld.getWorldVertices();
+			VkDeviceSize bufferSize = sizeof(vertices[0])* vertices.size();
 
 			VkBuffer stagingBuffer;
 			VkDeviceMemory stagingBufferMemory;
@@ -867,7 +865,7 @@ export namespace interstellarEngineCore::Renderer {
 
 			void* data;
 			vkMapMemory(device, stagingBufferMemory, 0, bufferSize, 0, &data);
-			memcpy(data, worldThing.vertices.data(), (size_t)bufferSize);
+			memcpy(data, vertices.data(), (size_t)bufferSize);
 			vkUnmapMemory(device, stagingBufferMemory);
 
 			createBuffer(bufferSize, VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_VERTEX_BUFFER_BIT, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT, vertexBuffer, vertexBufferMemory);
@@ -879,7 +877,8 @@ export namespace interstellarEngineCore::Renderer {
 		}
 
 		void createIndexBuffer() {
-			VkDeviceSize bufferSize = sizeof(worldThing.indices[0]) * worldThing.indices.size();
+			std::vector<uint32_t> indices = simpleWorld.getWorldIndices();
+			VkDeviceSize bufferSize = sizeof(indices[0]) * indices.size();
 
 			VkBuffer stagingBuffer;
 			VkDeviceMemory stagingBufferMemory;
@@ -887,7 +886,7 @@ export namespace interstellarEngineCore::Renderer {
 
 			void* data;
 			vkMapMemory(device, stagingBufferMemory, 0, bufferSize, 0, &data);
-			memcpy(data, worldThing.indices.data(), (size_t)bufferSize);
+			memcpy(data, indices.data(), (size_t)bufferSize);
 			vkUnmapMemory(device, stagingBufferMemory);
 
 			createBuffer(bufferSize, VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_INDEX_BUFFER_BIT, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT, indexBuffer, indexBufferMemory);
@@ -1092,7 +1091,7 @@ export namespace interstellarEngineCore::Renderer {
 
 			vkCmdBindDescriptorSets(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, pipeline.pipelineLayout, 0, 1, &descriptorSets[currentFrame], 0, nullptr);
 
-			vkCmdDrawIndexed(commandBuffer, static_cast<uint32_t>(worldThing.indices.size()), 1, 0, 0, 0);
+			vkCmdDrawIndexed(commandBuffer, static_cast<uint32_t>(simpleWorld.getWorldIndices().size()), 1, 0, 0, 0);
 
 			vkCmdEndRenderPass(commandBuffer);
 
