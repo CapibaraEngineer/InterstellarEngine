@@ -12,26 +12,36 @@ import Engine.RendererCore;
 export namespace interstellarEngineCore::Renderer {
 	//worlds are the world, they can be a level, a map for a shooter or even the whole world for a open world game, and something very simple like the main menu
 	//worlds contain renderObjects, lights, cameras, sounds, physics objects, etc.
-	struct world 
-	{	
+	struct world {
 		//work is progress, only contains renderObjects for now
-		//std::string worldName = "unnamed world"; // again MSVC breaking things, maybe i should compile with clang
+		std::string worldName = "unnamed world";
 		std::vector<renderObject> renderObjects;
 
 		[[nodiscard]] std::vector<vertex> getWorldVertices() const {
-			std::vector<vertex> worldVertices;
-			for (const auto& renderObjectInWorld : renderObjects) {
-				worldVertices.insert(worldVertices.end(), renderObjectInWorld.vertices.begin(), renderObjectInWorld.vertices.end());
+			std::vector<vertex> outputVertices;
+			size_t totalVerts = 0;
+			for (const auto& obj : renderObjects) {
+				totalVerts += obj.vertices.size();
 			}
-			return worldVertices;
+			outputVertices.reserve(totalVerts);
+
+			for (const auto& obj : renderObjects) {
+				outputVertices.insert(outputVertices.end(), obj.vertices.begin(), obj.vertices.end());
+			}
+			return outputVertices;
 		}
 
 		[[nodiscard]] std::vector<uint32_t> getWorldIndices() const {
-			std::vector<uint32_t> worldIndices;
-			for (const auto& renderObjectInWorld : renderObjects) {
-				worldIndices.insert(worldIndices.end(), renderObjectInWorld.indices.begin(), renderObjectInWorld.indices.end());
+			std::vector<uint32_t> outputIndices;
+			uint32_t vertexOffset = 0;
+			for (const auto& obj : renderObjects) {
+				outputIndices.reserve(outputIndices.size() + obj.indices.size());
+				for (uint32_t i : obj.indices) {
+					outputIndices.push_back(i + vertexOffset);
+				}
+				vertexOffset += static_cast<uint32_t>(obj.vertices.size());
 			}
-			return worldIndices;
+			return outputIndices;
 		}
 
 	};

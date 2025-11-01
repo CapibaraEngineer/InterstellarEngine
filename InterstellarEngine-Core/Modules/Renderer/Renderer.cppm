@@ -132,7 +132,7 @@ export namespace interstellarEngineCore::Renderer {
 			createTextureImageView();
 			createTextureSampler();
 			loadModel(modelPath, simpleScene);
-			//loadModel(testModelPath, testModel);
+			loadModel(testModelPath, testModel);
 			loadScene();
 			//loadModels();
 			createVertexBuffer();
@@ -245,7 +245,7 @@ export namespace interstellarEngineCore::Renderer {
 
 		void loadScene() {
 			simpleWorld.renderObjects.push_back(simpleScene);
-			//simpleWorld.renderObjects.push_back(testModel);
+			simpleWorld.renderObjects.push_back(testModel);
 		}
 
 		[[nodiscard]] float timeDifference(const std::chrono::time_point<std::chrono::steady_clock> a, const std::chrono::time_point<std::chrono::steady_clock> b) const {
