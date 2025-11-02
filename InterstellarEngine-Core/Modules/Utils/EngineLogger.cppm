@@ -18,6 +18,12 @@ export namespace interstellarEngineCore::utils {
 		*/
 		std::clog << "[\033[94mLOG\033[0m] " << message << ", logged by " << caller << "\n";
 	}
+	void logWARN(const std::string_view message, const std::string_view caller) {
+		/*  this function Logs: [WARN] message, logged by caller
+		 *	Exemple: [WARN] image resolution wrong, but still has been loaded, logged by imageLoader
+		*/
+		std::cerr << "[\033[93mWARN\033[0m] " << message << ", logged by " << caller << "\n";
+	}
 	void logFAIL(const std::string_view message, const std::string_view caller) {
 		/*  this function Logs: [FAIL] message, logged by caller
 		 *	Exemple: [FAIL] image falied to load, logged by imageLoader
@@ -38,6 +44,12 @@ export namespace interstellarEngineCore::utils {
 		 *	Exemple: [LOG] time to load image: 1s
 		*/
 		std::clog << "[\033[94mLOG\033[0m] " << message << "\n";
+	}
+	void logWARN(const std::string_view message) {
+		/*  this function Logs: [WARN] message
+		 *	Exemple: [WARN] image resolution wrong, but still has been loaded
+		*/
+		std::cerr << "[\033[93mWARN\033[0m] " << message << "\n";
 	}
 	void logFAIL(const std::string_view message) {
 		/*  this function Logs: [FAIL] message
@@ -60,6 +72,12 @@ export namespace interstellarEngineCore::utils {
 		*/
 		return "[\033[94mLOG\033[0m] " + std::string(message) + ", logged by " + std::string(caller) + "\n";
 	}
+	LOGFunc_Nodiscard constexpr std::string writeLogWARN(const std::string_view message, const std::string_view caller) {
+		/*  this function Logs: [WARN] message, logged by caller
+		 *	Exemple: [WARN] image resolution wrong, but still has been loaded, logged by imageLoader
+		*/
+		return "[\033[93mWARN\033[0m] " + std::string(message) + ", logged by " + std::string(caller) + "\n";
+	}
 	LOGFunc_Nodiscard constexpr std::string writeLogFAIL(const std::string_view message, const std::string_view caller) {
 		/*  this function Logs: [FAIL] message, logged by caller
 		 *	Exemple: [FAIL] image falied to load, logged by imageLoader
@@ -80,6 +98,12 @@ export namespace interstellarEngineCore::utils {
 		 *	Exemple: [LOG] time to load image: 1s
 		*/
 		return "[\033[94mLOG\033[0m] " + std::string(message) + "\n";
+	}
+	LOGFunc_Nodiscard constexpr std::string writeLogWARN(const std::string_view message) {
+		/*  this function Logs: [WARN] message
+		 *	Exemple: [WARN] image resolution wrong, but still has been loaded
+		*/
+		return "[\033[93mWARN\033[0m] " + std::string(message) + "\n";
 	}
 	LOGFunc_Nodiscard constexpr std::string writeLogFAIL(const std::string_view message) {
 		/*  this function Logs: [FAIL] message
