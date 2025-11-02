@@ -28,6 +28,7 @@ import Engine.Renderer.VulkanValidator;
 import Engine.Renderer.Window;
 import Engine.Renderer.RenderObject;
 import Engine.Renderer.World;
+import Engine.AssetManager;
 
 export namespace interstellarEngineCore::Renderer {
 	//The engineRender is class that run the rendering process
@@ -115,6 +116,8 @@ export namespace interstellarEngineCore::Renderer {
 			else {
 				utils::logLOG("Debug Build - validation layers [\033[32mENABLED\033[0m]");
 			}
+
+			assetManager::initAssetManager();
 
 			createInstance();
 			engineRendererVulkanValidator.setupDebugMessenger(instance);

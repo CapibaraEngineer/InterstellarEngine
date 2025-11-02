@@ -75,6 +75,11 @@ export namespace interstellarEngineCore::Renderer {
 			utils::logLOG(std::format("model {} ; model shapes size: {}, model materials size: {}, model vertices size: {}, model indices size: {}, model unique vertices size: {}", 
 				modelToBeLoadedPath.data(), shapes.size(), materials.size(), vertices.size(), indices.size(), uniqueVertices.size()));
 		}
+			
+		//requests the model from the asset manager, given the asset's unique identifier
+		void loadModelFromAssetManager(const uint32_t assetUID) {
+
+		}
 
 		//operators
 
