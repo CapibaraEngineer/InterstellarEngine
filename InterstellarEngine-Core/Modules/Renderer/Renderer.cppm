@@ -105,7 +105,7 @@ export namespace interstellarEngineCore::Renderer {
 		renderObject simpleScene;
 		renderObject testModel; //for loading more than onde object in a world
 
-		world simpleWorld;
+		world renderWorld; //everything will be put in this world to be rendered. todo: add function to load things into the world, and load world from file
 		
 		void initVulkan() {
 
@@ -244,8 +244,8 @@ export namespace interstellarEngineCore::Renderer {
 		}
 
 		void loadScene() {
-			simpleWorld.renderObjects.push_back(simpleScene);
-			simpleWorld.renderObjects.push_back(testModel);
+			renderWorld.renderObjects.push_back(simpleScene);
+			renderWorld.renderObjects.push_back(testModel);
 		}
 
 		[[nodiscard]] float timeDifference(const std::chrono::time_point<std::chrono::steady_clock> a, const std::chrono::time_point<std::chrono::steady_clock> b) const {
@@ -856,7 +856,7 @@ export namespace interstellarEngineCore::Renderer {
 		}
 
 		void createVertexBuffer() {
-			std::vector<vertex> vertices = simpleWorld.getWorldVertices();
+			std::vector<vertex> vertices = renderWorld.getWorldVertices();
 			VkDeviceSize bufferSize = sizeof(vertices[0])* vertices.size();
 
 			VkBuffer stagingBuffer;
@@ -877,7 +877,7 @@ export namespace interstellarEngineCore::Renderer {
 		}
 
 		void createIndexBuffer() {
-			std::vector<uint32_t> indices = simpleWorld.getWorldIndices();
+			std::vector<uint32_t> indices = renderWorld.getWorldIndices();
 			VkDeviceSize bufferSize = sizeof(indices[0]) * indices.size();
 
 			VkBuffer stagingBuffer;
@@ -1091,7 +1091,7 @@ export namespace interstellarEngineCore::Renderer {
 
 			vkCmdBindDescriptorSets(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, pipeline.pipelineLayout, 0, 1, &descriptorSets[currentFrame], 0, nullptr);
 
-			vkCmdDrawIndexed(commandBuffer, static_cast<uint32_t>(simpleWorld.getWorldIndices().size()), 1, 0, 0, 0);
+			vkCmdDrawIndexed(commandBuffer, static_cast<uint32_t>(renderWorld.getWorldIndices().size()), 1, 0, 0, 0);
 
 			vkCmdEndRenderPass(commandBuffer);
 
