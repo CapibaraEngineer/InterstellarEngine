@@ -132,7 +132,8 @@ export namespace interstellarEngineCore::Renderer {
 			createTextureImageView();
 			createTextureSampler();
 			loadModel(modelPath, simpleScene);
-			loadModel(testModelPath, testModel);
+			//loadModel(testModelPath, testModel);
+			generateSquare(testModel);
 			loadScene();
 			//loadModels();
 			createVertexBuffer();
@@ -252,7 +253,7 @@ export namespace interstellarEngineCore::Renderer {
 			return std::chrono::duration<float, std::chrono::seconds::period>(a - b).count();
 		}
 
-		void generateSquare(renderObject square) { 
+		void generateSquare(renderObject& square) { 
 			static const std::vector<vertex> _vertices = {
 				{{-0.5f, -0.5f, 0.0f}, {1.0f, 0.0f, 0.0f}, {0.0f, 0.0f}},
 				{{0.5f, -0.5f, 0.0f}, {0.0f, 1.0f, 0.0f}, {1.0f, 0.0f}},
@@ -386,14 +387,6 @@ export namespace interstellarEngineCore::Renderer {
 
 			endSingleTimeCommands(commandBuffer);
 
-		}
-
-		void loadModels() {
-			//renderObject theThing;
-			//theThing.loadModel(modelPath);
-			//indices = theThing.indices;
-			//vertices = theThing.vertices;
-			//loadModel(modelPath);
 		}
 		
 		void loadModel(const std::string_view& modelToBeLoadedPath, renderObject& objectToBeSavedTo) {
