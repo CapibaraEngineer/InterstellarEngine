@@ -28,7 +28,7 @@ export namespace interstellarEngineCore::Renderer {
 			updateVectors();
 		}
 
-		void processKeyboard(const int key, const float deltaTime) {
+		void processKeyboard(const int32_t key, const float deltaTime) {
 			const float velocity = speed * deltaTime;
 			if (key == GLFW_KEY_W) position += front * velocity;
 			if (key == GLFW_KEY_S) position -= front * velocity;
