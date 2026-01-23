@@ -76,7 +76,7 @@ export namespace interstellarEngineCore::assetManager {
 
 	//scans the asset folder for every valid asset and index them
 	void initAssetManager() {
-		utils::logLOG(std::format("initializing asset manager, starting in root folder: {}", assetsFolder));
+		utils::log(utils::logLevel::LOG, "initializing asset manager, starting in root folder: {}", assetsFolder);
 
 		try {
 			for (const auto& entry : fs::recursive_directory_iterator(assetsFolder)) {
@@ -90,11 +90,11 @@ export namespace interstellarEngineCore::assetManager {
 			std::cerr << "Erro ao acessar: " << e.what() << "\n";
 		}
 
-		for (const auto& asseti : assets) {
-			std::cout << asseti.assetPath << "\n";
+		for (const auto& assetI : assets) {
+			std::cout << assetI.assetPath << "\n";
 		}
 
-		utils::logOK("Asset Manager initialized");
+		utils::log(utils::logLevel::OK, "Asset Manager initialized");
 	}
 
 }

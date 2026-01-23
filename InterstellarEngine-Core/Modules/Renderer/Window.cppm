@@ -64,10 +64,10 @@ export namespace interstellarEngineCore::Renderer {
 		void createSurface(VkInstance instance, VkSurfaceKHR &surface) const {
 
 			if (glfwCreateWindowSurface(instance, window, nullptr, &surface) != VK_SUCCESS) [[unlikely]] {
-				throw std::runtime_error(utils::writeLogFAIL("Failed to create window surface"));
+				throw std::runtime_error(utils::writeLog(utils::logLevel::FAIL, "Failed to create window surface"));
 			}
 			else [[likely]] {
-				utils::logOK("window surface created sucessfully", "engineWindow.createSurface()");
+				utils::log(utils::logLevel::OK, "window surface created sucessfully");
 			}
 
 		}

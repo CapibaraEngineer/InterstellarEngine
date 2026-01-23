@@ -42,11 +42,11 @@ export namespace interstellarEngineCore::Renderer {
 			if (!tinyobj::LoadObj(&attrib, &shapes, &materials, &warn, &err, modelToBeLoadedPath.data())) {
 				throw std::runtime_error(warn + err);
 			}
-			utils::logLOG(std::format("model shapes size {}", shapes.size()));
+			utils::log(utils::logLevel::LOG, "model shapes size {}", shapes.size());
 			std::unordered_map<vertex, uint32_t> uniqueVertices{};
 
 			for (const auto& shape : shapes) {
-				utils::logLOG(std::format("shape indice {}", shape.mesh.indices.size()));
+				utils::log(utils::logLevel::LOG, "shape indice {}", shape.mesh.indices.size());
 				for (const auto& index : shape.mesh.indices) {
 					vertex vertex{};
 
@@ -72,8 +72,8 @@ export namespace interstellarEngineCore::Renderer {
 				}
 			}
 
-			utils::logLOG(std::format("model {} ; model shapes size: {}, model materials size: {}, model vertices size: {}, model indices size: {}, model unique vertices size: {}", 
-				modelToBeLoadedPath.data(), shapes.size(), materials.size(), vertices.size(), indices.size(), uniqueVertices.size()));
+			utils::log(utils::logLevel::LOG,"model {} ; model shapes size: {}, model materials size: {}, model vertices size: {}, model indices size: {}, model unique vertices size: {}", 
+				modelToBeLoadedPath.data(), shapes.size(), materials.size(), vertices.size(), indices.size(), uniqueVertices.size());
 		}
 			
 		//requests the model from the asset manager, given the asset's unique identifier

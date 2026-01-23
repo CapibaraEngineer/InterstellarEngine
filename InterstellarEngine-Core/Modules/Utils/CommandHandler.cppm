@@ -18,7 +18,7 @@ export namespace interstellarEngineCore::utils {
 			std::clog << "command processed: " << command << "\n";
 
 			if (command == ":exit" or command == ":quit") {
-				logLOG("Exiting interstellar engine...\n");
+				utils::log(utils::logLevel::LOG, "Exiting interstellar engine...\n");
 				shouldClose = true;
 			}
 		}
