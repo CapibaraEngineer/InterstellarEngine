@@ -117,7 +117,7 @@ export namespace interstellarEngineCore::Renderer {
 				utils::log(utils::logLevel::LOG, "Debug Build - validation layers [\033[32mENABLED\033[0m]");
 			}
 
-			assetManager::initAssetManager();
+			assetManager::initialize();
 
 			createInstance();
 			engineRendererVulkanValidator.setupDebugMessenger(instance);

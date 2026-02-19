@@ -12,89 +12,96 @@ namespace fs = std::filesystem;
 
 //unnamed namespace for implemetations details
 namespace {
-	// I will come back to these funcitons later, they are just not tha important right now
-	//using namespace interstellarEngineCore;
-	//void thinkNameLater(const std::string_view& directory, const int recursion) {
-	//	for (const auto& entry : fs::directory_iterator(directory)) {
-	//		if (fs::is_regular_file(entry.path())) {
-	//			for (int i = 0; i < recursion; i++) {
-	//				std::cout << "\t";
-	//			}
-	//			std::cout << "\t";
-	//			utils::logLOG(std::format("found: {} ", fs::absolute(entry.path()).generic_string()));
-	//		}
-	//		else if (fs::is_directory(entry.path())) {
-	//			for (int i = 0; i < recursion; i++) {
-	//				std::cout << "\t";
-	//			}
-	//			std::cout << "\t";
-	//			utils::logLOG(std::format("found directory [ {} ]", entry.path().filename().generic_string()));
-	//			thinkNameLater(entry.path().generic_string(), recursion + 1);
-	//		}
-	//		else {
-	//			for (int i = 0; i < recursion; i++) {
-	//				std::cout << "\t";
-	//			}
-	//			utils::logLOG(std::format("found something of unknown type in {}, absolute path: {} ", directory ,fs::absolute(entry.path()).generic_string()));
-	//		}
-	//	}
-	//}
-	//void printDirectoriesRecursively(const std::string_view& rootFolder) {
-	//	for (const auto& entry : fs::directory_iterator(rootFolder)) {
-	//		if (fs::is_regular_file(entry.path())) {
-	//			std::cout << "\t";
-	//			utils::logWARN(std::format("found asset in root, assets in root will not be loaded, insert asset in proper subfolder. asset: {}", entry.path().filename().string()));
-	//		}
-	//		else if (fs::is_directory(entry.path())) {
-	//			std::cout << "\t";
-	//			utils::logLOG(std::format("found directory [ {} ] in root", entry.path().filename().generic_string()));
-	//			
-	//			thinkNameLater(entry.path().generic_string(), 1);
-	//			
-	//		}
-	//		else {
-	//			std::cout << "\t";
-	//			utils::logLOG(std::format("found something of unknown type in root, absolute path: {} ", fs::absolute(entry.path()).generic_string()));
-	//		}
-	//	}
-	//}
+	
 }
 
-export namespace interstellarEngineCore::assetManager {
+export namespace interstellarEngineCore::assetManager { //Mnemosyne
 
-	// The assets folder structure is very specific, assets are stored in subfolders according to their types and only in subfolders, assets in the root will be ignored. 
-	// As long the folder follows this rules the assets folder may be any folder in the system
-	constexpr std::string_view assetsFolder = "../InterstellarEngine-Core/Assets";
+	/*Hello, I'm going to explain how this asset manager will work now:
+	The files are added by the user of the engine in the assets folder, once added they will be loaded into an engine format, for example any 3D model file will become a .IEMODEL File.
+	Those engine formats are optimized to work as best as possible with the engine, and have the best quality possible so no data is lost.
+	In the future, I will add a tool to convert files to the engine format, but for now, they are simply a dream.
+	The asset manager is a namespace, because I don't think there is a need for multiple instances of the asset manager, but if there is a need for multiple instances it may become a class later on.
+	The asset manager will have initialization function that will be called at the start of the engine, this function will scan the assets folder and put it all in a database.
+	The database is a simple key value pair, the key is the name of the file (string) and the value is a function pointer.
+	When the user wants to load an asset, they will call the load function with the name of the file, the load function will look up the name in the database and call the function pointer associated with that name, 
+	the function pointer will then load the file and return a pointer to the loaded asset (the pointer is put there during the initialization of the asset maneger), then replace the pointer in the database with a function pointer that returns the already loaded asset, so the next time the user wants to load the same asset, it will return the already loaded asset instead of loading it again.
+	The unload function will work in a similar way, it will look up the name in the database and call the function pointer associated with that name, the function pointer will then unload the asset and replace the funtion pointer in the database with a function pointer that loads the asset again, for the next time the user wants to load the same asset.
+	 - Note from the dev: This whole function pointer stuff is just a test. I'm not sure if this is the most efficient way to make sure asset cannot have multiple copys in memory at the same time. maybe a simple boolean flag that indicates if the asset is loaded or not would be better. But i want try this -CapibaraEngineer
+	*/
 
-	struct asset {
-		std::string assetPath;
-		std::string assetFileExtension;
-
+	enum class assetType {
+		MODEL = 0,
+		TEXTURE = 1,
+		SOUND = 2,
+		SHADER = 3
 	};
 
-	std::vector<asset> assets;
+	struct assetEntry
+	{
+		std::function<void* (const std::string&)> func;
+	};
 
-	//scans the asset folder for every valid asset and index them
-	void initAssetManager() {
-		utils::log(utils::logLevel::LOG, "initializing asset manager, starting in root folder: {}", assetsFolder);
+
+	std::unordered_map <std::string, assetEntry> assetMap;
+
+
+	fs::path root = "../InterstellarEngine-Core/Assets";
+
+	std::vector<std::string> acceptedAssetTypes = {
+		".obj",
+		".png"
+	
+	}; //temporary, just to test the file system, will be removed later on
+
+	void registerAsset(const fs::directory_entry& assetDirectory) 
+	{
+		if (assetDirectory.path().extension() == ".obj") {
+			assetMap.insert({ assetDirectory.path().filename().generic_string(), { [](const std::string& path) -> void* { 
+
+			} } });
+		}
+		else if (assetDirectory.path().extension() == ".png") {
+			
+		}
+	}
+
+
+	void initialize() {
+		utils::log(utils::logLevel::LOG, "initializing asset manager");
 
 		try {
-			for (const auto& entry : fs::recursive_directory_iterator(assetsFolder)) {
+			for (const auto& entry : fs::recursive_directory_iterator(root)) {
 				if (fs::is_regular_file(entry.path())) {
-					assets.push_back({ fs::absolute(entry.path()).generic_string(), entry.path().extension().generic_string() });
-				}
+					std::cout << "File: " << entry.path().generic_string() << '\n';
+					if (entry.path().has_extension()) {
+						std::string extension = entry.path().extension().generic_string();
+						if (std::find(acceptedAssetTypes.begin(), acceptedAssetTypes.end(), extension) != acceptedAssetTypes.end()) {
+							std::cout << "Entry:" << entry.path().filename().generic_string() << " is a accepted asset type, laoding in database" << '\n';
+						}
+						else {
+							std::cout << "Entry:" << entry.path().filename().generic_string() << " is not a accepted asset type" << '\n';
+						}
+					}
+					std::cout << "Entry:" << entry.path().filename().generic_string() << '\n';
 
+					registerAsset(entry);
+					
+
+				}
+				else if (fs::is_directory(entry.path())) {
+					std::cout << "Directory: " << entry.path().generic_string() << '\n';
+				}
+				else {
+					std::cout << "Other type: " << entry.path().generic_string() << '\n';
+				}
 			}
 		}
 		catch (const fs::filesystem_error& e) {
-			std::cerr << "Erro ao acessar: " << e.what() << "\n";
+			std::cerr << "Fail to access: " << e.what() << '\n';
 		}
-
-		for (const auto& assetI : assets) {
-			std::cout << assetI.assetPath << "\n";
-		}
-
-		utils::log(utils::logLevel::OK, "Asset Manager initialized");
 	}
+	
+
 
 }
