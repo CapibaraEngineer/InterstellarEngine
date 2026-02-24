@@ -7,11 +7,13 @@ export module Engine.AssetManager;
 import std;
 
 import Engine.Utils.Logger;
+import EngineFileTypes;
+import LoadFunctions;
+import AssetEntry;
 
 namespace fs = std::filesystem;
 
-//unnamed namespace for implemetations details
-namespace {
+namespace registerFunctions {
 	
 }
 
@@ -37,14 +39,8 @@ export namespace interstellarEngineCore::assetManager { //Mnemosyne
 		SHADER = 3
 	};
 
-	struct assetEntry
-	{
-		std::function<void* (const std::string&)> func;
-	};
 
-
-	std::unordered_map <std::string, assetEntry> assetMap;
-
+	std::map <std::string, assetEntry> assetDB;
 
 	fs::path root = "../InterstellarEngine-Core/Assets";
 
@@ -54,12 +50,15 @@ export namespace interstellarEngineCore::assetManager { //Mnemosyne
 	
 	}; //temporary, just to test the file system, will be removed later on
 
+	
+
+
 	void registerAsset(const fs::directory_entry& assetDirectory) 
 	{
-		if (assetDirectory.path().extension() == ".obj") {
-			assetMap.insert({ assetDirectory.path().filename().generic_string(), { [](const std::string& path) -> void* { 
-
-			} } });
+		if (assetDirectory.path().extension() == ".obj") 
+		{
+			assetEntry asset { assetDirectory.path().generic_string(), loadFunctions::loadModel };
+			assetDB.insert({ assetDirectory.path().generic_string(), asset});
 		}
 		else if (assetDirectory.path().extension() == ".png") {
 			
