@@ -13,8 +13,11 @@ import AssetEntry;
 
 namespace fs = std::filesystem;
 
-namespace registerFunctions {
-	
+namespace {
+	std::string toLower(std::string str) {
+		std::transform(str.begin(), str.end(), str.begin(), [](unsigned char c) { return std::tolower(c); });
+		return str;
+	}
 }
 
 export namespace interstellarEngineCore::assetManager { //Mnemosyne
@@ -44,26 +47,55 @@ export namespace interstellarEngineCore::assetManager { //Mnemosyne
 
 	fs::path root = "../InterstellarEngine-Core/Assets";
 
-	std::vector<std::string> acceptedAssetTypes = {
+	
+	std::set<std::string> acceptedAssetTypes = 
+	{
 		".obj",
 		".png"
-	
-	}; //temporary, just to test the file system, will be removed later on
-
-	
+	};
 
 
-	void registerAsset(const fs::directory_entry& assetDirectory) 
+
+	bool isAcceptedAsset(const fs::path& p) {
+		if (!p.has_extension()) return false;
+		auto fileExtension = toLower(p.extension().generic_string());
+		return acceptedAssetTypes.find(fileExtension) != acceptedAssetTypes.end();
+	}
+
+
+
+	void registerAsset(const fs::directory_entry& assetDirectory)
 	{
-		if (assetDirectory.path().extension() == ".obj") 
+		auto fileExtension = toLower(assetDirectory.path().extension().generic_string());
+		if (fileExtension == ".obj")
 		{
-			assetEntry asset { assetDirectory.path().generic_string(), loadFunctions::loadModel };
-			assetDB.insert({ assetDirectory.path().generic_string(), asset});
+			assetEntry asset{ assetDirectory.path().generic_string(), loadFunctions::loadModel };
+			assetDB.insert({ assetDirectory.path().generic_string(), asset });
 		}
-		else if (assetDirectory.path().extension() == ".png") {
-			
+		else if (fileExtension == ".png") {
+			// futuro: register texture loader
 		}
 	}
+
+	void processFileEntry(const fs::directory_entry& entry) {
+		const auto& path = entry.path();
+		utils::log(utils::logLevel::LOG, "File: {}", path.generic_string());
+
+		if (!path.has_extension()) {
+			utils::log(utils::logLevel::LOG, "Entry: {} has no extension", path.filename().generic_string());
+			return;
+		}
+
+		if (isAcceptedAsset(path)) {
+			utils::log(utils::logLevel::LOG, "Entry: {} is a accepted asset type, loading in database", path.filename().generic_string());
+			registerAsset(entry);
+		}
+		else {
+			utils::log(utils::logLevel::LOG, "Entry: {} is not a accepted asset type", path.filename().generic_string());
+		}
+	}
+
+
 
 
 	void initialize() {
@@ -71,33 +103,20 @@ export namespace interstellarEngineCore::assetManager { //Mnemosyne
 
 		try {
 			for (const auto& entry : fs::recursive_directory_iterator(root)) {
-				if (fs::is_regular_file(entry.path())) {
-					std::cout << "File: " << entry.path().generic_string() << '\n';
-					if (entry.path().has_extension()) {
-						std::string extension = entry.path().extension().generic_string();
-						if (std::find(acceptedAssetTypes.begin(), acceptedAssetTypes.end(), extension) != acceptedAssetTypes.end()) {
-							std::cout << "Entry:" << entry.path().filename().generic_string() << " is a accepted asset type, laoding in database" << '\n';
-						}
-						else {
-							std::cout << "Entry:" << entry.path().filename().generic_string() << " is not a accepted asset type" << '\n';
-						}
-					}
-					std::cout << "Entry:" << entry.path().filename().generic_string() << '\n';
-
-					registerAsset(entry);
-					
-
+				const auto& path = entry.path();
+				if (fs::is_regular_file(path)) {
+					processFileEntry(entry);
 				}
-				else if (fs::is_directory(entry.path())) {
-					std::cout << "Directory: " << entry.path().generic_string() << '\n';
+				else if (fs::is_directory(path)) {
+					utils::log(utils::logLevel::LOG, "Directory: {}", path.generic_string());
 				}
 				else {
-					std::cout << "Other type: " << entry.path().generic_string() << '\n';
+					utils::log(utils::logLevel::LOG, "Other type: {}", path.generic_string());
 				}
 			}
 		}
-		catch (const fs::filesystem_error& e) {
-			std::cerr << "Fail to access: " << e.what() << '\n';
+		catch (const fs::filesystem_error& error) {
+			utils::log(utils::logLevel::FAIL, "Fail to access: {}", error.what());
 		}
 	}
 	

@@ -29,6 +29,10 @@ import Engine.Renderer.Window;
 import Engine.Renderer.RenderObject;
 import Engine.Renderer.World;
 import Engine.AssetManager;
+import AssetEntry;
+import EngineFileTypes;
+
+namespace fs = std::filesystem;
 
 export namespace interstellarEngineCore::Renderer {
 	//The engineRender is class that run the rendering process
@@ -392,49 +396,13 @@ export namespace interstellarEngineCore::Renderer {
 
 		}
 		
-		void loadModel(const std::string_view& modelToBeLoadedPath, renderObject& objectToBeSavedTo) {
-			objectToBeSavedTo.vertices.clear();
-			objectToBeSavedTo.indices.clear();
-			tinyobj::attrib_t attrib;
-			std::vector<tinyobj::shape_t> shapes;
-			std::vector<tinyobj::material_t> materials;
-			std::string warn, err;
-
-			if (!tinyobj::LoadObj(&attrib, &shapes, &materials, &warn, &err, modelToBeLoadedPath.data())) {
-				throw std::runtime_error(warn + err);
-			}
-			utils::log(utils::logLevel::LOG, "model shapes size {}", shapes.size());
-			std::unordered_map<vertex, uint32_t> uniqueVertices{};
-
-			for (const auto& shape : shapes) {
-				utils::log(utils::logLevel::LOG, "shape indice {}", shape.mesh.indices.size());
-				for (const auto& index : shape.mesh.indices) {
-					vertex vertex{};
-
-					vertex.pos = {
-						attrib.vertices[3 * index.vertex_index + 0],
-						attrib.vertices[3 * index.vertex_index + 1],
-						attrib.vertices[3 * index.vertex_index + 2]
-					};
-
-					vertex.texCoord = {
-						attrib.texcoords[2 * index.texcoord_index + 0],
-						1.0f - attrib.texcoords[2 * index.texcoord_index + 1]
-					};
-
-					vertex.color = { 1.0f, 1.0f, 1.0f };
-
-					if (uniqueVertices.count(vertex) == 0) {
-						uniqueVertices[vertex] = static_cast<uint32_t>(objectToBeSavedTo.vertices.size());
-						objectToBeSavedTo.vertices.push_back(vertex);
-					}
-
-					objectToBeSavedTo.indices.push_back(uniqueVertices[vertex]);
-				}
-			}
-			utils::log(utils::logLevel::LOG, "model {} ; model shapes size: {}, model materials size: {}, model vertices size: {}, model indices size: {}, model unique vertices size: {}",
-				modelToBeLoadedPath.data(), shapes.size(), materials.size(), objectToBeSavedTo.vertices.size(), objectToBeSavedTo.indices.size(), uniqueVertices.size());
-
+		void loadModel(fs::path pathToModel, renderObject& objectToBeSavedTo) {
+			std::string pathString = pathToModel.string();
+			std::function<void* (assetManager::assetEntry)> loadFunc = assetManager::assetDB.at(pathString).func;
+			void* voidModelPointer = loadFunc(assetManager::assetDB.at(pathString));
+			fileTypes::modelFile* modelPointer = static_cast<fileTypes::modelFile*>(voidModelPointer);
+			objectToBeSavedTo.vertices = modelPointer->vertices;
+			objectToBeSavedTo.indices = modelPointer->indices;
 		}
 
 		[[nodiscard]] bool hasStencilComponent(VkFormat format) {
