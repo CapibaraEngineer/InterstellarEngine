@@ -42,27 +42,21 @@ export namespace interstellarEngineCore::assetManager { //Mnemosyne
 		SHADER = 3
 	};
 
-
 	std::map <std::string, assetEntry> assetDB;
 
 	fs::path root = "../InterstellarEngine-Core/Assets";
 
-	
 	std::set<std::string> acceptedAssetTypes = 
 	{
 		".obj",
 		".png"
 	};
 
-
-
 	bool isAcceptedAsset(const fs::path& p) {
 		if (!p.has_extension()) return false;
 		auto fileExtension = toLower(p.extension().generic_string());
 		return acceptedAssetTypes.find(fileExtension) != acceptedAssetTypes.end();
 	}
-
-
 
 	void registerAsset(const fs::directory_entry& assetDirectory)
 	{
@@ -95,9 +89,6 @@ export namespace interstellarEngineCore::assetManager { //Mnemosyne
 		}
 	}
 
-
-
-
 	void initialize() {
 		utils::log(utils::logLevel::LOG, "initializing asset manager");
 
@@ -119,7 +110,4 @@ export namespace interstellarEngineCore::assetManager { //Mnemosyne
 			utils::log(utils::logLevel::FAIL, "Fail to access: {}", error.what());
 		}
 	}
-	
-
-
 }
