@@ -67,7 +67,8 @@ export namespace interstellarEngineCore::assetManager { //Mnemosyne
 			assetDB.insert({ assetDirectory.path().generic_string(), asset });
 		}
 		else if (fileExtension == ".png") {
-			// futuro: register texture loader
+			assetEntry asset{ assetDirectory.path().generic_string(), loadFunctions::loadTexture };
+			assetDB.insert({ assetDirectory.path().generic_string(), asset });
 		}
 	}
 

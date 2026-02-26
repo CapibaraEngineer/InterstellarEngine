@@ -398,7 +398,7 @@ export namespace interstellarEngineCore::Renderer {
 		
 		void loadModel(fs::path pathToModel, renderObject& objectToBeSavedTo) {
 			std::string pathString = pathToModel.string();
-			std::function<void* (assetManager::assetEntry)> loadFunc = assetManager::assetDB.at(pathString).func;
+			std::function<void* (assetManager::assetEntry&)> loadFunc = assetManager::assetDB.at(pathString).func;
 			void* voidModelPointer = loadFunc(assetManager::assetDB.at(pathString));
 			fileTypes::modelFile* modelPointer = static_cast<fileTypes::modelFile*>(voidModelPointer);
 			objectToBeSavedTo.vertices = modelPointer->vertices;

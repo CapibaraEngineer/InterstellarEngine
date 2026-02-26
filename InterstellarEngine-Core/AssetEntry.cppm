@@ -9,6 +9,6 @@ export namespace interstellarEngineCore::assetManager
 	struct assetEntry
 	{
 		const std::string filePath;
-		std::function<void* (assetEntry)> func;
+		std::function<void* (assetEntry&)> func;
 	};
 }

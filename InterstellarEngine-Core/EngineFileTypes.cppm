@@ -21,15 +21,12 @@ export namespace interstellarEngineCore::fileTypes {
 		R8G8B8_UNORM
 	};
 
-
-
 	struct modelFile {
 		std::vector<Renderer::vertex> vertices;
 		std::vector<uint32_t> indices;
 
 		
 	};
-
 
 	struct imageFile {
 		uint32_t width = 0;

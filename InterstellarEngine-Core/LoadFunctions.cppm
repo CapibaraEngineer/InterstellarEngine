@@ -3,6 +3,7 @@ module;
 #include <glm/glm.hpp>
 
 #include <tiny_obj_loader.h>
+#include <stb_image.h>
 
 export module LoadFunctions;
 
@@ -15,7 +16,7 @@ import Engine.RendererCore;
 
 export namespace interstellarEngineCore::loadFunctions 
 {
-	[[nodiscard]] fileTypes::modelFile* loadModel(assetManager::assetEntry entry) 
+	[[nodiscard]] fileTypes::modelFile* loadModel(assetManager::assetEntry& entry) 
 	{
 		using namespace Renderer;
 		fileTypes::modelFile* model = new fileTypes::modelFile();
@@ -62,7 +63,8 @@ export namespace interstellarEngineCore::loadFunctions
 		utils::log(utils::logLevel::LOG, "model {} ; model shapes size: {}, model materials size: {}, model vertices size: {}, model indices size: {}, model unique vertices size: {}",
 			entry.filePath.data(), shapes.size(), materials.size(), model->vertices.size(), model->indices.size(), uniqueVertices.size());
 
-		std::function<void* (assetManager::assetEntry)> func = [model](assetManager::assetEntry) -> void* {
+		std::function<void* (assetManager::assetEntry&)> func = [model](assetManager::assetEntry&) -> void* {
+			std::cout << "Returning already loaded model" << std::endl;
 			return model;
 			};
 		entry.func = func;
@@ -70,7 +72,41 @@ export namespace interstellarEngineCore::loadFunctions
 		return model;
 	}
 
-	void* loadTexture(const std::string& filePath) {
-		return nullptr;
+	void* loadTexture(assetManager::assetEntry& entry) {
+		// Aloca imagem do formato do engine
+		fileTypes::imageFile* image = new fileTypes::imageFile();
+
+		int imageWidth = 0;
+		int imageHeight = 0;
+		int imageChannelsInFile = 0;
+		// Força 4 canais (RGBA) para compatibilidade com o pipeline atual
+		stbi_uc* pixelData = stbi_load(entry.filePath.c_str(), &imageWidth, &imageHeight, &imageChannelsInFile, STBI_rgb_alpha);
+		if (!pixelData) {
+			delete image;
+			throw std::runtime_error(std::string("failed to load texture image: ") + entry.filePath);
+		}
+
+		image->width = static_cast<uint32_t>(imageWidth);
+		image->height = static_cast<uint32_t>(imageHeight);
+		image->channels = 4u; // STBI_rgb_alpha força 4 canais
+		image->mipLevels = 1u;
+		image->format = fileTypes::imagePixelFormat::R8G8B8A8_SRGB;
+
+		std::size_t requiredByteSize = image->byteSize();
+		image->pixels.resize(requiredByteSize);
+		memcpy(image->pixels.data(), pixelData, requiredByteSize);
+
+		stbi_image_free(pixelData);
+
+		utils::log(utils::logLevel::OK, "texture loaded: {} ({}x{} channels={})", entry.filePath, image->width, image->height, image->channels);
+
+		// Mantém o mesmo padrão usado em loadModel: substitui a função localmente para retornar o ponteiro já carregado.
+		std::function<void* (assetManager::assetEntry&)> func = [image](assetManager::assetEntry&) -> void* {
+			std::cout << "Returning already loaded image" << std::endl;
+			return image;
+			};
+		entry.func = func;
+
+		return image;
 	}
 }
