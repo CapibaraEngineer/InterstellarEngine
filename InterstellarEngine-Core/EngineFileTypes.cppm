@@ -3,6 +3,7 @@ module;
 #include <glm/glm.hpp>
 
 #include <tiny_obj_loader.h>
+#include <stb_image.h>
 
 export module EngineFileTypes;
 
@@ -33,16 +34,15 @@ export namespace interstellarEngineCore::fileTypes {
 		uint32_t height = 0;
 		uint32_t channels = 0;     
 		uint32_t mipLevels = 1;
+		size_t size = 0;
 		imagePixelFormat format = imagePixelFormat::UNDEFINED;
-		std::vector<unsigned char> pixels;
+		std::shared_ptr <stbi_uc[]> pixelData;
+		/*stbi_uc* pixels;*/
 
 		[[nodiscard]] std::size_t byteSize() const noexcept {
 			return static_cast<std::size_t>(width) * height * channels;
 		}
 
-		[[nodiscard]] bool isValid() const noexcept {
-			return width > 0 && height > 0 && !pixels.empty() && pixels.size() == byteSize();
-		}
 
 	};
 

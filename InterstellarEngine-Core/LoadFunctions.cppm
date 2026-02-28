@@ -72,7 +72,7 @@ export namespace interstellarEngineCore::loadFunctions
 		return model;
 	}
 
-	void* loadTexture(assetManager::assetEntry& entry) {
+	[[nodiscard]] void* loadTexture(assetManager::assetEntry& entry) {
 		// Aloca imagem do formato do engine
 		fileTypes::imageFile* image = new fileTypes::imageFile();
 
@@ -81,6 +81,7 @@ export namespace interstellarEngineCore::loadFunctions
 		int imageChannelsInFile = 0;
 		// Força 4 canais (RGBA) para compatibilidade com o pipeline atual
 		stbi_uc* pixelData = stbi_load(entry.filePath.c_str(), &imageWidth, &imageHeight, &imageChannelsInFile, STBI_rgb_alpha);
+		std::shared_ptr<stbi_uc[]> pixelDataPtr(pixelData, stbi_image_free);
 		if (!pixelData) {
 			delete image;
 			throw std::runtime_error(std::string("failed to load texture image: ") + entry.filePath);
@@ -90,13 +91,12 @@ export namespace interstellarEngineCore::loadFunctions
 		image->height = static_cast<uint32_t>(imageHeight);
 		image->channels = 4u; // STBI_rgb_alpha força 4 canais
 		image->mipLevels = 1u;
+		image->size = image->width * image->height * 4;
 		image->format = fileTypes::imagePixelFormat::R8G8B8A8_SRGB;
 
-		std::size_t requiredByteSize = image->byteSize();
-		image->pixels.resize(requiredByteSize);
-		memcpy(image->pixels.data(), pixelData, requiredByteSize);
+		
+		image->pixelData = pixelDataPtr;
 
-		stbi_image_free(pixelData);
 
 		utils::log(utils::logLevel::OK, "texture loaded: {} ({}x{} channels={})", entry.filePath, image->width, image->height, image->channels);
 

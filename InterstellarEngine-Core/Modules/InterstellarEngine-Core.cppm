@@ -12,7 +12,7 @@ export namespace interstellarEngineCore {
 
 	//The working directory is the InterstellarEngine-Editor directory
 	const fs::path modelPath("../InterstellarEngine-Core/Assets/Models/viking_room.obj");
-	constexpr std::string_view modelTexturePath = "../InterstellarEngine-Core/Assets/Textures/viking_room.png";
+	const fs::path modelTexturePath = "../InterstellarEngine-Core/Assets/Textures/viking_room.png";
 	constexpr std::string_view grassTexturePath = "../InterstellarEngine-Core/Assets/Textures/grass_block_side.png";
 	constexpr std::string_view capibaraEngineerPath = "../InterstellarEngine-Core/Assets/Textures/capibara_engineer_512x512.png";
 	constexpr std::string_view vertexShaderPath = "../InterstellarEngine-Core/Assets/Shaders/vert.spv";
