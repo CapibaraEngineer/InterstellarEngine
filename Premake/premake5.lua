@@ -3,7 +3,6 @@ workspace ("InterstellarEngine")
     architecture ("x86_64")
     configurations {"Debug", "Release"}
     startproject ("InterstellarEngine-Editor")
-    flags {"MultiProcessorCompile", "ShadowedVariables", "UndefinedIdentifiers"}
 
 local Root_Dir = "../" --directory above the Premake directory, the root directory
 local ExternalDir = Root_Dir .. "External/" -- third party libraries directory like GLFW and glm
